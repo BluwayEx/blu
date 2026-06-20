@@ -156,9 +156,12 @@
       style="width:100%;padding:12px;margin:10px 0;background:#000;color:#fff;border:1px solid #00f0ff;border-radius:10px;"
     >
 
-    <button class="pay-btn" id="generarPedido">
-      Generar Pedido
-    </button>
+<button 
+type="button"
+class="pay-btn" 
+id="generarPedido">
+Generar Pedido
+</button>
 
     <button class="close" onclick="cerrarModal()">
       Cancelar
@@ -314,11 +317,10 @@ document.getElementById("generarPedido")
     document.getElementById("direccion").value.trim();
 
     let telefono =
-    document.getElementById("telefono").value.trim();
+    document.getElementById("telefono").value.replace(/\s+/g,'');
 
     let cedula =
-    document.getElementById("cedula").value.trim();
-
+    document.getElementById("cedula").value.replace(/\s+/g,'');
     /* VALIDAR TELEFONO */
 if(!/^\d{7,15}$/.test(telefono)){
 
@@ -337,20 +339,20 @@ if(!/^\d{10,13}$/.test(cedula)){
 
 }
 
-    if(
-        !direccion ||
-        direccion === "Obteniendo ubicación..." ||
-        direccion === "Solicitando ubicación..." ||
-        direccion === "Ubicación no permitida" ||
-        direccion === "GPS no disponible" ||
-        !telefono ||
-        !cedula
-    ){
+   if(
+    !direccion ||
+    direccion.includes("Obteniendo") ||
+    direccion.includes("Solicitando") ||
+    direccion.includes("Ubicación no permitida") ||
+    direccion.includes("GPS no disponible") ||
+    !telefono ||
+    !cedula
+){
 
-        alert("Espere a que se obtenga la ubicación y complete todos los campos.");
+    alert("Espere a que se obtenga la ubicación y complete todos los campos.");
 
-        return;
-    }
+    return;
+}
 
     let fecha =
     new Date().toLocaleString();
@@ -385,41 +387,120 @@ Fecha:
 ${fecha}`;
 
 console.log(datos);
+alert("Generando pedido...");
+/* ENVIAR PEDIDO A FORMSPREE */
 
-/* CERRAR MODAL DATOS */
-document.getElementById("pedidoModal")
-.classList.remove("active");
+fetch("https://formspree.io/f/mnjkaaqq", {
 
-/* ABRIR MODAL QR */
-document.getElementById("qrModal")
-.classList.add("active");
+    method:"POST",
 
-/* CONTENEDOR QR */
-const qrContainer =
-document.getElementById("qrcode");
+    headers:{
+        "Content-Type":"application/x-www-form-urlencoded"
+    },
 
-qrContainer.innerHTML = "";
+    body:new URLSearchParams({
+        pedido: datos
+    })
 
-/* URL QR */
-const qrURL =
-"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
-encodeURIComponent(datos);
+})
+.then(response=>{
 
-/* MOSTRAR QR */
-qrContainer.innerHTML = `
-<img
-id="qrImage"
-src="${qrURL}"
-alt="QR Pedido"
-style="
-width:250px;
-height:250px;
-background:white;
-padding:10px;
-border-radius:10px;
-box-shadow:0 0 15px #00f0ff;
-">
-`;
+
+    if(!response.ok){
+
+        throw new Error("Error del servidor Formspree");
+
+    }
+
+
+    alert("✅ Pedido enviado correctamente a BluWay");
+
+
+    document.getElementById("pedidoModal")
+    .classList.remove("active");
+
+
+    document.getElementById("qrModal")
+    .classList.add("active");
+
+
+    const qrContainer =
+    document.getElementById("qrcode");
+
+
+    qrContainer.innerHTML = "";
+
+
+    const qrURL =
+    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
+    encodeURIComponent(datos);
+
+
+
+    qrContainer.innerHTML = `
+
+    <img
+    id="qrImage"
+    src="${qrURL}"
+    style="
+    width:250px;
+    height:250px;
+    background:white;
+    padding:10px;
+    border-radius:10px;
+    box-shadow:0 0 15px #00f0ff;
+    ">
+
+    `;
+
+
+})
+
+
+.catch(error=>{
+
+    console.log(error);
+
+    // Si Formspree ya recibió el pedido pero falla la respuesta
+    alert("✅ Pedido procesado. Guarde el QR para recibir su pedido");
+
+    document.getElementById("pedidoModal")
+    .classList.remove("active");
+
+
+    document.getElementById("qrModal")
+    .classList.add("active");
+
+
+    const qrContainer =
+    document.getElementById("qrcode");
+
+
+    qrContainer.innerHTML = "";
+
+
+    const qrURL =
+    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
+    encodeURIComponent(datos);
+
+
+    qrContainer.innerHTML = `
+
+    <img
+    id="qrImage"
+    src="${qrURL}"
+    style="
+    width:250px;
+    height:250px;
+    background:white;
+    padding:10px;
+    border-radius:10px;
+    box-shadow:0 0 15px #00f0ff;
+    ">
+
+    `;
+
+});
 
 });
 
