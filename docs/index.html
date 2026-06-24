@@ -8,9 +8,9 @@
 
   <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif;}
-    body {background: linear-gradient(135deg, #e99f08, #ffffff); color: #fff; overflow-x: hidden;}
-    header {background: rgb(151 4 4 / 0%); backdrop-filter: blur(10px); padding: 20px 50px;
-      display: flex; align-items: center; justify-content: space-between; position: relative; top: 0;
+    body {background: linear-gradient(135deg, #050505, #0a0f1c); color: #fff; overflow-x: hidden;}
+    header {background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); padding: 20px 50px;
+      display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0;
       border-bottom: 1px solid #00f0ff40; box-shadow: 0 0 15px #00f0ff30;}
     header h1 {font-size: 1.8em; color: #00f0ff; letter-spacing: 2px; text-shadow: 0 0 10px #00f0ff;}
     nav a {color: #a0a0a0; margin-left: 30px; text-decoration: none; transition: 0.3s;}
@@ -19,18 +19,18 @@
      background: url('https://loremflickr.com/1600/900/shop') no-repeat center center/cover; position: relative;}
     .hero::before {content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7);}
     .hero h2, .hero p {position: relative;}
-    .hero h2 {font-size: 3em; color: #2e7575; text-shadow: 0 0 20px #000000;}
+    .hero h2 {font-size: 3em; color: #00f0ff; text-shadow: 0 0 20px #00f0ff;}
     .hero p {font-size: 1.2em; color: #ddd; margin-top: 15px;}
     .product-section {padding: 60px 40px;}
-    .section-title {text-align: center; color: #ff0000; font-size: 2em; margin-bottom: 40px; text-shadow: 0 0 10px #ffffff;}
-    .product-card {background: #001314; border: 1px solid #00f0ff40; border-radius: 15px; overflow: hidden;
+    .section-title {text-align: center; color: #00f0ff; font-size: 2em; margin-bottom: 40px; text-shadow: 0 0 10px #00f0ff;}
+    .product-card {background: #081733; border: 1px solid #00f0ff40; border-radius: 15px; overflow: hidden;
       transition: 0.3s; box-shadow: 0 0 10px #00f0ff20; flex: 0 0 280px;}
     .product-card:hover {transform: translateY(-8px); box-shadow: 0 0 25px #00f0ff60;}
-    .product-card img {width: 100%; height: 280px; object-fit: contain; background-color: #f7f7f7ea; border-bottom: 1px solid #00f0ff30;}
+    .product-card img {width: 100%; height: 220px; object-fit: contain; background-color: #000; border-bottom: 1px solid #00f0ff30;}
     .product-info {padding: 20px; text-align: center;}
-    .product-info h3 {color: #ffffffc5; font-size: 1.2em; margin-bottom: 10px;}
-    .product-info p {color: #fffffff1; font-size: 0.9em; margin-bottom: 15px;}
-    .price {color: #ffffff; font-size: 1.1em; font-weight: bold; margin-bottom: 10px;}
+    .product-info h3 {color: #00f0ff; font-size: 1.2em; margin-bottom: 10px;}
+    .product-info p {color: #bbb; font-size: 0.9em; margin-bottom: 15px;}
+    .price {color: #fff; font-size: 1.1em; font-weight: bold; margin-bottom: 10px;}
     .btn {background: #00f0ff; color: #000; border: none; padding: 10px 20px; border-radius: 25px;
       font-weight: bold; cursor: pointer; transition: 0.3s;}
     .btn:hover {background: #fff; color: #00f0ff; box-shadow: 0 0 20px #00f0ff;}
@@ -40,95 +40,18 @@
     .modal {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: 0.3s;}
     .modal.active {visibility: visible; opacity: 1;}
-    .modal-content {background: #1e1f4d; border: 1px solid #00f0ff40; border-radius: 15px; padding: 30px;
+    .modal-content {background: #0a0f1c; border: 1px solid #00f0ff40; border-radius: 15px; padding: 30px;
       text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 25px #00f0ff40;}
     .modal-content h3 {color: #00f0ff; margin-bottom: 20px;}
     select, button.pay-btn {margin: 10px 0; padding: 10px; border-radius: 10px; border: none; width: 100%; font-size: 1em;}
     select {background: #000; color: #00f0ff; border: 1px solid #00f0ff80;}
     button.pay-btn {background: #00f0ff; color: #000; font-weight: bold; cursor: pointer;}
-    button.close {background: none; color: #f7f7f7; border: none; cursor: pointer; margin-top: 10px;}
-/* --- SLIDER --- */
-
-.product-slider{
-    display:flex;
-    overflow-x:auto;
-    overflow-y:hidden;
-    scroll-behavior:smooth;
-    gap:30px;
-    padding:20px;
-    width:100%;
-    max-width:100%;
-}
-
-
-/* Scroll PC */
-
-.product-slider::-webkit-scrollbar{
-    height:8px;
-}
-
-
-.product-slider::-webkit-scrollbar-thumb{
-    background:#00f0ff80;
-    border-radius:10px;
-}
-
-
-.product-slider::-webkit-scrollbar-track{
-    background:#081733;
-}
-
-
-/* CELULAR */
-
-@media(max-width:768px){
-
-    .product-slider{
-
-        gap:15px;
-
-        padding:10px 0;
-
-        overflow-x:auto;
-
-        overflow-y:hidden;
-
-    }
-
-
-    .product-slider::-webkit-scrollbar{
-
-        height:0px;
-
-    }
-
-
-    .product-card{
-
-        flex:0 0 85vw;
-
-    }
-
-}
-
-@media(max-width:768px){
-
-.hero{
-    background-size: cover;
-    background-position:center;
-    min-height:180px;
-    padding:40px 10px;
-}
-
-.hero h2{
-    font-size:2em;
-}
-
-.hero p{
-    font-size:1rem;
-}
-
-}
+    button.close {background: none; color: #888; border: none; cursor: pointer; margin-top: 10px;}
+    /* --- SLIDER --- */
+    .product-slider {display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 30px; padding: 20px;}
+    .product-slider::-webkit-scrollbar {height: 8px;}
+    .product-slider::-webkit-scrollbar-thumb {background: #00f0ff80; border-radius: 10px;}
+    .product-slider::-webkit-scrollbar-track {background: #081733;}
 
     /* =========================
    BOTONES SLIDER PC
@@ -215,14 +138,25 @@ display:none;
 }
 
 }
+
+
+@media(max-width:768px){
+
+.hero{
+    background-size: cover;
+    background-position: center;
+    min-height: 300px;
+}
+
+}
   </style>
 </head>
 <body>
 
 <header>
-  <h1>BluWay</h1>
+  <h1>BluWay | Sin Limites</h1>
 <nav>
-  <a href="bluwaytv.html">TV</a>
+  <a href="bluwaytv.html">BluWay TV</a>
   <a href="#">Inicio</a>
   <a href="#">Soporte</a>
 </nav>
@@ -230,12 +164,12 @@ display:none;
 
 <section class="hero">
   <h2>Envíos Ambato</h2>
-  <p>Estilo y precio en un solo lugar</p>
+  <p>Estilo y precio en un solo lugar.WEB EN FASE DE PRUEBAS</p>
 </section>
 <section class="product-section">
 
 <h2 class="section-title">
-Estanteria
+Productos Disponibles
 </h2>
 
 
@@ -259,6 +193,8 @@ Estanteria
   © 2026 BluWay | Sin Límites
 </footer>
 
+</body>
+</html>
 
 <!-- MODAL DATOS DEL PEDIDO -->
 <div class="modal" id="pedidoModal">
@@ -636,7 +572,7 @@ fetch("https://formspree.io/f/mnjkaaqq", {
     width:250px;
     height:250px;
     background:white;
-    padding:8px;
+    padding:10px;
     border-radius:10px;
     box-shadow:0 0 15px #00f0ff;
     ">
