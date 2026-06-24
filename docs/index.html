@@ -52,7 +52,152 @@
     .product-slider::-webkit-scrollbar {height: 8px;}
     .product-slider::-webkit-scrollbar-thumb {background: #00f0ff80; border-radius: 10px;}
     .product-slider::-webkit-scrollbar-track {background: #081733;}
-    .slider-container {position: relative;}
+
+    /* =========================
+   BOTONES SLIDER PC
+========================= */
+
+.slider-container{
+position:relative;
+width:100%;
+}
+
+
+.slider-btn{
+
+position:absolute;
+
+top:50%;
+
+transform:translateY(-50%);
+
+width:42px;
+height:70px;
+
+border:none;
+
+background:rgba(0,0,0,0.65);
+
+color:white;
+
+font-size:22px;
+
+cursor:pointer;
+
+z-index:20;
+
+opacity:0;
+
+transition:0.25s;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+backdrop-filter:blur(8px);
+
+box-shadow:
+0 0 15px rgba(0,240,255,0.25);
+
+}
+
+
+.slider-btn.left{
+
+left:0;
+
+}
+
+
+
+.slider-btn.right{
+
+right:0;
+
+}
+
+
+
+/* aparece con mouse en computadora */
+
+.slider-container:hover .slider-btn{
+
+opacity:1;
+
+}
+
+
+
+/* celular sin botones */
+
+@media(max-width:768px){
+
+.slider-btn{
+
+display:none;
+}
+
+}
+
+
+@media(max-width:768px){
+
+.hero{
+    background-size: cover;
+    background-position: center;
+    min-height: 300px;
+}
+}
+/* Tipografía base adaptable */
+body {
+  font-size: 16px; /* tamaño base */
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px; /* reduce un poco en pantallas pequeñas */
+  }
+
+  header h1 {
+    font-size: 1.4em; /* más pequeño en móvil */
+  }
+
+  .hero h2 {
+    font-size: 2em; /* ajusta títulos */
+  }
+
+  .hero p {
+    font-size: 1em;
+  }
+
+  .section-title {
+    font-size: 1.5em;
+  }
+
+  .product-card {
+    flex: 0 0 90%; /* ocupa casi todo el ancho en móvil */
+    margin: 0 auto;
+  }
+
+  .product-card img {
+    height: auto; /* que no quede fijo */
+    max-height: 200px;
+  }
+
+  .product-info h3 {
+    font-size: 1em;
+  }
+
+  .product-info p {
+    font-size: 0.85em;
+  }
+
+  .btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
+}
+
 
 </style>
 </head>
@@ -82,19 +227,25 @@ font-weight:normal;
 ">
 De tu eleccion
 </h2>
+
+
 </section>
 <section class="product-section">
 
 <h2 class="section-title">
 Catálogo de productos
 </h2>
+
+
 <div class="slider-container">
   
 <button class="slider-btn left" id="btnLeft">
 ‹
 </button>
+
 <div class="product-slider" id="productosFirebase">
 </div>
+
 <button class="slider-btn right" id="btnRight">
 ›
 </button>
@@ -105,6 +256,10 @@ Catálogo de productos
 <footer>
   © 2026 BluWay | Sin Límites
 </footer>
+
+</body>
+</html>
+
 <!-- MODAL DATOS DEL PEDIDO -->
 <div class="modal" id="pedidoModal">
   <div class="modal-content">
@@ -628,7 +783,10 @@ btnLeft.addEventListener("click",()=>{
 
 });
 
+
+
 btnRight.addEventListener("click",()=>{
+
 
     slider.scrollBy({
 
@@ -637,7 +795,11 @@ btnRight.addEventListener("click",()=>{
         behavior:"smooth"
 
     });
+
+
 });
+
 </script>
+
 </body>
 </html>
