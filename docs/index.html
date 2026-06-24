@@ -6,8 +6,8 @@
   <title>BluWay | Sin Limites</title>
   <link rel="icon" type="image/jpeg" href="imagenes/icono.jpg">
 
-<style>
-    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', cursive;}
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif;}
     body {background: linear-gradient(135deg, #e99f08, #ffffff); color: #fff; overflow-x: hidden;}
     header {background: rgb(151 4 4 / 0%); backdrop-filter: blur(10px); padding: 20px;
       display: flex; align-items: center; justify-content: space-between; position: relative; top: 0;
@@ -147,6 +147,153 @@ display:none;
     background-position: center;
     min-height: 300px;
 }
+
+}
+
+/* ==========================
+   ADAPTACION CELULAR
+========================== */
+
+@media(max-width:768px){
+
+
+body{
+    overflow-x:hidden;
+}
+
+
+/* HEADER */
+
+header{
+    flex-direction:column;
+    gap:15px;
+    padding:15px;
+}
+
+
+header h1{
+    font-size:1.5em;
+}
+
+
+nav{
+    display:flex;
+    gap:15px;
+}
+
+
+nav a{
+    margin-left:0;
+    font-size:14px;
+}
+
+
+
+/* HERO */
+
+.hero{
+
+    padding:50px 15px;
+    min-height:260px;
+
+}
+
+
+.hero h2{
+
+    font-size:2em;
+
+}
+
+
+.hero p{
+
+    font-size:1em;
+
+}
+
+
+
+/* PRODUCTOS */
+
+.product-section{
+
+    padding:30px 10px;
+
+}
+
+
+.section-title{
+
+    font-size:1.5em;
+
+}
+
+
+
+/* SLIDER */
+
+.product-slider{
+
+    gap:15px;
+    padding:10px;
+
+}
+
+
+/* TARJETAS */
+
+.product-card{
+
+    flex:0 0 85vw;
+    max-width:85vw;
+
+}
+
+
+
+.product-card img{
+
+    height:220px;
+
+}
+
+
+
+.product-info{
+
+    padding:15px;
+
+}
+
+
+/* MODALES */
+
+.modal-content{
+
+    width:92%;
+    max-height:90vh;
+    overflow-y:auto;
+
+}
+
+
+
+input,
+button,
+select{
+
+    font-size:16px !important;
+
+}
+
+
+footer{
+
+    font-size:12px;
+
+}
+
 
 }
   </style>
