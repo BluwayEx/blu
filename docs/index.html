@@ -194,20 +194,155 @@ body {
     font-size: 0.9em;
   }
 }
+/* ===========================
+   MENU HAMBURGUESA
+=========================== */
 
+.menu-btn{
+    font-size:30px;
+    color:white;
+    cursor:pointer;
+    user-select:none;
+}
+
+/* Fondo oscuro */
+.menu-fondo{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.45);
+    display:none;
+    z-index:998;
+}
+
+/* Panel lateral */
+.menu-lateral{
+    position:fixed;
+    top:0;
+    left:-280px;
+    width:260px;
+    height:100%;
+    background:white;
+    transition:0.35s;
+    z-index:999;
+    overflow-y:auto;
+    box-shadow:5px 0 20px rgba(0,0,0,.3);
+}
+
+/* Cuando está abierto */
+.menu-lateral.abierto{
+    left:0;
+}
+
+.menu-fondo.abierto{
+    display:block;
+}
+
+/* Cabecera del menú */
+.perfil{
+    background:#0A0F2C;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+.perfil img{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    display:block;
+    margin:0 auto 10px;
+}
+
+/* Opciones */
+.menu-lateral a{
+    display:block;
+    padding:16px 20px;
+    text-decoration:none;
+    color:#333;
+    border-bottom:1px solid #e5e5e5;
+    transition:.2s;
+}
+
+.menu-lateral a:hover{
+    background:#f5f5f5;
+    padding-left:30px;
+}
+#fotoPerfil{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #00f0ff;
+  box-shadow:0 0 15px rgba(0,240,255,0.4);
+  transition:0.3s;
+}
+
+#fotoPerfil:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(0,240,255,0.7);
+}
+
+.perfil h3{
+  margin-top:10px;
+  font-size:16px;
+  color:#fff;
+}
+
+.perfil p{
+  font-size:12px;
+  color:#ccc;
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>BluWay</h1>
-<nav>
-  <a href="bluwaytv.html">TV</a>
-  <a href="#">Catalogo</a>
-  <a href="#">Contacto</a>
-</nav>
-</header>
 
+<div style="display:flex;align-items:center;gap:15px;">
+
+<div class="menu-btn" onclick="abrirMenu()">
+☰
+</div>
+
+<h1>BluWay</h1>
+
+</div>
+
+<nav>
+  <a href="#">Catalogo</a>
+</nav>
+
+</header>
+<div class="menu-fondo" id="menuFondo" onclick="cerrarMenu()"></div>
+
+<div class="menu-lateral" id="menuLateral">
+
+<div class="perfil">
+    <img id="fotoPerfil" src="imagenes/icono.jpg" alt="Foto de perfil">
+
+    <h3 id="nombrePerfil">BluWay</h3>
+
+    <p id="correoPerfil">Sin Límites</p>
+</div>
+
+<a href="index.html">Inicio</a>
+
+<a href="bluwaytv.html">TV</a>
+
+<a href="#" id="perfilUsuario">
+  Perfil
+</a>
+
+<a href="#" id="cerrarSesion">
+  Cerrar sesión
+</a>
+
+<a href="#"> Contacto</a>
+
+</div>
 <section class="hero">
 <h2 id="frase" style="
 font-family:'Monotype Corsiva', cursive;
@@ -253,10 +388,221 @@ Coleccion
   © 2026 BluWay | Sin Límites
 </footer>
 
-</body>
+
 <script src="js/fondos.js"></script>
 
+<script type="module">
+
+import { createClient } from 
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+window.supabase = createClient(
+
+"https://nyloxoancdspgmhfaxgu.supabase.co",
+
+"sb_publishable_L5e4j8t_hWq1Owd2Zi2JOQ_h0PECtSy"
+
+);
+
+
+// ===============================
+// REVISAR SESIÓN ACTUAL
+// ===============================
+
+const { data } = await window.supabase.auth.getSession();
+
+const fotoPerfil = document.getElementById("fotoPerfil");
+const nombrePerfil = document.querySelector(".perfil h3");
+const textoPerfil = document.querySelector(".perfil p");
+
+if (data.session) {
+
+  const user = data.session.user;
+
+  nombrePerfil.textContent = user.user_metadata?.full_name || "Usuario";
+  textoPerfil.textContent = user.email;
+
+  fotoPerfil.src =
+    user.user_metadata?.avatar_url || "imagenes/icono.jpg";
+
+} else {
+
+  nombrePerfil.textContent = "BluWay";
+  textoPerfil.textContent = "Sin Límites";
+
+  fotoPerfil.src = "imagenes/icono.jpg";
+}
+
+if (data.session) {
+  const user = data.session.user;
+
+  // TEXTO
+  document.getElementById("nombrePerfil").innerText =
+    user.user_metadata?.full_name || "Usuario";
+
+  document.getElementById("correoPerfil").innerText =
+    user.email;
+
+  document.getElementById("perfilUsuario").innerHTML =
+    "👤 " + user.email;
+
+  // 👾 AVATAR AUTOMÁTICO (DICEBEAR)
+  const avatarUrl =
+    "https://api.dicebear.com/9.x/bottts/svg?seed=" +
+    encodeURIComponent(user.email);
+
+  document.getElementById("fotoPerfil").src = avatarUrl;
+
+  console.log(
+    "Usuario conectado:",
+    user.email
+  );
+
+} else {
+  // RESET (sin sesión)
+
+  document.getElementById("fotoPerfil").src =
+    "imagenes/icono.jpg";
+
+  document.getElementById("nombrePerfil").innerText =
+    "BluWay";
+
+  document.getElementById("correoPerfil").innerText =
+    "Sin Límites";
+
+  document.getElementById("perfilUsuario").innerHTML =
+    " Iniciar sesión";
+
+  console.log(
+    "No hay usuario conectado"
+  );
+}
+// ===============================
+// ABRIR MODAL LOGIN
+// ===============================
+
+
+document
+.getElementById("perfilUsuario")
+.addEventListener("click", async()=>{
+
+
+const {data} =
+await window.supabase.auth.getSession();
+const fotoPerfil = document.getElementById("fotoPerfil");
+const nombrePerfil = document.querySelector(".perfil h3");
+const textoPerfil = document.querySelector(".perfil p");
+
+if (data.session) {
+
+  const user = data.session.user;
+
+  nombrePerfil.textContent = user.user_metadata?.full_name || "Usuario";
+  textoPerfil.textContent = user.email;
+
+  fotoPerfil.src = user.user_metadata?.avatar_url || "imagenes/icono.jpg";
+
+} else {
+
+  nombrePerfil.textContent = "BluWay";
+  textoPerfil.textContent = "Sin Límites";
+
+  fotoPerfil.src = "imagenes/icono.jpg";
+}
+
+
+
+if(data.session){
+
+alert(
+"Ya tienes sesión iniciada"
+);
+
+return;
+
+}
+
+
+
+// abrir Google directamente
+
+const {error} =
+await window.supabase.auth.signInWithOAuth({
+  provider: "google",
+  options: {
+    redirectTo: "https://bluwayex.github.io/blu/"
+  }
+});
+
+
+if(error){
+
+console.log(
+"Error Google:",
+error.message
+);
+
+}
+
+
+});
+
+// ===============================
+// CERRAR SESIÓN
+// ===============================
+
+
+document
+.getElementById("cerrarSesion")
+.addEventListener("click", async ()=>{
+
+
+const { error } =
+await window.supabase.auth.signOut();
+
+
+
+if(error){
+
+
+console.log(
+"Error cerrando sesión:",
+error.message
+);
+
+
+return;
+
+
+}
+
+
+
+console.log(
+"Sesión cerrada correctamente"
+);
+
+
+
+alert("Sesión cerrada");
+
+
+// recargar para limpiar datos
+
+location.reload();
+
+
+
+});
+
+
+
+</script>
+
+</body>
 </html>
+
 
 <!-- MODAL DATOS DEL PEDIDO -->
 <div class="modal" id="pedidoModal">
@@ -326,11 +672,12 @@ Generar Pedido
       Cancelar Pedido
     </button>
 
-  </div>
-</div>
 <script>
-const SUPABASE_URL = "https://nyloxoancdspgmhfaxgu.supabase.co";
-const SUPABASE_KEY = "sb_publishable_L5e4j8t_hWq1Owd2Zi2JOQ_h0PECtSy";
+const SUPABASE_URL =
+"https://nyloxoancdspgmhfaxgu.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_L5e4j8t_hWq1Owd2Zi2JOQ_h0PECtSy";
 
 fetch(`${SUPABASE_URL}/rest/v1/productos`, {
   method: "GET",
@@ -447,15 +794,40 @@ navigator.geolocation.getCurrentPosition(
     );
 
 }
-
 /* =========================
    BOTONES COMPRAR
 ========================= */
 
-document.addEventListener("click", function(e){
+document.addEventListener("click", async function(e){
 
 
 if(e.target.classList.contains("comprar-btn")){
+
+
+if(!window.supabase){
+    alert("Supabase no está listo");
+    return;
+}
+
+
+const {data} = await window.supabase.auth.getSession();
+
+if(!data.session){
+
+await window.supabase.auth.signInWithOAuth({
+
+provider:"google",
+
+options:{
+redirectTo:window.location.href
+}
+
+});
+
+return;
+
+}
+
 
 
 productoSeleccionado =
@@ -796,6 +1168,33 @@ btnRight.addEventListener("click",()=>{
 
 
 });
+/* ===========================
+   MENÚ HAMBURGUESA
+=========================== */
+
+function abrirMenu(){
+
+    document
+    .getElementById("menuLateral")
+    .classList.add("abierto");
+
+    document
+    .getElementById("menuFondo")
+    .classList.add("abierto");
+
+}
+
+function cerrarMenu(){
+
+    document
+    .getElementById("menuLateral")
+    .classList.remove("abierto");
+
+    document
+    .getElementById("menuFondo")
+    .classList.remove("abierto");
+
+}
 
 </script>
 
