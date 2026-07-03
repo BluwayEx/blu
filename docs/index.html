@@ -23,15 +23,15 @@
     .hero p {font-size: 1.2em; color: #ddd; margin-top: 15px;}
     .product-section {padding:5%;}
     .section-title {text-align: center; color: #000000; font-size: 2em; margin-bottom: 40px; text-shadow: 0 0 10px #ffffff;}
-    .product-card {background: #001314; border: 1px solid #00f0ff40; border-radius: 15px; overflow: hidden;
+    .product-card {background: #ffffff; border: 1px solid #000000; border-radius: 15px; overflow: hidden;
       transition: 0.3s; box-shadow: 0 0 10px #00f0ff20; flex: 0 0 280px;}
     .product-card:hover {transform: translateY(-8px); box-shadow: 0 0 25px #00f0ff60;}
-    .product-card img {width: 100%; height: 280px; object-fit: contain; background-color: #f7f7f7ea; border-bottom: 1px solid #00f0ff30;}
+    .product-card img {width: 100%; height: 280px; object-fit: contain; background-color: #fafbfa; border-bottom: 1px solid #ffffff;}
     .product-info {padding: 20px; text-align: center;}
-    .product-info h3 {color: #ffffffc5; font-size: 1.2em; margin-bottom: 10px;}
+    .product-info h3 {color: #000000fb; font-size: 1.2em; margin-bottom: 10px;}
     .product-info p {color: #fffffff1; font-size: 0.9em; margin-bottom: 15px;}
-    .price {color: #ffffff; font-size: 1.1em; font-weight: bold; margin-bottom: 10px;}
-    .btn {background: #00f0ff; color: #000; border: none; padding: 10px 20px; border-radius: 25px;
+    .price {color: #000000b4; font-size: 1.1em; font-weight: bold; margin-bottom: 10px;}
+    .btn {background: #000000da; color: #ffffff; border: none; padding: 10px 20px; border-radius: 25px;
       font-weight: bold; cursor: pointer; transition: 0.3s;}
     .btn:hover {background: #fff; color: #00f0ff; box-shadow: 0 0 20px #00f0ff;}
     footer {text-align: center; padding: 25px; background: #000; border-top: 1px solid #00f0ff30;
@@ -178,7 +178,7 @@ body {
 
   .product-card img {
     height: auto; /* que no quede fijo */
-    max-height: 200px;
+    max-height:none;
   }
 
   .product-info h3 {
@@ -701,20 +701,19 @@ fetch(`${SUPABASE_URL}/rest/v1/productos`, {
     return;
   }
 
-  data.forEach(producto => {
-    contenedor.innerHTML += `
-      <div class="product-card">
-        <img src="${producto.imagen || 'imagenes/Camiseta.jpg'}">
-        <div class="product-info">
-          <h3>${producto.nombre}</h3>
-          <p>${producto.descripcion || ""}</p>
-          <div class="price">$${producto.precio}</div>
-          <button class="btn comprar-btn">Comprar</button>
-        </div>
+data.forEach(producto => {
+  contenedor.innerHTML += `
+    <div class="product-card" data-id="${producto.id}">
+      <img src="${producto.imagen || 'imagenes/Camiseta.jpg'}">
+      <div class="product-info">
+        <h3>${producto.nombre}</h3>
+        <p>${producto.descripcion || ""}</p>
+        <div class="price">$${producto.precio}</div>
+        <button class="btn comprar-btn">Comprar</button>
       </div>
-    `;
-  });
-
+    </div>
+  `;
+});
 })
 .catch(error => {
   console.log("Error Supabase:", error);
@@ -830,14 +829,17 @@ return;
 
 
 
-productoSeleccionado =
-e.target.parentElement.querySelector("h3").innerText;
+const card = e.target.closest(".product-card");
 
+if (!card) return;
 
-document.getElementById("productoPedido")
-.innerText =
-"Producto: " + productoSeleccionado;
+productoSeleccionado = {
+  id: card.dataset.id,
+  nombre: card.querySelector("h3")?.innerText || "Producto sin nombre"
+};
 
+document.getElementById("productoPedido").innerText =
+  "Producto: " + productoSeleccionado.nombre;
 
 document.getElementById("direccion").value =
 "Obteniendo ubicación...";
@@ -926,25 +928,30 @@ if(!/^\d{10,13}$/.test(cedula)){
 
 ID: ${pedidoID}
 
-Producto: ${productoSeleccionado}
+Producto: ${productoSeleccionado?.nombre || "No definido"}
+ID: ${productoSeleccionado?.id || "No definido"}
 
-Direccion:
-${direccion}
+Dirección:
+${direccion || "No registrada"}
 
-Telefono:
-${telefono}
+Teléfono:
+${telefono || "No registrado"}
 
-Cedula:
-${cedula}
+Cédula:
+${cedula || "No registrada"}
 
 GPS:
-${latitudCliente}, ${longitudCliente}
+${latitudCliente && longitudCliente 
+  ? `${latitudCliente}, ${longitudCliente}` 
+  : "No disponible"}
 
 GOOGLE MAPS:
-https://maps.google.com/?q=${latitudCliente},${longitudCliente}
+${latitudCliente && longitudCliente 
+  ? `https://maps.google.com/?q=${latitudCliente},${longitudCliente}`
+  : "Sin ubicación"}
 
 Fecha:
-${fecha}`;
+${fecha}`
 
 console.log(datos);
 alert("Generando pedido...");
