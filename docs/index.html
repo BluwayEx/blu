@@ -442,7 +442,84 @@ body {
 .precio-anterior{
     margin-left:1px;  /* casi pegado */
 }
+/* ===========================
+   BUSCADOR DE PRODUCTOS
+=========================== */
 
+.search-container {
+  position: relative;
+  z-index: 2;
+  margin: 20px auto 25px auto;
+  width: 90%;
+  max-width: 500px;
+  animation: fadeInDown 0.8s ease;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid #00f0ff50;
+  border-radius: 50px;
+  padding: 4px 8px 4px 20px;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+  border-color: #00f0ff;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.search-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1.05em;
+  padding: 12px 8px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.search-box input::placeholder {
+  color: #aaa;
+  opacity: 0.8;
+}
+
+.search-icon {
+  color: #00f0ff;
+  font-size: 1.1em;
+  margin-right: 8px;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+/* Animación suave al cargar */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-container {
+    width: 95%;
+    max-width: 100%;
+  }
+  .search-box input {
+    font-size: 1em;
+    padding: 10px 6px;
+  }
+}
 </style>
 </head>
 <body>
@@ -492,22 +569,29 @@ body {
 
 </div>
 <section class="hero">
-<h2 id="frase" style="
-font-family:'Monotype Corsiva', cursive;
-color:rgb(228, 228, 228);
-font-weight:normal;
-">
-</h2>
+  <h2 id="frase" style="
+    font-family:'Monotype Corsiva', cursive;
+    color:rgb(228, 228, 228);
+    font-weight:normal;
+  ">
+  </h2>
 
-<h2 style="
-font-family:'Monotype Corsiva', cursive;
-color:rgb(172, 166, 166);
-font-weight:normal;
-">
-De tu eleccion
-</h2>
+  <!-- BUSCADOR PASO 1 -->
+  <div class="search-container">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="buscadorProductos" placeholder="Buscar productos..." autocomplete="off">
+    </div>
+  </div>
+  <!-- FIN BUSCADOR -->
 
-
+  <h2 style="
+    font-family:'Monotype Corsiva', cursive;
+    color:rgb(172, 166, 166);
+    font-weight:normal;
+  ">
+    De tu eleccion
+  </h2>
 </section>
 <section class="product-section">
 
@@ -1381,6 +1465,37 @@ function cerrarMenu(){
     .classList.remove("abierto");
 
 }
+
+/* ==========================
+   BUSCADOR DE PRODUCTOS
+========================== */
+
+const buscador = document.getElementById("buscadorProductos");
+
+buscador.addEventListener("input", function () {
+
+    const texto = this.value.toLowerCase();
+
+    const productos = document.querySelectorAll(".product-card");
+
+    productos.forEach(producto => {
+
+        const nombre = producto.querySelector("h3").textContent.toLowerCase();
+
+        const descripcion = producto.querySelector("p").textContent.toLowerCase();
+
+        if (
+            nombre.includes(texto) ||
+            descripcion.includes(texto)
+        ) {
+            producto.style.display = "";
+        } else {
+            producto.style.display = "none";
+        }
+
+    });
+
+});
 
 </script>
 
