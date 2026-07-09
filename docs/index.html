@@ -28,10 +28,17 @@
       transition: 0.3s; box-shadow: 0 0 10px #00f0ff20; flex: 0 0 280px;}
     .product-card:hover {transform: translateY(-8px); box-shadow: 0 0 25px #00f0ff60;}
     .product-card img {width: 100%; height: 280px; object-fit: contain; background-color: #fafbfa; border-bottom: 1px solid #ffffff;}
-    .product-info {padding: 20px; text-align: center;}
-    .product-info h3 {color: #000000fb; font-size: 1.2em; margin-bottom: 10px;}
-    .product-info p {color: #fffffff1; font-size: 0.9em; margin-bottom: 15px;}
-  .btn {width:80%;margin:25px auto 8px;height:54px;display:flex;justify-content:center;align-items:center;gap:10px;
+    .product-info {padding: 5%; text-align: center;}
+    .product-info h3 {color: #000000fb; font-size: 1.2em; margin-bottom:auto;}
+    .product-info p {color: #fffffff1; font-size: 0.9em; margin-bottom: 0%;}
+    .titulo-producto{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0px;
+    margin-bottom:0px;
+}
+  .btn {width:80%;margin:8px auto 1px;height: 54px;display:flex;justify-content:center;align-items:center;gap:10px;
     border:none;border-radius:40px;cursor:pointer;font-size:clamp(18px, 3vw, 28px);font-weight:700;color:#00D8FF;
     background:linear-gradient(180deg,#1a1a1a,#0d0d0d);box-shadow:0 10px 25px rgba(0,0,0,.25);transition:.30s;text-align:center;}
 .btn::before {content:"";position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg,transparent,rgba(255, 255, 255, 0.575),transparent);transform:skewX(-25deg);}
@@ -239,12 +246,11 @@ body {
   }
 
   .product-card img {
-    height: auto; /* que no quede fijo */
     max-height:none;
   }
 
   .product-info h3 {
-    font-size: 1em;
+    font-size: larger;
   }
 
   .product-info p {
@@ -365,7 +371,7 @@ body {
 
 .info-btn{
 
-    width: 35px;
+    width: 32px;
     height: 35px;
 
     display:flex;
@@ -373,12 +379,12 @@ body {
     justify-content:center;
 
     border:none;
-    border-radius:50%;
+    border-radius:100%;
 
-    background:#000000;
+    background:#5b3cff;
     color:#ffffff;
 
-    font-size:22px;
+    font-size: 30px;
 
     font-family: "Blackadder ITC", "Times New Roman", cursive;
 
@@ -848,9 +854,16 @@ fetch(`${SUPABASE_URL}/rest/v1/productos`, {
       <div class="product-card">
         <img src="${producto.imagen || 'imagenes/Camiseta.jpg'}">
         <div class="product-info">
-<button class="info-btn">i</button>
+
+<div class="titulo-producto">
 
 <h3>${producto.nombre}</h3>
+
+<button class="info-btn">
+    <i class="fa-solid fa-circle-info"></i>
+</button>
+
+</div>
 
 <p>${producto.descripcion || ""}</p>
 <div style="display:flex;align-items:baseline;gap:6px;">
