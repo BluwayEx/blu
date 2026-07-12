@@ -1266,17 +1266,39 @@ navigator.geolocation.getCurrentPosition(
         }
 
     },
+function(error) {
 
-        function(error) {
+    if(error.code === 1){
 
-            campoDireccion.value =
-            "Ubicación no permitida";
+        alert(
+        "Por favor activa la ubicación del navegador para completar el pedido."
+        );
 
-        }
+        campoDireccion.value =
+        "Permiso de ubicación rechazado";
 
-    );
+    }
+
+    else if(error.code === 2){
+
+        campoDireccion.value =
+        "Ubicación no disponible";
+
+    }
+
+    else if(error.code === 3){
+
+        campoDireccion.value =
+        "Tiempo agotado";
+
+    }
 
 }
+
+);
+
+}
+
 /* =========================
    BOTONES COMPRAR
 ========================= */
@@ -1330,7 +1352,11 @@ document.getElementById("pedidoModal")
 .classList.add("active");
 
 
-obtenerUbicacion();
+setTimeout(() => {
+
+    obtenerUbicacion();
+
+},500);
 
 
 }
