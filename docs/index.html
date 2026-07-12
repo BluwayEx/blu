@@ -612,6 +612,110 @@ footer{
 }
 
 }
+
+/*=========================
+SUGERENCIAS BUSCADOR
+==========================*/
+
+.search-container{
+
+    position:relative;
+
+}
+
+.lista-sugerencias{
+
+    position:absolute;
+
+    top:100%;
+
+    left:0;
+
+    width:100%;
+
+    background:#101010;
+
+    border:1px solid rgba(0,240,255,.2);
+
+    border-radius:12px;
+
+    margin-top:8px;
+
+    overflow:hidden;
+
+    display:none;
+
+    z-index:99999;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.45);
+
+}
+
+.sugerencia{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:12px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.sugerencia:hover{
+
+    background:#181818;
+
+}
+
+.sugerencia img{
+
+    width:45px;
+
+    height:45px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+}
+
+.sugerencia .nombre{
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.sugerencia .precio{
+
+    color:#00f0ff;
+
+    font-size:13px;
+
+}
+
+.lista-sugerencias::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.lista-sugerencias::-webkit-scrollbar-thumb{
+
+    background:#00f0ff;
+
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -669,15 +773,28 @@ footer{
   </h2>
 
   <!-- BUSCADOR PASO 1 -->
-  <div class="search-container">
+<div class="search-container">
+
     <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass search-icon"></i>
-      <input type="text" id="buscadorProductos" placeholder="Buscar productos..." autocomplete="off">
-          <button id="btnBuscar" class="search-btn">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+        <input
+        type="text"
+        id="buscadorProductos"
+        placeholder="Buscar productos..."
+        autocomplete="off">
+
+        <button id="btnBuscar" class="search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
     </div>
-  </div>
+
+    <!-- NUEVO -->
+    <div id="listaSugerencias" class="lista-sugerencias"></div>
+
+</div>
   <!-- FIN BUSCADOR -->
 
   <h2 style="
@@ -1016,7 +1133,8 @@ fetch(`${SUPABASE_URL}/rest/v1/productos`, {
 .then(res => res.json())
 .then(data => {
 
-  console.log("Supabase conectado:", data);
+  console.log("Connected Supabase:", data);
+  productosCache = data;
 
   const contenedor = document.getElementById("productosFirebase");
 
@@ -1565,7 +1683,10 @@ function cerrarMenu(){
 ========================== */
 
 const buscador = document.getElementById("buscadorProductos");
+const listaSugerencias =
+document.getElementById("listaSugerencias");
 
+let productosCache = [];
 // ==========================
 // ACTIVAR BUSCADOR FLOTANTE
 // ==========================
@@ -1663,11 +1784,72 @@ function buscarProductos() {
 // Computadora: buscar mientras escribe
 buscador.addEventListener("input", () => {
 
-    if (window.innerWidth > 768) {
+    buscarProductos();
 
-        buscarProductos();
+    mostrarSugerencias();
+
+});
+buscador.addEventListener ("input", () => {
+
+    const texto =
+    buscador.value.toLowerCase().trim();
+
+    listaSugerencias.innerHTML = "";
+
+    if(texto===""){
+
+        listaSugerencias.style.display="none";
+
+        return;
 
     }
+
+    const encontrados =
+    productosCache.filter(producto =>
+
+        producto.nombre.toLowerCase().includes(texto)
+
+    ).slice(0,5);
+
+    if(encontrados.length===0){
+
+        listaSugerencias.style.display="none";
+
+        return;
+
+    }
+
+    encontrados.forEach(producto=>{
+
+        listaSugerencias.innerHTML += `
+
+        <div class="sugerencia">
+
+            <img src="${producto.imagen}">
+
+            <div>
+
+                <div class="nombre">
+
+                    ${producto.nombre}
+
+                </div>
+
+                <div class="precio">
+
+                    $${Number(producto.precio).toFixed(2)}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    listaSugerencias.style.display="block";
 
 });
 
@@ -1680,6 +1862,74 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
         contenedorBuscador.classList.remove("flotante");
 
     }
+
+
+/* ==========================
+   SUGERENCIAS AMAZON
+========================== */
+
+function mostrarSugerencias() {
+
+    const texto = buscador.value
+        .toLowerCase()
+        .trim();
+
+    listaSugerencias.innerHTML = "";
+
+    if (texto === "") {
+
+        listaSugerencias.style.display = "none";
+
+        return;
+
+    }
+
+    const encontrados = productosCache.filter(producto =>
+
+        producto.nombre
+        .toLowerCase()
+        .includes(texto)
+
+    ).slice(0,5);
+
+    if (encontrados.length === 0) {
+
+        listaSugerencias.style.display = "none";
+
+        return;
+
+    }
+
+    encontrados.forEach(producto => {
+
+        listaSugerencias.innerHTML += `
+
+        <div class="sugerencia">
+
+            <img src="${producto.imagen}">
+
+            <div>
+
+                <div class="nombre">
+                    ${producto.nombre}
+                </div>
+
+                <div class="precio">
+                    $${Number(producto.precio).toFixed(2)}
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    listaSugerencias.style.display = "block";
+
+}
+
 
 });
 
