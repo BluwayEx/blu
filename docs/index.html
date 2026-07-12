@@ -1775,20 +1775,22 @@ function buscarProductos() {
 
     });
 
-    // Solo hacer scroll en computadoras
-    if (window.innerWidth > 768 && primerProducto && texto !== "") {
+// Scroll also on mobile phones
+if (primerProducto && texto !== "") {
+
+    setTimeout(() => {
 
         primerProducto.scrollIntoView({
 
             behavior: "smooth",
 
-            block: "nearest",
-
-            inline: "center"
+            block: "center"
 
         });
 
-    }
+    }, 100);
+
+}
 
 }
 
@@ -1868,11 +1870,16 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
 
     buscarProductos();
 
+    listaSugerencias.style.display = "none";
+
+    buscador.blur();
+
     if (window.innerWidth > 768) {
 
         contenedorBuscador.classList.remove("flotante");
 
     }
+
 });
 
 /* ==========================
@@ -1944,35 +1951,26 @@ function mostrarSugerencias() {
 /* ==========================
    CLICK EN SUGERENCIA AMAZON
 ========================== */
-
 document.addEventListener("click", (e)=>{
 
-
     const sugerencia = e.target.closest(".sugerencia");
-
 
     if(!sugerencia){
         return;
     }
-
 
     const nombre =
     sugerencia.querySelector(".nombre")
     .textContent
     .trim();
 
-
-    // escribir automáticamente
     buscador.value = nombre;
 
-
-    // ejecutar la misma búsqueda del botón
     buscarProductos();
 
+    listaSugerencias.style.display = "none";
 
-    // ocultar sugerencias
-    listaSugerencias.style.display="none";
-
+    buscador.blur();
 
 });
 </script>
