@@ -1146,9 +1146,9 @@ fetch(`${SUPABASE_URL}/rest/v1/productos`, {
     return;
   }
 
-  data.forEach(producto => {
+data.forEach(producto => {
     contenedor.innerHTML += `
-      <div class="product-card">
+      <div class="product-card" data-id="${producto.id}">
         <img src="${producto.imagen || 'imagenes/Camiseta.jpg'}">
         <div class="product-info">
 
@@ -1726,8 +1726,19 @@ buscador.addEventListener ("keydown", (e) => {
     }
 
 });
+// ==========================
+// EJECUTAR BUSQUEDA DESDE SUGERENCIA
+// ==========================
 
+function ejecutarBusqueda(texto){
 
+    buscador.value = texto;
+
+    buscarProductos();
+
+    listaSugerencias.style.display = "none";
+
+}
 
 
 function buscarProductos() {
@@ -1823,7 +1834,7 @@ buscador.addEventListener ("input", () => {
 
         listaSugerencias.innerHTML += `
 
-        <div class="sugerencia">
+        <div class="sugerencia" data-id="${producto.id}">
 
             <img src="${producto.imagen}">
 
@@ -1862,7 +1873,7 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
         contenedorBuscador.classList.remove("flotante");
 
     }
-
+});
 
 /* ==========================
    SUGERENCIAS AMAZON
@@ -1904,7 +1915,7 @@ function mostrarSugerencias() {
 
         listaSugerencias.innerHTML += `
 
-        <div class="sugerencia">
+        <div class="sugerencia" data-id="${producto.id}">
 
             <img src="${producto.imagen}">
 
@@ -1930,9 +1941,40 @@ function mostrarSugerencias() {
 
 }
 
+/* ==========================
+   CLICK EN SUGERENCIA AMAZON
+========================== */
+
+document.addEventListener("click", (e)=>{
+
+
+    const sugerencia = e.target.closest(".sugerencia");
+
+
+    if(!sugerencia){
+        return;
+    }
+
+
+    const nombre =
+    sugerencia.querySelector(".nombre")
+    .textContent
+    .trim();
+
+
+    // escribir automáticamente
+    buscador.value = nombre;
+
+
+    // ejecutar la misma búsqueda del botón
+    buscarProductos();
+
+
+    // ocultar sugerencias
+    listaSugerencias.style.display="none";
+
 
 });
-
 </script>
 
 </body>
