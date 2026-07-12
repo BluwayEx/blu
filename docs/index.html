@@ -1774,9 +1774,16 @@ function buscarProductos() {
         }
 
     });
-
-// Scroll also on mobile phones
-if (primerProducto && texto !== "") {
+// Only scroll when requested
+// Computer: always scrolls while typing
+// Celular: solo cuando se pulsa la lupa o una sugerencia
+if (
+    (window.innerWidth > 768 && primerProducto && texto !== "") ||
+    (window.innerWidth <= 768 &&
+     window.hacerScrollBusqueda &&
+     primerProducto &&
+     texto !== "")
+) {
 
     setTimeout(() => {
 
@@ -1792,16 +1799,21 @@ if (primerProducto && texto !== "") {
 
 }
 
+// Reiniciar bandera
+window.hacerScrollBusqueda = false;
+
 }
 
-// Computadora: buscar mientras escribe
-buscador.addEventListener("input", () => {
+buscador.addEventListener ("input", () => {
+
+    window.hacerScrollBusqueda = false;
 
     buscarProductos();
 
     mostrarSugerencias();
 
 });
+
 buscador.addEventListener ("input", () => {
 
     const texto =
@@ -1865,8 +1877,9 @@ buscador.addEventListener ("input", () => {
     listaSugerencias.style.display="block";
 
 });
-
 document.getElementById("btnBuscar").addEventListener("click", () => {
+
+    window.hacerScrollBusqueda = true;
 
     buscarProductos();
 
@@ -1965,6 +1978,8 @@ document.addEventListener("click", (e)=>{
     .trim();
 
     buscador.value = nombre;
+
+    window.hacerScrollBusqueda = true;
 
     buscarProductos();
 
