@@ -1594,52 +1594,92 @@ buscador.addEventListener ("blur", () => {
     }
 
 });
+buscador.addEventListener ("keydown", (e) => {
 
-buscador.addEventListener("input", function () {
+    if (window.innerWidth <= 768 && e.key === "Enter") {
 
-    const texto = this.value.toLowerCase();
+        buscarProductos();
+
+        buscador.blur(); // Cierra el teclado
+
+    }
+
+});
+
+
+
+
+function buscarProductos() {
+
+    const texto = buscador.value.toLowerCase();
 
     const productos = document.querySelectorAll(".product-card");
+
+    let primerProducto = null;
 
     productos.forEach(producto => {
 
         const nombre = producto.querySelector("h3").textContent.toLowerCase();
-        const descripcion = producto.querySelector("p").textContent.toLowerCase();
+        const description =producto.querySelector("p")?.textContent.toLowerCase() || "";
+
         if (
             nombre.includes(texto) ||
-            descripcion.includes(texto)
+            description.includes(texto)
         ) {
+
             producto.style.display = "";
 
-            if (texto !== "") {
-                producto.scrollIntoView({
-                    behavior: "smooth",
-                    inline: "center",
-                    block: "nearest"
-                });
+            if (!primerProducto) {
+
+                primerProducto = producto;
+
             }
 
         } else {
+
             producto.style.display = "none";
+
         }
+
+    });
+
+    // Solo hacer scroll en computadoras
+    if (window.innerWidth > 768 && primerProducto && texto !== "") {
+
+        primerProducto.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "nearest",
+
+            inline: "center"
+
         });
+
+    }
+
+}
+
+// Computadora: buscar mientras escribe
+buscador.addEventListener("input", () => {
+
+    if (window.innerWidth > 768) {
+
+        buscarProductos();
+
+    }
 
 });
 
 document.getElementById("btnBuscar").addEventListener("click", () => {
 
-    buscador.dispatchEvent(new Event("input"));
+    buscarProductos();
 
+    if (window.innerWidth > 768) {
 
-    contenedorBuscador.classList.remove("flotante");
+        contenedorBuscador.classList.remove("flotante");
 
-    window.scrollTo({
-
-        top: posicionOriginalBuscador,
-
-        behavior:"smooth"
-
-    });
+    }
 
 });
 
