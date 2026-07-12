@@ -674,7 +674,7 @@ footer{
       <i class="fa-solid fa-magnifying-glass search-icon"></i>
       <input type="text" id="buscadorProductos" placeholder="Buscar productos..." autocomplete="off">
           <button id="btnBuscar" class="search-btn">
-  <i class="fa-solid fa-xmark"></i>
+  <i class="fa-solid fa-magnifying-glass"></i>
 </button>
     </div>
   </div>
@@ -1574,11 +1574,27 @@ const contenedorBuscador =
 document.querySelector(".search-container");
 
 
-buscador.addEventListener("focus",()=>{
+buscador.addEventListener ("focus", () => {
 
-    contenedorBuscador.classList.add("flotante");
+    // Solo activar buscador flotante en computadoras
+    if (window.innerWidth > 768) {
+
+        contenedorBuscador.classList.add("flotante");
+
+    }
 
 });
+
+buscador.addEventListener ("blur", () => {
+
+    if (window.innerWidth > 768) {
+
+        contenedorBuscador.classList.remove("flotante");
+
+    }
+
+});
+
 buscador.addEventListener("input", function () {
 
     const texto = this.value.toLowerCase();
