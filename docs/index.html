@@ -105,22 +105,288 @@
 
     footer {text-align: center; padding: 25px; background: #000; border-top: 1px solid #00f0ff30;
       color: #00f0ff; box-shadow: 0 -5px 25px #00f0ff20; font-size: 0.9em;}
-    /* --- MODAL DE COMPRA --- */
-    .modal {position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transition: 0.3s;}
-    .modal.active {visibility: visible; opacity: 1;}
-    .modal-content {background: #1e1f4d; border: 1px solid #00f0ff40; border-radius: 15px; padding: 30px;
-      text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 25px #00f0ff40;}
-    .modal-content h3 {color: #00f0ff; margin-bottom: 20px;}
-    select, button.pay-btn {margin: 10px 0; padding: 10px; border-radius: 10px; border: none; width: 100%; font-size: 1em;}
-    select {background: #000; color: #00f0ff; border: 1px solid #00f0ff80;}
-    button.pay-btn {background: #00f0ff; color: #000; font-weight: bold; cursor: pointer;}
-    button.close {background: none; color: #f7f7f7; border: none; cursor: pointer; margin-top: 10px;}
-    /* --- SLIDER --- */
-    .product-slider {display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 30px; padding: 20px;}
-    .product-slider::-webkit-scrollbar {height: 8px;}
-    .product-slider::-webkit-scrollbar-thumb {background: #00f0ff80; border-radius: 10px;}
-    .product-slider::-webkit-scrollbar-track {background: #081733;}
+    /* ===========================
+   MODAL DE COMPRA - NUEVO ESTILO
+=========================== */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+visibility:hidden;
+opacity:0;
+transition:.35s;
+background:rgba(0,0,0,.75);
+backdrop-filter:blur(8px);
+z-index:9999;
+}
+
+.modal.active{
+visibility:visible;
+opacity:1;
+}
+
+.modal-content{
+
+position:relative;
+
+width:90%;
+max-width:400px;
+
+padding:30px;
+
+border-radius:28px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.10);
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.45),
+0 0 35px rgba(0,229,255,.18);
+
+animation:modalShow .45s ease;
+
+overflow:hidden;
+
+}
+
+.modal-content::before{
+
+content:"";
+
+position:absolute;
+
+width:260px;
+height:260px;
+
+border-radius:50%;
+
+background:#00e5ff;
+
+filter:blur(120px);
+
+opacity:.12;
+
+top:-120px;
+left:-100px;
+
+pointer-events:none;
+
+}
+
+.modal-content::after{
+
+content:"";
+
+position:absolute;
+
+width:220px;
+height:220px;
+
+border-radius:50%;
+
+background:#5b3cff;
+
+filter:blur(120px);
+
+opacity:.12;
+
+bottom:-120px;
+right:-80px;
+
+pointer-events:none;
+
+}
+
+@keyframes modalShow{
+
+from{
+
+opacity:0;
+
+transform:translateY(40px) scale(.95);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0) scale(1);
+
+}
+
+}
+
+.modal-content>*{
+
+position:relative;
+
+z-index:2;
+
+}
+
+.modal-content h3{
+
+color:#fff;
+
+font-size:28px;
+
+font-weight:600;
+
+margin-bottom:25px;
+
+text-align:center;
+
+}
+
+.modal-content input,
+.modal-content select{
+
+width:100%;
+
+padding:15px 18px;
+
+margin:10px 0;
+
+border-radius:14px;
+
+border:1px solid rgba(255,255,255,.15);
+
+background:rgba(255,255,255,.08);
+
+color:#fff;
+
+outline:none;
+
+transition:.35s;
+
+font-size:15px;
+
+}
+
+.modal-content input::placeholder{
+
+color:#d7d7d7;
+
+}
+
+.modal-content input:focus,
+.modal-content select:focus{
+
+border-color:#00e5ff;
+
+box-shadow:0 0 20px rgba(0,229,255,.35);
+
+}
+
+.modal-content select{
+
+appearance:none;
+
+}
+
+button.pay-btn{
+
+width:100%;
+
+margin-top:20px;
+
+padding:16px;
+
+border:none;
+
+border-radius:15px;
+
+background:linear-gradient(135deg,#00e5ff,#5b3cff);
+
+color:#fff;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.35s;
+
+}
+
+button.pay-btn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 0 25px rgba(0,229,255,.45);
+
+}
+
+button.close{
+
+margin-top:15px;
+
+background:none;
+
+border:none;
+
+color:#d7dff8;
+
+cursor:pointer;
+
+font-size:14px;
+
+transition:.3s;
+
+}
+
+button.close:hover{
+
+color:#00e5ff;
+
+}
+
+/* --- SLIDER --- */
+
+.product-slider{
+
+display:flex;
+
+overflow-x:auto;
+
+scroll-behavior:smooth;
+
+gap:30px;
+
+padding:20px;
+
+}
+
+.product-slider::-webkit-scrollbar{
+
+height:8px;
+
+}
+
+.product-slider::-webkit-scrollbar-thumb{
+
+background:#00f0ff80;
+
+border-radius:10px;
+
+}
+
+.product-slider::-webkit-scrollbar-track{
+
+background:#081733;
+
+}
 
     /* =========================
    BOTONES SLIDER PC
@@ -713,8 +979,255 @@ SUGERENCIAS BUSCADOR
 
 }
 
+.location{
+    display:flex;
+    gap:10px;
+}
+
+.location input{
+    flex:1;
+}
+
+.location button{
+    padding:12px 18px;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#00e5ff,#4b9fff);
+    color:white;
+    font-weight:600;
+    transition:.3s;
+}
+
+.location button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 18px rgba(0,229,255,.45);
+}
+
+/* =========================
+   TELEFONO INTELIGENTE
+========================= */
 
 
+#estadoTelefono{
+
+color:#aaa;
+font-size:14px;
+display:flex;
+align-items:center;
+gap:8px;
+
+}
+
+
+#estadoTelefono span{
+
+font-size:18px;
+transition:.3s;
+
+}
+
+
+
+#telefono{
+
+transition:.35s;
+
+}
+
+
+/* Estado correcto */
+
+.telefono-ok{
+
+border-color:#00ff66 !important;
+
+box-shadow:
+0 0 15px #00ff66,
+0 0 30px rgba(0,255,100,.5);
+
+}
+
+
+
+/* Estado error */
+
+.telefono-error{
+
+border-color:#ff0033 !important;
+
+box-shadow:
+0 0 15px #ff0033,
+0 0 30px rgba(255,0,50,.5);
+
+}
+
+
+
+.estado-verde{
+
+color:#00ff66 !important;
+
+text-shadow:
+0 0 10px #00ff66;
+
+}
+
+
+
+.estado-rojo{
+
+color:#ff0033 !important;
+
+text-shadow:
+0 0 10px #ff0033;
+
+}
+.usuario-box small{
+
+display:block;
+
+color:#aaa;
+
+font-size:12px;
+
+margin-bottom:5px;
+
+}
+
+
+#usuarioPedido{
+
+font-size:17px;
+
+font-weight:600;
+
+}
+
+/* =========================
+   QR ANIMADO BLUWAY
+========================= */
+
+.qr-box{
+
+position:relative;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+margin:20px auto;
+
+width:250px;
+
+height:250px;
+
+}
+
+
+/* QR */
+
+.qrcode img{
+
+width:250px;
+
+height:250px;
+
+background:white;
+
+padding:10px;
+
+border-radius:15px;
+
+}
+
+
+/* LETRA B CENTRAL */
+
+.qr-logo{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+width:65px;
+
+height:65px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:45px;
+
+font-weight:900;
+
+font-family:Arial, sans-serif;
+
+color:#00e5ff;
+
+background:rgba(0,0,0,.75);
+
+border:3px solid #00e5ff;
+
+box-shadow:
+
+0 0 15px #00e5ff,
+
+0 0 35px rgba(0,229,255,.8);
+
+animation:
+
+pulsoB 2s infinite;
+
+}
+
+
+/* ANIMACIÓN */
+
+@keyframes pulsoB{
+
+0%{
+
+transform:
+
+translate(-50%,-50%)
+
+scale(1);
+
+}
+
+50%{
+
+transform:
+
+translate(-50%,-50%)
+
+scale(1.12);
+
+}
+
+100%{
+
+transform:
+
+translate(-50%,-50%)
+
+scale(1);
+
+}
+
+}
 
 </style>
 </head>
@@ -870,12 +1383,18 @@ if (data.session) {
   fotoPerfil.src =
     user.user_metadata?.avatar_url || "imagenes/icono.jpg";
 
-} else {
+	} else {
 
   nombrePerfil.textContent = "BluWay";
   textoPerfil.textContent = "Sin Límites";
 
-  fotoPerfil.src = "imagenes/icono.jpg";
+  fotoPerfil.src = "images/icono.jpg";
+
+  const usuarioPedido = document.getElementById("usuarioPedido");
+
+  if (usuarioPedido) {
+    usuarioPedido.value = "No has iniciado sesión";
+  }
 }
 
 if (data.session) {
@@ -885,11 +1404,19 @@ if (data.session) {
   document.getElementById("nombrePerfil").innerText =
     user.user_metadata?.full_name || "Usuario";
 
-  document.getElementById("correoPerfil").innerText =
-    user.email;
+document.getElementById("emailProfile").innerText = "%USER-EMAIL%";
 
-  document.getElementById("perfilUsuario").innerHTML =
+    
+document.getElementById("userProfile").innerHTML =
     "👤 " + user.email;
+
+const usuarioPedido = document.getElementById("usuarioPedido");
+if (usuarioPedido) {
+    usuarioPedido.value =
+        user.user_metadata?.full_name || user.email;
+}
+
+    
 
   // 👾 AVATAR AUTOMÁTICO (DICEBEAR)
   const avatarUrl =
@@ -1044,70 +1571,190 @@ location.reload();
 
 </script>
 
-</body>
-</html>
-
-
-<!-- MODAL DATOS DEL PEDIDO -->
+<!-- ORDER DATA MODAL -->
 <div class="modal" id="pedidoModal">
-  <div class="modal-content">
 
-    <h3>Datos de Entrega</h3>
+<div class="modal-content">
 
-    <p id="productoPedido"
-       style="
-       color:#00f0ff;
-       font-weight:bold;
-       margin-bottom:15px;
-       font-size:16px;
-       ">
-    </p>
-    <input
-     type="text"
-     id="direccion"
-     readonly
-     placeholder="Obteniendo ubicación..."
-     style="width:100%;padding:12px;margin:10px 0;background:#000;color:#fff;border:1px solid #00f0ff;border-radius:10px;"
-    >
+<h3>Finalizar Pedido</h3>
 
-    <input
-      type="text"
-      id="telefono"
-      placeholder="Número de teléfono"
-      style="width:100%;padding:12px;margin:10px 0;background:#000;color:#fff;border:1px solid #00f0ff;border-radius:10px;"
-    >
+<p
+id="productoPedido"
+style="
+color:#00e5ff;
+font-weight:600;
+margin-bottom:22px;
+font-size:16px;
+text-align:center;
+">
+</p>
 
-    <input
-      type="text"
-      id="cedula"
-      placeholder="Número de cédula"
-      style="width:100%;padding:12px;margin:10px 0;background:#000;color:#fff;border:1px solid #00f0ff;border-radius:10px;"
-    >
+<!-- USUARIO -->
 
-<button 
-type="button"
-class="pay-btn" 
-id="generarPedido">
-Generar Pedido
-</button>
+<div class="group">
+  
+<div class="usuario-box">
 
-    <button class="close" onclick="cerrarModal()">
-      Cancelar
-    </button>
+<small id="correoPedido">
+No has iniciado sesión
+</small>
 
-  </div>
+<input
+type="text"
+id="usuarioPedido"
+readonly
+value="No has iniciado sesión"
+>
+
 </div>
 
+</div>
+
+<div class="location">
+
+<input
+type="text"
+id="direccion"
+readonly
+placeholder="Obteniendo ubicación..."
+>
+
+<button
+type="button"
+id="gps">
+
+📍 Ubicar
+
+</button>
+
+</div>
+
+<!-- TELÉFONO -->
+
+<div class="group">
+<input
+type="text"
+id="telefono"
+placeholder="Número de contacto"
+maxlength="12"
+autocomplete="off"
+>
+
+
+</div>
+
+<button
+type="button"
+class="pay-btn"
+id="generarPedido">
+
+CONTINUAR
+
+</button>
+
+<button
+class="close"
+onclick="cerrarModal()">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+<!-- =========================
+     MODAL REFERENCIAS
+========================= -->
+
+<div class="modal" id="referenciaModal">
+
+<div class="modal-content">
+
+<h3>
+Referencias de entrega
+</h3>
+
+<p
+style="
+color:#bfbfbf;
+text-align:center;
+margin-bottom:20px;
+font-size:14px;
+">
+
+Ayúdanos a encontrar tu ubicación más rápido.
+
+</p>
+
+<div class="group">
+
+<input
+type="text"
+id="callePrincipal"
+placeholder="Calle principal"
+autocomplete="off"
+>
+
+</div>
+
+<div class="group">
+
+<input
+type="text"
+id="calleSecundaria"
+placeholder="Calle secundaria o transversal"
+autocomplete="off"
+>
+
+</div>
+
+<div class="group">
+
+<input
+type="text"
+id="referenciaExtra"
+placeholder="Referencia adicional (Ej: Casa azul junto a la farmacia)"
+autocomplete="off"
+>
+
+</div>
+
+<button
+type="button"
+class="pay-btn"
+id="continuarPedidoFinal">
+
+GENERAR PEDIDO
+
+</button>
+
+<button
+class="close"
+onclick="cerrarReferenciaModal()">
+
+Volver
+
+</button>
+
+</div>
+
+</div>
 <!-- MODAL QR -->
 <div class="modal" id="qrModal">
   <div class="modal-content">
 
     <h3>Pedido Generado</h3>
 
-    <div id="qrcode"
-         style="display:flex;justify-content:center;margin:20px;">
+<div class="qr-box">
+
+    <div id="qrcode"></div>
+
+    <div class="qr-logo">
+        B
     </div>
 
+</div>
     <button class="pay-btn" onclick="guardarQR()">
       Guardar QR
     </button>
@@ -1207,6 +1854,124 @@ let productoSeleccionado = "";
 
 let latitudCliente = "";
 let longitudCliente = "";
+
+// =========================
+// TELEFONO INTELIGENTE
+// =========================
+
+
+const telefono =
+document.getElementById("telefono");
+
+
+telefono.addEventListener("input",()=>{
+
+
+let numeros =
+telefono.value.replace(/\D/g,"");
+
+
+// máximo 10 números
+
+if(numeros.length > 10){
+
+numeros = numeros.substring(0,10);
+
+}
+
+
+// formato 099-999-9999
+
+let formato = numeros;
+
+
+if(numeros.length > 3){
+
+formato =
+numeros.substring(0,3)
++
+"-"
++
+numeros.substring(3);
+
+}
+
+
+if(numeros.length > 6){
+
+formato =
+numeros.substring(0,3)
++
+"-"
++
+numeros.substring(3,6)
++
+"-"
++
+numeros.substring(6);
+
+}
+
+
+telefono.value = formato;
+
+
+
+// VALIDACIÓN
+
+
+if(numeros.length === 0){
+
+
+
+
+estadoTelefono.className="";
+
+telefono.className="";
+
+
+return;
+
+}
+
+
+
+if(numeros.startsWith("0") 
+&& numeros.length <=10){
+
+
+
+
+telefono.classList.add(
+"telefono-ok"
+);
+
+
+telefono.classList.remove(
+"telefono-error"
+);
+
+
+
+}else{
+
+
+telefono.classList.add(
+"telefono-error"
+);
+
+
+telefono.classList.remove(
+"telefono-ok"
+);
+
+
+}
+
+
+
+});
+
 
 /* =========================
    OBTENER UBICACION
@@ -1317,7 +2082,7 @@ if(!window.supabase){
 
 const {data} = await window.supabase.auth.getSession();
 
-if(!data.session){
+if (!data.session) {
 
 await window.supabase.auth.signInWithOAuth({
 
@@ -1332,7 +2097,6 @@ redirectTo:window.location.href
 return;
 
 }
-
 
 
 productoSeleccionado =
@@ -1350,6 +2114,91 @@ document.getElementById("direccion").value =
 
 document.getElementById("pedidoModal")
 .classList.add("active");
+
+const gpsButton = document.getElementById("gps");
+const direccion = document.getElementById("direccion");
+
+gpsButton.innerHTML = "Ubicar";
+gpsButton.disabled = false;
+
+gpsButton.onclick = function(){
+
+if(!navigator.geolocation){
+
+alert("Tu navegador no soporta geolocalización.");
+
+return;
+
+}
+
+gpsButton.innerHTML = "Buscando...";
+
+gpsButton.disabled = true;
+navigator.geolocation.getCurrentPosition(
+
+async function(pos){
+
+const lat = pos.coords.latitude;
+const lng = pos.coords.longitude;
+
+
+// Guardar coordenadas internamente
+latitudCliente = lat;
+longitudCliente = lng;
+
+
+try{
+
+const respuesta = await fetch(
+`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+);
+
+
+const datos = await respuesta.json();
+
+
+// Mostrar dirección real
+direccion.value =
+datos.display_name || "Dirección encontrada";
+
+
+gpsButton.innerHTML = "✓ Detectada";
+
+
+}
+
+catch(error){
+
+
+direccion.value =
+"Dirección no disponible";
+
+
+gpsButton.innerHTML =
+"Intentar";
+
+
+gpsButton.disabled = false;
+
+
+}
+
+
+},
+
+function(){
+
+gpsButton.innerHTML = "Intentar";
+
+gpsButton.disabled = false;
+
+alert("No se pudo obtener la ubicación.");
+
+}
+
+);
+
+};
 
 
 setTimeout(() => {
@@ -1374,7 +2223,17 @@ function cerrarModal(){
     .classList.remove("active");
 
 }
+function cerrarReferenciaModal(){
 
+document
+.getElementById("referenciaModal")
+.classList.remove("active");
+
+document
+.getElementById("pedidoModal")
+.classList.add("active");
+
+}
 /* =========================
    GENERAR PEDIDO
 ========================= */
@@ -1388,41 +2247,43 @@ document.getElementById("generarPedido")
     let telefono =
     document.getElementById("telefono").value.replace(/\s+/g,'');
 
-    let cedula =
-    document.getElementById("cedula").value.replace(/\s+/g,'');
+
     /* VALIDAR TELEFONO */
-if(!/^\d{7,15}$/.test(telefono)){
+let telefonoLimpio =telefono.replace(/\D/g,'');
 
-    alert("Ingrese un número de teléfono válido.");
-
+if (!/^0\d{9}$/.test(telefonoLimpio)) {
+    alert("Ingrese un número válido de 10 dígitos.");
     return;
-
 }
 
-/* VALIDAR CEDULA */
-if(!/^\d{10,13}$/.test(cedula)){
 
-    alert("Ingrese una cédula válida.");
-
-    return;
-
-}
-
-   if(
+if(
     !direccion ||
     direccion.includes("Obteniendo") ||
     direccion.includes("Solicitando") ||
     direccion.includes("Ubicación no permitida") ||
     direccion.includes("GPS no disponible") ||
-    !telefono ||
-    !cedula
+    !telefono
 ){
-
     alert("Espere a que se obtenga la ubicación y complete todos los campos.");
 
     return;
 }
+// =========================
+// ABRIR MODAL REFERENCIAS
+// =========================
 
+document
+.getElementById("pedidoModal")
+.classList.remove("active");
+
+
+document
+.getElementById("referenciaModal")
+.classList.add("active");
+
+
+return;
     let fecha =
     new Date().toLocaleString();
 
@@ -1456,8 +2317,8 @@ Fecha:
 ${fecha}`;
 
 console.log(datos);
-alert("Generando pedido...");
-/* ENVIAR PEDIDO A FORMSPREE */
+alert("Generating order...");
+/* SEND ORDER TO FORMSPREE */
 
 fetch("https://formspree.io/f/mnjkaaqq", {
 
@@ -1468,12 +2329,11 @@ fetch("https://formspree.io/f/mnjkaaqq", {
     },
 
     body:new URLSearchParams({
-        pedido: datos
+        pedido: datosFinales
     })
 
 })
 .then(response=>{
-
 
     if(!response.ok){
 
@@ -1481,128 +2341,61 @@ fetch("https://formspree.io/f/mnjkaaqq", {
 
     }
 
-
-    alert("✅ Pedido enviado correctamente a BluWay");
-
-
-    document.getElementById("pedidoModal")
-    .classList.remove("active");
-
-
-    document.getElementById("qrModal")
-    .classList.add("active");
-
-
-    const qrContainer =
-    document.getElementById("qrcode");
-
-
-    qrContainer.innerHTML = "";
-
-
-    const qrURL =
-    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
-    encodeURIComponent(datos);
-
-
-
-    qrContainer.innerHTML = `
-
-    <img
-    id="qrImage"
-    src="${qrURL}"
-    style="
-    width:250px;
-    height:250px;
-    background:white;
-    padding:8px;
-    border-radius:10px;
-    box-shadow:0 0 15px #00f0ff;
-    ">
-
-    `;
-
+    console.log("✅ Pedido enviado correctamente a BluWay");
 
 })
-
-
 .catch(error=>{
 
     console.log(error);
 
-    // Si Formspree ya recibió el pedido pero falla la respuesta
-    alert("✅ Pedido procesado. Guarde el QR para recibir su pedido");
-
-    document.getElementById("pedidoModal")
-    .classList.remove("active");
-
-
-    document.getElementById("qrModal")
-    .classList.add("active");
-
-
-    const qrContainer =
-    document.getElementById("qrcode");
-
-
-    qrContainer.innerHTML = "";
-
-
-    const qrURL =
-    "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" +
-    encodeURIComponent(datos);
-
-
-    qrContainer.innerHTML = `
-
-    <img
-    id="qrImage"
-    src="${qrURL}"
-    style="
-    width:250px;
-    height:250px;
-    background:white;
-    padding:10px;
-    border-radius:10px;
-    box-shadow:0 0 15px #00f0ff;
-    ">
-
-    `;
+    console.log("⚠️ Formspree no respondió, se continuará generando el QR.");
 
 });
 
 });
-
 /* =========================
    GUARDAR QR
 ========================= */
 
-function guardarQR(){
+async function guardarQR(){
 
-    const imagen =
-    document.querySelector("#qrImage");
+    const imagen = document.getElementById("qrImage");
 
     if(!imagen){
-
         alert("No existe QR para guardar");
-
         return;
     }
 
-    const enlace =
-    document.createElement("a");
+    try{
 
-    enlace.href =
-    imagen.src;
+        const respuesta = await fetch(imagen.src);
 
-    enlace.download =
-    "pedido-bluway.png";
+        const blob = await respuesta.blob();
 
-    document.body.appendChild(enlace);
+        const url = URL.createObjectURL(blob);
 
-    enlace.click();
+        const enlace = document.createElement("a");
 
-    document.body.removeChild(enlace);
+        enlace.href = url;
+
+        enlace.download = "pedido-bluway.png";
+
+        document.body.appendChild(enlace);
+
+        enlace.click();
+
+        document.body.removeChild(enlace);
+
+        URL.revokeObjectURL(url);
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        alert("No se pudo guardar el QR");
+
+    }
 
 }
 
@@ -2014,7 +2807,169 @@ document.addEventListener("click", (e)=>{
     buscador.blur();
 
 });
-</script>
+/* ==========================
+   BOTÓN MODAL REFERENCIAS
+========================== */
+document
+.getElementById("continuarPedidoFinal")
+.addEventListener("click",function(){
 
+
+let callePrincipal =
+document.getElementById("callePrincipal").value.trim();
+
+
+let calleSecundaria =
+document.getElementById("calleSecundaria").value.trim();
+
+
+let referenciaExtra =
+document.getElementById("referenciaExtra").value.trim();
+
+
+
+if(!callePrincipal || !calleSecundaria){
+
+alert("Complete las referencias de ubicación");
+
+return;
+
+}
+
+
+// cerrar referencias
+
+document
+.getElementById("referenciaModal")
+.classList.remove("active");
+
+
+// abrir QR
+
+document
+.getElementById("qrModal")
+.classList.add("active");
+
+
+
+// crear datos finales
+let userOrdered =
+document.getElementById("usuarioPedido").value;
+
+
+let lat = latitudCliente;
+let lon = longitudCliente;
+
+
+let linkMaps = 
+`https://maps.google.com/?q=${lat},${lon}`;
+
+
+
+let datosFinales = `
+
+PEDIDO BLUWAY
+
+Usuario:
+${usuarioPedido}
+
+
+Producto:
+${productoSeleccionado}
+
+
+Dirección:
+${document.getElementById("direccion").value}
+
+
+Teléfono:
+${document.getElementById("telefono").value}
+
+
+Ubicación GPS:
+${lat}, ${lon}
+
+
+Google Maps:
+${linkMaps}
+
+
+Referencias:
+
+Calle principal:
+${callePrincipal}
+
+
+Calle secundaria:
+${calleSecundaria}
+
+
+Referencia:
+${referenciaExtra}
+
+`;
+
+// =========================
+// ENVIAR A FORMSPREE
+// =========================
+
+fetch("https://formspree.io/f/mnjkaaqq",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+
+body:new URLSearchParams({
+
+pedido:datosFinales
+
+})
+
+})
+
+.catch(error=>{
+
+console.log("Formspree:",error);
+
+});
+
+// crear QR
+
+const qrContainer =
+document.getElementById("qrcode");
+
+
+qrContainer.innerHTML="";
+
+
+const qrURL =
+"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="
++
+encodeURIComponent(datosFinales);
+
+
+
+qrContainer.innerHTML = `
+
+<img
+id="qrImage"
+src="${qrURL}"
+style="
+width:250px;
+height:250px;
+background:white;
+padding:10px;
+border-radius:10px;
+">
+
+`;
+
+
+
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
 </html>
