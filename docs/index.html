@@ -1331,6 +1331,7 @@ scale(1);
     De tu eleccion
   </h2>
 </section>
+
 <section class="product-section">
 
 <h2 class="section-title">
@@ -1801,12 +1802,63 @@ fetch(`${SUPABASE_URL}/rest/v1/productos`, {
     contenedor.innerHTML = "<p>No hay productos en Supabase</p>";
     return;
   }
+// ===============================
+// CREAR ESTANTERÍAS AUTOMÁTICAS
+// MÁXIMO 10 PRODUCTOS POR SLIDER
+// ===============================
+
+let contadorProductos = 0;
+let numeroEstanteria = 1;
+
+let contenedorActual = contenedor;
+
+
+// crear nueva estantería
+function crearNuevaEstanteria(){
+
+    numeroEstanteria++;
+
+    const nueva = document.createElement("div");
+
+    nueva.className = "product-slider";
+
+    nueva.id = "productosFirebase_" + numeroEstanteria;
+
+
+    // agregar debajo de la anterior
+    contenedor.parentElement.parentElement.appendChild(nueva);
+
+
+    return nueva;
+
+}
+
+
 
 data.forEach(producto => {
-    contenedor.innerHTML += `
+
+
+    // si ya hay 10 productos,
+    // crear otra estantería
+
+    if(contadorProductos >= 10){
+
+        contenedorActual = crearNuevaEstanteria();
+
+        contadorProductos = 0;
+
+    }
+
+
+
+    contenedorActual.innerHTML += `
+
       <div class="product-card" data-id="${producto.id}">
+
         <img src="${producto.imagen || 'imagenes/Camiseta.jpg'}">
+
         <div class="product-info">
+
 
 <div class="titulo-producto">
 
@@ -1818,42 +1870,68 @@ data.forEach(producto => {
 
 </div>
 
+
 <p>${producto.descripcion || ""}</p>
+
+
 <div style="display:flex;align-items:baseline;gap:6px;">
 
-  <!-- PRECIO ACTUAL -->
-  <div class="price">
-      <span class="currency">$</span>
-      <span class="entero">${producto.precio.toFixed(2).split('.')[0]}</span>
-      <span class="decimal">.${producto.precio.toFixed(2).split('.')[1]}</span>
-  </div>
 
-  <!-- PRECIO ANTERIOR -->
-  ${
-    producto.precio_anterior > 0
-    ? `
-      <div class="precio-anterior">
-        $${Number(producto.precio_anterior).toFixed(2)}
-      </div>
-    `
-    : ""
-  }
+<div class="price">
+
+<span class="currency">$</span>
+
+<span class="entero">
+${producto.precio.toFixed(2).split('.')[0]}
+</span>
+
+<span class="decimal">
+.${producto.precio.toFixed(2).split('.')[1]}
+</span>
+
 
 </div>
 
-<button class="btn comprar-btn"">
-  <i class="fa-solid fa-cart-shopping cart-icon"></i>
-  <span>Comprar</span>
+
+${
+producto.precio_anterior > 0
+?
+`
+<div class="precio-anterior">
+
+$${Number(producto.precio_anterior).toFixed(2)}
+
+</div>
+`
+:
+""
+}
+
+
+</div>
+
+
+<button class="btn comprar-btn">
+
+<i class="fa-solid fa-cart-shopping cart-icon"></i>
+
+<span>Comprar</span>
+
 </button>
 
 
 
 </div>
-        </div>
-      </div>
-    `;
-  });
 
+</div>
+
+`;
+
+
+contadorProductos++;
+
+
+});
 })
 .catch(error => {
   console.log("Error Supabase:", error);
