@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <style>
+
+body{
+    user-select:none;
+    -webkit-user-select:none;
+}
+
+img{
+    pointer-events:none;
+}
+
+</style>
+    
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1593,9 +1606,8 @@ text-align:center;
 <div class="usuario-box">
 
 <small id="correoPedido">
-No has iniciado sesión
+Usuario
 </small>
-
 <input
 type="text"
 id="usuarioPedido"
@@ -2968,5 +2980,121 @@ border-radius:10px;
 });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+
+setInterval(function(){
+
+    if(
+        window.outerWidth - window.innerWidth > 160 ||
+        window.outerHeight - window.innerHeight > 160
+    ){
+
+        document.body.innerHTML = `
+        <h1 style="
+        text-align:center;
+        margin-top:100px;
+        font-family:Arial;
+        ">
+        🔒 BluWay protegido
+        </h1>
+        `;
+
+    }
+
+},1000);
+
+
+</script>
+
+</body>
+
+<script>
+
+
+// BLOQUEAR CLIC DERECHO
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+});
+
+
+// BLOQUEAR CTRL + U (ver código fuente)
+document.addEventListener("keydown", function(e){
+
+    if(e.ctrlKey && e.key.toLowerCase() === "u"){
+        e.preventDefault();
+
+        alert("Código protegido por BluWay.");
+    }
+
+});
+
+
+// BLOQUEAR F12
+document.addEventListener("keydown", function(e){
+
+    if(e.key === "F12"){
+        e.preventDefault();
+
+        alert("Herramientas protegidas por BluWay.");
+    }
+
+});
+
+
+// BLOQUEAR CTRL + SHIFT + I (inspeccionar)
+document.addEventListener("keydown", function(e){
+
+    if(
+        e.ctrlKey &&
+        e.shiftKey &&
+        e.key.toLowerCase() === "i"
+    ){
+
+        e.preventDefault();
+
+        alert("Acceso restringido.");
+
+    }
+
+});
+
+
+// BLOQUEAR CTRL + SHIFT + J (consola)
+document.addEventListener("keydown", function(e){
+
+    if(
+        e.ctrlKey &&
+        e.shiftKey &&
+        e.key.toLowerCase() === "j"
+    ){
+
+        e.preventDefault();
+
+        alert("Acceso restringido.");
+
+    }
+
+});
+
+
+// BLOQUEAR CTRL + S (guardar página)
+document.addEventListener("keydown", function(e){
+
+    if(
+        e.ctrlKey &&
+        e.key.toLowerCase() === "s"
+    ){
+
+        e.preventDefault();
+
+        alert("Esta página está protegida por BluWay.");
+
+    }
+
+});
+
+
+</script>
 </body>
 </html>
