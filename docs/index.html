@@ -1388,7 +1388,7 @@ if (data.session) {
   nombrePerfil.textContent = "BluWay";
   textoPerfil.textContent = "Sin Límites";
 
-  fotoPerfil.src = "images/icono.jpg";
+  fotoPerfil.src = "imagenes/icono.jpg";
 
   const usuarioPedido = document.getElementById("usuarioPedido");
 
@@ -1404,12 +1404,12 @@ if (data.session) {
   document.getElementById("nombrePerfil").innerText =
     user.user_metadata?.full_name || "Usuario";
 
-document.getElementById("emailProfile").innerText = "%USER-EMAIL%";
+document.getElementById("correoPerfil").innerText =
+    user.email;
 
-    
-document.getElementById("userProfile").innerHTML =
+
+document.getElementById("perfilUsuario").innerHTML =
     "👤 " + user.email;
-
 const usuarioPedido = document.getElementById("usuarioPedido");
 if (usuarioPedido) {
     usuarioPedido.value =
@@ -1556,14 +1556,11 @@ console.log(
 
 
 
-alert("Sesión cerrada");
+alert("Session successfully closed");
 
-
-// recargar para limpiar datos
-
+setTimeout(()=>{
 location.reload();
-
-
+},500);
 
 });
 
@@ -2089,7 +2086,7 @@ await window.supabase.auth.signInWithOAuth({
 provider:"google",
 
 options:{
-redirectTo:window.location.href
+redirectTo:"https://bluwayex.github.io/blu/"
 }
 
 });
