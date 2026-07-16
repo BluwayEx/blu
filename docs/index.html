@@ -1241,6 +1241,104 @@ scale(1);
 }
 
 }
+.info-modal-content{
+  max-width:900px;
+  background:#fff;
+  padding:90px;
+  width:95%;
+}
+.info-layout{
+  display:flex;
+  gap:50px;
+  align-items:flex-start;
+}
+
+.info-details{
+  flex:1;
+  min-width:0;
+  text-align:left;
+}
+
+.info-details h3{
+  font-size:1.3em;
+}
+
+.info-categoria{
+  display:inline-block;
+  background:#f0f0f0;
+  color:#555;
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
+.info-descripcion{
+  color:#333;
+  font-size:0.9em;
+  margin:10px 0;
+  line-height:1.4;
+}
+
+.info-image{
+  flex:0 0 400px;
+}
+
+.info-image img{
+  width:100%;
+  border-radius:12px;
+  object-fit:cover;
+  aspect-ratio:1/1;
+}
+
+.info-comprar-btn{
+  width:100%;
+  margin-top:15px;
+}
+
+#infoPrecioBox{
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:2px;
+  width:fit-content;
+  margin:0 auto;
+}
+
+#infoPrecioBox .entero{
+  margin:0;
+}
+
+#infoPrecioBox .decimal{
+  margin:0;
+}
+
+@media (max-width: 768px) {
+  .info-modal-content{
+    padding:15px;
+  }
+  .info-layout{
+    gap:15px;
+  }
+  .info-image{
+    flex:0 0 150px;
+    padding:0px;
+  }
+  .info-details h3{
+    font-size:1.05em;
+  }
+  .info-descripcion{
+    font-size:0.8em;
+  }
+}
+
+@media (max-width: 768px) {
+  #menuCatalogo{
+    background: rgba(10,15,44,0.35) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+}
 </style>
 </head>
 <body>
@@ -1790,7 +1888,8 @@ Volver
     <button class="close" onclick="cancelarPedido()">
       Cancelar Pedido
     </button>
-
+  </div><!-- close modal-content -->
+</div><!-- cierra qrModal -->
 <script>
 const SUPABASE_URL =
 "https://nyloxoancdspgmhfaxgu.supabase.co";
@@ -2204,7 +2303,72 @@ function(error) {
 );
 
 }
+/* =========================
+   BOTÓN INFO (i)
+========================= */
 
+let productoInfoActual = "";
+
+document.addEventListener("click", function(e){
+
+    if(e.target.closest(".info-btn")){
+
+        const card = e.target.closest(".product-card");
+        const id = Number(card.dataset.id);
+
+        const producto = productosCache.find(p => p.id === id);
+
+        if(!producto){
+            return;
+        }
+
+        productoInfoActual = producto.nombre;
+
+        document.getElementById("infoNombre").innerText = producto.nombre || "";
+
+        const categoriaEl = document.getElementById("infoCategoria");
+
+        if(producto.categoria){
+            categoriaEl.innerText = producto.categoria;
+            categoriaEl.style.display = "inline-block";
+        }else{
+            categoriaEl.style.display = "none";
+        }
+
+        document.getElementById("infoDescripcion").innerText =
+            producto.descripcion || "Sin descripción disponible";
+
+        document.getElementById("infoImagen").src =
+            producto.imagen || "imagenes/Camiseta.jpg";
+
+        const precio = Number(producto.precio) || 0;
+
+        document.getElementById("infoPrecioEntero").innerText =
+            precio.toFixed(2).split(".")[0];
+
+        document.getElementById("infoPrecioDecimal").innerText =
+            "." + precio.toFixed(2).split(".")[1];
+
+        const anteriorEl = document.getElementById("infoPrecioAnterior");
+
+        if(producto.precio_anterior > 0){
+            anteriorEl.innerText = "$" + Number(producto.precio_anterior).toFixed(2);
+            anteriorEl.style.display = "inline-block";
+        }else{
+            anteriorEl.style.display = "none";
+        }
+
+        document.getElementById("infoModal").classList.add("active");
+
+    }
+
+});
+
+function cerrarInfoModal(){
+
+    document.getElementById("infoModal").classList.remove("active");
+
+}
 /* =========================
    BOTONES COMPRAR
 ========================= */
@@ -2351,7 +2515,23 @@ setTimeout(() => {
 
 }
 
+document.getElementById("infoComprarBtn").addEventListener("click", function(){
 
+    document.getElementById("infoModal").classList.remove("active");
+
+    const botonesComprar = document.querySelectorAll(".comprar-btn");
+
+    for(const boton of botonesComprar){
+
+        const nombreTarjeta = boton.parentElement.querySelector("h3")?.innerText;
+
+        if(nombreTarjeta === productoInfoActual){
+            boton.click();
+            break;
+        }
+    }
+
+});
 });
 
 /* =========================
@@ -3186,126 +3366,40 @@ border-radius:10px;
 
 `;
 
-
-
 });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- MODAL INFO PRODUCT -->
+<div class="modal" id="infoModal">
+  <div class="modal-content info-modal-content">
+    <button class="close" onclick="cerrarInfoModal()" style="position:absolute; top:10px; right:15px; color:#000; z-index:5;">✕</button>
 
-<script>
+<div class="info-layout">
 
-setInterval(function(){
+  <div class="info-image">
+    <img id="infoImagen" src="" alt="">
+  </div>
 
-    if(
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160
-    ){
+  <div class="info-details">
+    <h3 id="infoNombre" style="color:#000; text-align:left; margin-bottom:8px;"></h3>
+    <span id="infoCategoria" class="info-categoria"></span>
+    <p id="infoDescripcion" class="info-descripcion"></p>
 
-        document.body.innerHTML = `
-        <h1 style="
-        text-align:center;
-        margin-top:100px;
-        font-family:Arial;
-        ">
-        🔒 BluWay protegido
-        </h1>
-        `;
+    <div class="price" id="infoPrecioBox">
+      <span class="currency">$</span>
+      <span class="entero" id="infoPrecioEntero"></span>
+      <span class="decimal" id="infoPrecioDecimal"></span>
+    </div>
+    <div class="precio-anterior" id="infoPrecioAnterior" style="display:none;"></div>
 
-    }
+    <button type="button" class="btn info-comprar-btn" id="infoComprarBtn">
+      <i class="fa-solid fa-cart-shopping cart-icon"></i>
+      <span>Comprar</span>
+    </button>
+  </div>
 
-},1000);
-
-
-</script>
-
-</body>
-
-<script>
-
-
-// BLOQUEAR CLIC DERECHO
-document.addEventListener("contextmenu", function(e){
-    e.preventDefault();
-});
-
-
-// BLOQUEAR CTRL + U (ver código fuente)
-document.addEventListener("keydown", function(e){
-
-    if(e.ctrlKey && e.key.toLowerCase() === "u"){
-        e.preventDefault();
-
-        alert("Código protegido por BluWay.");
-    }
-
-});
-
-
-// BLOQUEAR F12
-document.addEventListener("keydown", function(e){
-
-    if(e.key === "F12"){
-        e.preventDefault();
-
-        alert("Herramientas protegidas por BluWay.");
-    }
-
-});
-
-
-// BLOQUEAR CTRL + SHIFT + I (inspeccionar)
-document.addEventListener("keydown", function(e){
-
-    if(
-        e.ctrlKey &&
-        e.shiftKey &&
-        e.key.toLowerCase() === "i"
-    ){
-
-        e.preventDefault();
-
-        alert("Acceso restringido.");
-
-    }
-
-});
-
-
-// BLOQUEAR CTRL + SHIFT + J (consola)
-document.addEventListener("keydown", function(e){
-
-    if(
-        e.ctrlKey &&
-        e.shiftKey &&
-        e.key.toLowerCase() === "j"
-    ){
-
-        e.preventDefault();
-
-        alert("Acceso restringido.");
-
-    }
-
-});
-
-
-// BLOQUEAR CTRL + S (guardar página)
-document.addEventListener("keydown", function(e){
-
-    if(
-        e.ctrlKey &&
-        e.key.toLowerCase() === "s"
-    ){
-
-        e.preventDefault();
-
-        alert("Esta página está protegida por BluWay.");
-
-    }
-
-});
-
-
-</script>
+</div>
+  </div>
+</div>
 </body>
 </html>
