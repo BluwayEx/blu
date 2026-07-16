@@ -3401,5 +3401,120 @@ border-radius:10px;
 </div>
   </div>
 </div>
+<script>
+
+setInterval(function(){
+
+    if(
+        window.outerWidth - window.innerWidth > 160 ||
+        window.outerHeight - window.innerHeight > 160
+    ){
+
+        document.body.innerHTML = `
+        <h1 style="
+        text-align:center;
+        margin-top:100px;
+        font-family:Arial;
+        ">
+        🔒 BluWay protegido
+        </h1>
+        `;
+
+    }
+
+},1000);
+
+
+</script>
+
+</body>
+
+<script>
+
+
+// BLOQUEAR CLIC DERECHO
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+});
+
+
+// BLOQUEAR CTRL + U (ver código fuente)
+document.addEventListener("keydown", function(e){
+
+    if(e.ctrlKey && e.key.toLowerCase() === "u"){
+        e.preventDefault();
+
+        alert("Código protegido por BluWay.");
+    }
+
+});
+
+
+// BLOQUEAR F12
+document.addEventListener("keydown", function(e){
+
+    if(e.key === "F12"){
+        e.preventDefault();
+
+        alert("Herramientas protegidas por BluWay.");
+    }
+
+});
+
+
+// BLOQUEAR CTRL + SHIFT + I (inspeccionar)
+document.addEventListener("keydown", function(e){
+
+    if(
+        e.ctrlKey &&
+        e.shiftKey &&
+        e.key.toLowerCase() === "i"
+    ){
+
+        e.preventDefault();
+
+        alert("Acceso restringido.");
+
+    }
+
+});
+
+
+// BLOQUEAR CTRL + SHIFT + J (consola)
+document.addEventListener("keydown", function(e){
+
+    if(
+        e.ctrlKey &&
+        e.shiftKey &&
+        e.key.toLowerCase() === "j"
+    ){
+
+        e.preventDefault();
+
+        alert("Acceso restringido.");
+
+    }
+
+});
+
+
+// BLOQUEAR CTRL + S (guardar página)
+document.addEventListener("keydown", function(e){
+
+    if(
+        e.ctrlKey &&
+        e.key.toLowerCase() === "s"
+    ){
+
+        e.preventDefault();
+
+        alert("Esta página está protegida por BluWay.");
+
+    }
+
+});
+
+
+</script>
 </body>
 </html>
