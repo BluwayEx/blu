@@ -328,7 +328,67 @@ button.close:hover{ color:var(--cyan); }
 .info-image img{ width:100%; border-radius:16px; object-fit:contain; aspect-ratio:1/1; background:var(--ivory); border:1px solid var(--line); }
 .info-comprar-btn{ width:100%; margin-top:16px; color:var(--navy-900); }
 #infoPrecioBox{ display:flex; align-items:baseline; justify-content:flex-start; gap:2px; margin-top:8px; }
+/* Thematic close button */
+.info-modal-content .close-info{
+  position:absolute; top:14px; right:14px; z-index:5;
+  width:36px; height:36px; border-radius:50%; border:none;
+  background:var(--ivory); color:var(--ink-soft);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; cursor:pointer; transition:.25s;
+}
+.info-modal-content .close-info:hover{
+  background:var(--violet); color:#fff; transform:rotate(90deg);
+}
 
+/* Badge de descuento sobre la imagen */
+.info-image{ position:relative; }
+.descuento-badge{
+  position:absolute; top:12px; left:12px;
+  background:var(--red); color:#fff; font-weight:800; font-size:13px;
+  padding:6px 12px; border-radius:20px; box-shadow:0 6px 16px rgba(225,29,46,.4);
+  z-index:3;
+}
+
+/* Categoria clickeable */
+.info-categoria{ cursor:pointer; transition:.2s; }
+.info-categoria:hover{ background:var(--cyan); color:var(--navy-900); }
+
+/* Selector de cantidad */
+.cantidad-selector{
+  display:flex; align-items:center; gap:14px; margin:14px 0 4px;
+}
+.cantidad-selector button{
+  width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+  background:var(--ivory); font-size:16px; font-weight:700; color:var(--ink);
+  cursor:pointer; transition:.2s;
+}
+.cantidad-selector button:hover{ background:var(--cyan); color:var(--navy-900); }
+.cantidad-selector span{ font-size:16px; font-weight:700; min-width:20px; text-align:center; }
+
+/* Mensaje sin descripcion */
+.sin-descripcion{
+  display:flex; align-items:center; gap:8px;
+  color:var(--ink-soft); font-size:.88em; font-style:italic;
+}
+
+/* Sellos de confianza */
+.info-trust{
+  display:flex; gap:16px; margin-top:16px; padding-top:14px;
+  border-top:1px solid var(--line); flex-wrap:wrap;
+}
+.info-trust span{
+  display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-soft); font-weight:600;
+}
+.info-trust i{ color:var(--cyan-dim); }
+
+/* Boton compartir */
+.info-actions{ display:flex; gap:10px; margin-top:14px; }
+.share-btn{
+  width:50px; flex-shrink:0; border-radius:40px; border:1px solid var(--line);
+  background:var(--white); color:var(--ink); cursor:pointer; transition:.25s;
+  display:flex; align-items:center; justify-content:center;
+}
+.share-btn:hover{ background:var(--violet); color:#fff; border-color:var(--violet); }
 @media (max-width:768px){
   .info-modal-content{ padding:20px; }
   .info-layout{ flex-direction:column; gap:16px; }
@@ -709,11 +769,9 @@ async function obtenerUbicacion() {
     }
   );
 }
+let priceCurrent = 0;
+let amountCurrent = 1;
 
-/* =========================
-   BOTÓN INFO (i)
-========================= */
-let productoInfoActual = "";
 document.addEventListener("click", function(e){
   if (e.target.closest(".info-btn")) {
     const card = e.target.closest(".product-card");
@@ -722,30 +780,81 @@ document.addEventListener("click", function(e){
     if (!producto) return;
 
     productoInfoActual = producto.nombre;
+    cantidadActual = 1;
+    document.getElementById("cantidadValor").innerText = "1";
+
     document.getElementById("infoNombre").innerText = producto.nombre || "";
 
     const categoriaEl = document.getElementById("infoCategoria");
-    if (producto.categoria) { categoriaEl.innerText = producto.categoria; categoriaEl.style.display = "inline-block"; }
-    else categoriaEl.style.display = "none";
+    if (producto.categoria) {
+      categoriaEl.innerText = producto.categoria;
+      categoriaEl.style.display = "inline-block";
+      categoriaEl.onclick = () => {
+        cerrarInfoModal();
+        document.querySelectorAll(".categoria-item").forEach(el=>{
+          if (el.dataset.categoria === producto.categoria) el.click();
+        });
+      };
+    } else categoriaEl.style.display = "none";
 
-    document.getElementById("infoDescripcion").innerText = producto.descripcion || "Sin descripción disponible";
+    const descEl = document.getElementById("infoDescripcion");
+    if (producto.descripcion) {
+      descEl.className = "info-descripcion";
+      descEl.innerText = producto.descripcion;
+    } else {
+      descEl.className = "sin-descripcion";
+      descEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> Este producto aún no tiene descripción detallada.`;
+    }
+
     document.getElementById("infoImagen").src = producto.imagen || "imagenes/Camiseta.jpg";
 
     const precio = Number(producto.precio) || 0;
     document.getElementById("infoPrecioEntero").innerText = precio.toFixed(2).split(".")[0];
     document.getElementById("infoPrecioDecimal").innerText = "." + precio.toFixed(2).split(".")[1];
+    precioActual = precio;
+    document.getElementById("infoTotal").innerText = "$" + precio.toFixed(2);
 
     const anteriorEl = document.getElementById("infoPrecioAnterior");
+    const badgeEl = document.getElementById("infoDescuento");
     if (producto.precio_anterior > 0) {
-      anteriorEl.innerText = "$" + Number(producto.precio_anterior).toFixed(2);
+      const anterior = Number(producto.precio_anterior);
+      anteriorEl.innerText = "$" + anterior.toFixed(2);
       anteriorEl.style.display = "inline-block";
-    } else anteriorEl.style.display = "none";
+      const porcentaje = Math.round(100 - (precio / anterior * 100));
+      badgeEl.innerText = "-" + porcentaje + "%";
+      badgeEl.style.display = "block";
+    } else {
+      anteriorEl.style.display = "none";
+      badgeEl.style.display = "none";
+    }
 
     document.getElementById("infoModal").classList.add("active");
   }
 });
+document.addEventListener("DOMContentLoaded", function(){
 
+document.getElementById("sumarCantidad").addEventListener("click", ()=>{
+    cantidadActual++;
+    document.getElementById("cantidadValor").innerText = cantidadActual;
+    document.getElementById("infoTotal").innerText = "$" + (precioActual * cantidadActual).toFixed(2);
+  });
+  document.getElementById("restarCantidad").addEventListener("click", ()=>{
+    if (cantidadActual > 1) cantidadActual--;
+    document.getElementById("cantidadValor").innerText = cantidadActual;
+    document.getElementById("infoTotal").innerText = "$" + (precioActual * cantidadActual).toFixed(2);
+  });
+document.getElementById("infoShareBtn").addEventListener("click", async ()=>{
+  const nombre = document.getElementById("infoNombre").innerText;
+  if (navigator.share) {
+    try { await navigator.share({ title: "BluWay", text: `Mira este producto: ${nombre}` }); }
+    catch(e){}
+  } else {
+    alert("Tu navegador no soporta compartir directamente.");
+  }
+});
+});
 function cerrarInfoModal(){ document.getElementById("infoModal").classList.remove("active"); }
+
 
 /* =========================
    BOTONES COMPRAR
@@ -1127,32 +1236,50 @@ ${referenciaExtra}
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<!-- MODAL INFO PRODUCTO -->
 <div class="modal" id="infoModal">
   <div class="modal-content info-modal-content">
-    <button class="close" onclick="cerrarInfoModal()" style="position:absolute; top:10px; right:15px; color:#000; z-index:5; width:auto;">✕</button>
+    <button class="close-info" onclick="cerrarInfoModal()"><i class="fa-solid fa-xmark"></i></button>
     <div class="info-layout">
-      <div class="info-image"><img id="infoImagen" src="" alt=""></div>
+      <div class="info-image">
+        <div class="descuento-badge" id="infoDescuento" style="display:none;"></div>
+        <img id="infoImagen" src="" alt="">
+      </div>
       <div class="info-details">
         <h3 id="infoNombre"></h3>
         <span id="infoCategoria" class="info-categoria"></span>
         <p id="infoDescripcion" class="info-descripcion"></p>
+
         <div class="price" id="infoPrecioBox">
           <span class="currency">$</span>
           <span class="entero" id="infoPrecioEntero"></span>
           <span class="decimal" id="infoPrecioDecimal"></span>
         </div>
         <div class="precio-anterior" id="infoPrecioAnterior" style="display:none;"></div>
-        <button type="button" class="btn info-comprar-btn" id="infoComprarBtn">
-          <i class="fa-solid fa-cart-shopping cart-icon"></i>
-          <span>Comprar</span>
-        </button>
+
+        <div class="cantidad-selector">
+          <button type="button" id="restarCantidad">−</button>
+          <span id="cantidadValor">1</span>
+          <button type="button" id="sumarCantidad">+</button>
+        </div>
+        <p style="margin-top:8px;font-weight:700;color:var(--ink);">Total: <span id="infoTotal">$0.00</span></p>
+
+        <div class="info-actions">
+          <button type="button" class="btn info-comprar-btn" id="infoComprarBtn" style="width:100%;margin:0;">
+            <i class="fa-solid fa-cart-shopping cart-icon"></i>
+            <span>Comprar</span>
+          </button>
+          <button type="button" class="share-btn" id="infoShareBtn"><i class="fa-solid fa-share-nodes"></i></button>
+        </div>
+
+        <div class="info-trust">
+          <span><i class="fa-solid fa-truck"></i> Entrega a domicilio</span>
+          <span><i class="fa-solid fa-lock"></i> Pedido seguro</span>
+          <span><i class="fa-solid fa-rotate-left"></i> Soporte post-venta</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 <script>
 setInterval(function(){
   if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
