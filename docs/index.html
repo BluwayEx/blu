@@ -1,1501 +1,440 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluWay | Sin Límites</title>
+<link rel="icon" type="image/jpeg" href="imagenes/icono.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<style>
+/* ==========================================================
+   BLUWAY — DESIGN SYSTEM
+   Navy / Cyan / Violet — ocean-tech identity
+========================================================== */
+:root{
+  --navy-950:#04070f;
+  --navy-900:#080d24;
+  --navy-800:#0A0F2C;
+  --navy-700:#141b3f;
+  --cyan:#00E5FF;
+  --cyan-dim:#00b8cc;
+  --violet:#5B3CFF;
+  --ivory:#F6F7FB;
+  --white:#FFFFFF;
+  --ink:#12162B;
+  --ink-soft:#6B7280;
+  --red:#E11D2E;
+  --line:#E7E9F2;
+  --radius-lg:22px;
+  --radius-md:16px;
+  --shadow-lg:0 25px 60px -20px rgba(10,15,44,.35);
+  --shadow-glow:0 0 25px rgba(0,229,255,.35);
+}
+
+*{margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif;}
+html{scroll-behavior:smooth;}
 body{
-    user-select:none;
-    -webkit-user-select:none;
+  background: var(--ivory);
+  color: var(--ink);
+  overflow-x:hidden;
+  user-select:none;
+  -webkit-user-select:none;
+}
+img{pointer-events:none;}
+a{text-decoration:none;}
+:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
+
+/* ===================== HEADER ===================== */
+header{
+  background: var(--navy-800);
+  padding:16px 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(0,240,255,.18);
+  box-shadow:0 4px 24px rgba(0,0,0,.35);
+  position:sticky; top:0; z-index:500;
+}
+header h1{
+  font-size:1.7em; font-weight:800; letter-spacing:1px;
+  background:linear-gradient(90deg,#00BFFF,#00F0FF);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 0 18px rgba(0,240,255,.35);
+}
+.menu-btn{font-size:26px; color:#fff; cursor:pointer; transition:.25s;}
+.menu-btn:hover{color:var(--cyan); text-shadow:0 0 10px var(--cyan);}
+nav a{color:#d6d9e6; font-weight:500; transition:.25s; padding:8px 4px;}
+nav a:hover{color:var(--cyan); text-shadow:0 0 10px var(--cyan);}
+
+/* ===================== CATALOGO DROPDOWN ===================== */
+#menuCatalogo{
+  background: rgba(10,15,44,.92);
+  backdrop-filter: blur(14px);
+  border:1px solid rgba(0,240,255,.25);
+  border-radius:14px;
+  box-shadow:0 15px 40px rgba(0,0,0,.5), 0 0 25px rgba(0,229,255,.2);
+  padding:8px 0;
+  min-width:220px;
+}
+.categoria-item{
+  color:#e7e9f2; font-size:.92em; transition:.2s;
+}
+.categoria-item:hover{ background:rgba(0,229,255,.1); color:var(--cyan); padding-left:26px !important; }
+
+/* ===================== MENU LATERAL ===================== */
+.menu-fondo{
+  position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:998;
+}
+.menu-fondo.abierto{display:block;}
+.menu-lateral{
+  position:fixed; top:0; left:-280px; width:270px; height:100%;
+  background:var(--white); transition:.35s cubic-bezier(.4,0,.2,1); z-index:999;
+  overflow-y:auto; box-shadow:8px 0 30px rgba(0,0,0,.25);
+}
+.menu-lateral.abierto{left:0;}
+.perfil{ background:var(--navy-800); color:#fff; text-align:center; padding:30px 20px; }
+#fotoPerfil{
+  width:80px; height:80px; border-radius:50%; object-fit:cover;
+  border:2px solid var(--cyan); box-shadow:0 0 15px rgba(0,240,255,.4); transition:.3s;
+}
+#fotoPerfil:hover{ transform:scale(1.06); box-shadow:0 0 25px rgba(0,240,255,.7); }
+.perfil h3{ margin-top:12px; font-size:16px; font-weight:700; }
+.perfil p{ font-size:12px; color:#aab; margin-top:2px; }
+.menu-lateral a{
+  display:flex; align-items:center; gap:10px;
+  padding:16px 22px; color:var(--ink); border-bottom:1px solid var(--line); transition:.2s; font-weight:500;
+}
+.menu-lateral a:hover{ background:var(--ivory); padding-left:30px; color:var(--cyan-dim); }
+
+/* ===================== HERO ===================== */
+.hero{
+  position:relative;
+  padding:64px 20px 90px;
+  text-align:center;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% -10%, rgba(0,229,255,.25), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 100% 10%, rgba(91,60,255,.30), transparent 60%),
+    linear-gradient(160deg, var(--navy-950), var(--navy-800) 65%, var(--navy-700));
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.6s ease;
+  overflow:hidden;
+}
+.hero::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:70px;
+  background: var(--ivory);
+  clip-path: polygon(0 60%, 8% 45%, 18% 60%, 30% 40%, 42% 62%, 55% 38%, 68% 60%, 80% 42%, 92% 58%, 100% 45%, 100% 100%, 0 100%);
+}
+.hero-content{ position:relative; z-index:2; max-width:720px; margin:0 auto; }
+.hero h2.frase{
+  font-family:'Playfair Display', serif; font-style:italic; font-weight:400;
+  font-size:clamp(1.1rem, 2.4vw, 1.5rem); color:#c8cde0; min-height:1.4em; margin-bottom:22px;
+}
+.hero h2.tagline{
+  font-family:'Playfair Display', serif; font-style:italic; font-weight:400;
+  font-size:clamp(1.6rem, 3.4vw, 2.3rem); color:#f1f2f8; margin-top:28px;
+  text-shadow:0 0 24px rgba(0,229,255,.25);
 }
 
-img{
-    pointer-events:none;
+/* ===================== SEARCH ===================== */
+.search-container{
+  position:relative; z-index:5; margin:10px auto 0; width:100%; max-width:520px;
+}
+.search-container.flotante{
+  position:fixed; top:88px; left:50%; transform:translateX(-50%);
+  width:90%; max-width:520px; z-index:2000; animation:buscadorFlota .35s ease;
+}
+@keyframes buscadorFlota{ from{opacity:0; transform:translateX(-50%) translateY(-24px);} to{opacity:1; transform:translateX(-50%) translateY(0);} }
+
+.search-box{
+  position:relative; display:flex; align-items:center;
+  background:rgba(255,255,255,.08); backdrop-filter:blur(14px);
+  border:1px solid rgba(0,240,255,.3);
+  border-radius:50px; padding:5px 8px 5px 22px;
+  box-shadow:0 10px 35px rgba(0,0,0,.35), 0 0 20px rgba(0,229,255,.12);
+  transition:.3s;
+}
+.search-box:focus-within{ border-color:var(--cyan); box-shadow:0 0 30px rgba(0,229,255,.4); background:rgba(4,7,15,.85); }
+.search-icon{ color:var(--cyan); font-size:1.05em; margin-right:8px; }
+.search-box input{
+  width:100%; background:transparent; border:none; outline:none; color:#fff;
+  font-size:1em; padding:13px 8px;
+}
+.search-box input::placeholder{ color:#a9adc4; }
+.search-btn{
+  border:none; background:linear-gradient(135deg, var(--cyan), var(--cyan-dim));
+  color:var(--navy-900); width:42px; height:42px; border-radius:50%; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:.25s; flex-shrink:0;
+}
+.search-btn:hover{ transform:scale(1.08); box-shadow:0 0 18px rgba(0,229,255,.5); }
+
+.lista-sugerencias{
+  position:absolute; top:calc(100% + 8px); left:0; width:100%;
+  background:var(--navy-900); border:1px solid rgba(0,240,255,.2);
+  border-radius:14px; overflow:hidden; display:none; z-index:99999;
+  box-shadow:0 15px 40px rgba(0,0,0,.5);
+}
+.sugerencia{ display:flex; align-items:center; gap:12px; padding:12px 14px; cursor:pointer; transition:.2s; }
+.sugerencia:hover{ background:rgba(0,229,255,.08); }
+.sugerencia img{ width:44px; height:44px; object-fit:cover; border-radius:8px; background:#fff; }
+.sugerencia .nombre{ color:#fff; font-size:14px; font-weight:500; }
+.sugerencia .precio{ color:var(--cyan); font-size:12.5px; margin-top:2px; }
+
+/* ===================== PRODUCT SECTION ===================== */
+.product-section{ padding:10px 4% 60px; }
+.section-title{
+  text-align:center; color:var(--ink); font-size:1.9em; font-weight:800;
+  margin: 6px 0 34px; letter-spacing:.3px;
+}
+.section-title::after{
+  content:""; display:block; width:56px; height:4px; margin:12px auto 0;
+  background:linear-gradient(90deg, var(--cyan), var(--violet)); border-radius:4px;
 }
 
-</style>
-    
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BluWay | Sin Limites</title>
-  <link rel="icon" type="image/jpeg" href="imagenes/icono.jpg">
-
-  <style>
-    * {margin: auto; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif;}
-    body {background: linear-gradient(135deg, #fafbfa, #d3d3d3); color: #e6e3e3; overflow-x: hidden;}
-    header {background: #0A0F2C; backdrop-filter: blur(10px); padding:15px 20px;
-      display: flex; align-items: center; justify-content: space-between; position:static; top: 0;
-      border-bottom: 1px solid #00f0ff40; box-shadow: 0 0 15px #00f0ff30;}
-    header h1 {font-size: 1.8em; color:linear-gradient(90deg, #00BFFF, #1E90FF); letter-spacing: 2px; text-shadow: 0 0 10px #00f0ff;}
-    nav a {color: #d1cece;; margin-left: 30px; text-decoration: none; transition: 0.3s;}
-    nav a:hover {color: #00f0ff; text-shadow: 0 0 10px #00f0ff;}
-    .hero {text-align: center; padding: 10%;
-     background: url('https://lo..o()remflickr.com/3200000240') no-repeat center center/cover; position: relative;}
-    .hero::before {content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7);}
-    .hero h2, .hero p {position: relative;}
-    .hero h2 {font-size: 3em; color: #ddd; text-shadow: 0 0 20px #000000;}
-    .hero p {font-size: 1.2em; color: #ddd; margin-top: 15px;}
-    .product-section {padding:5%;}
-    .section-title {text-align: center; color: #000000; font-size: 2em; margin-bottom: 40px; text-shadow: 0 0 10px #ffffff;}
-    .product-card {background: #ffffff; border: 1px solid #000000; border-radius: 15px; overflow: hidden;
-      transition: 0.3s; box-shadow: 0 0 10px #00f0ff20; flex: 0 0 280px;}
-    .product-card:hover {transform: translateY(-8px); box-shadow: 0 0 25px #00f0ff60;}
-    .product-card img {width: 100%; height: 280px; object-fit: contain; background-color: #fafbfa; border-bottom: 1px solid #ffffff;}
-    .product-info {padding: 5%; text-align: center;}
-    .product-info h3 {color: #000000fb; font-size: 1.2em; margin-bottom:auto;}
-    .product-info p {color: #fffffff1; font-size: 0.9em; margin-bottom: 0%;}
-    .titulo-producto{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:0px;
-    margin-bottom:0px;
+.slider-container{ position:relative; width:100%; }
+.product-slider{
+  display:flex; overflow-x:auto; scroll-behavior:smooth; gap:22px; padding:14px 6px 22px;
 }
-  .btn {width:80%;margin:8px auto 1px;height: 54px;display:flex;justify-content:center;align-items:center;gap:10px;
-    border:none;border-radius:40px;cursor:pointer;font-size:clamp(18px, 3vw, 28px);font-weight:700;color:#00D8FF;
-    background:linear-gradient(180deg,#1a1a1a,#0d0d0d);box-shadow:0 10px 25px rgba(0,0,0,.25);transition:.30s;text-align:center;}
-.btn::before {content:"";position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg,transparent,rgba(255, 255, 255, 0.575),transparent);transform:skewX(-25deg);}
-.btn:hover::before {animation:shine 0.75s forwards;}
-@keyframes shine {
-    100% {
-        left:125%;
-    }}
+.product-slider::-webkit-scrollbar{ height:7px; }
+.product-slider::-webkit-scrollbar-thumb{ background:rgba(0,229,255,.5); border-radius:10px; }
+.product-slider::-webkit-scrollbar-track{ background:var(--line); border-radius:10px; }
 
-.btn span {
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.slider-btn{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:44px; height:72px; border:none;
+  background:rgba(10,15,44,.75); color:#fff; font-size:22px; cursor:pointer;
+  z-index:20; opacity:0; transition:.25s; display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(8px); box-shadow:0 0 15px rgba(0,240,255,.25);
+  border-radius:10px;
 }
-.cart-icon{
-    font-size:clamp(18px, 5vw, 28px);
-    transition:.30s;
+.slider-btn.left{ left:-4px; }
+.slider-btn.right{ right:-4px; }
+.slider-container:hover .slider-btn{ opacity:1; }
+@media(max-width:768px){ .slider-btn{ display:none; } }
+
+.product-card{
+  background:var(--white); border:1px solid var(--line); border-radius:var(--radius-lg);
+  overflow:hidden; transition:.3s; box-shadow:0 6px 20px rgba(10,15,44,.06);
+  flex:0 0 270px; display:flex; flex-direction:column;
+}
+.product-card:hover{ transform:translateY(-8px); box-shadow:0 20px 40px rgba(10,15,44,.16); border-color:rgba(0,229,255,.4); }
+.product-card img{
+  width:100%; height:230px; object-fit:contain; background:var(--ivory);
+  border-bottom:1px solid var(--line); padding:14px;
+}
+.product-info{ padding:18px 18px 20px; text-align:center; display:flex; flex-direction:column; gap:6px; flex:1; }
+.titulo-producto{ display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:2px; }
+.product-info h3{ color:var(--ink); font-size:1.08em; font-weight:700; }
+.product-info p{ color:var(--ink-soft); font-size:.86em; min-height:1.2em; }
+
+.info-btn{
+  width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+  border:none; border-radius:50%; background:var(--violet); color:#fff; font-size:15px; cursor:pointer;
+  transition:.25s; flex-shrink:0;
+}
+.info-btn:hover{ transform:scale(1.12); background:var(--cyan); color:var(--navy-900); box-shadow:0 0 16px rgba(0,229,255,.6); }
+
+.price{ color:var(--red); display:flex; align-items:baseline; justify-content:center; gap:1px; margin-top:4px; }
+.currency{ font-size:22px; margin-top:2px; font-weight:600; }
+.entero{ font-size:28px; line-height:1; font-weight:800; }
+.decimal{ font-size:18px; margin-top:2px; font-weight:600; }
+.precio-anterior{
+  color:var(--ink-soft); font-size:15px; text-decoration:line-through; font-weight:500; margin-top:-2px;
 }
 
 .btn{
-  font-size: 20px;
+  width:88%; margin:12px auto 4px; height:50px; display:flex; justify-content:center; align-items:center; gap:10px;
+  border:none; border-radius:40px; cursor:pointer; font-size:16px; font-weight:700; color:var(--navy-900);
+  background:linear-gradient(135deg, var(--cyan), #5be0ff);
+  box-shadow:0 10px 22px rgba(0,229,255,.3); transition:.3s; position:relative; overflow:hidden;
+}
+.btn:hover{ transform:translateY(-2px); box-shadow:0 14px 28px rgba(0,229,255,.45); }
+.btn::before{
+  content:""; position:absolute; top:0; left:-75%; width:50%; height:100%;
+  background:linear-gradient(120deg, transparent, rgba(255,255,255,.6), transparent);
+  transform:skewX(-25deg);
+}
+.btn:hover::before{ animation:shine .75s forwards; }
+@keyframes shine{ 100%{ left:125%; } }
+.cart-icon{ font-size:18px; transition:.3s; }
+.btn:hover .cart-icon{ animation:bounce .6s; }
+@keyframes bounce{ 0%,100%{transform:translateY(0);} 30%{transform:translateY(-6px);} 60%{transform:translateY(3px);} }
+@media(max-width:768px){ .btn::before, .btn:hover::before{ animation:none; background:none; } }
+
+/* ===================== FOOTER ===================== */
+footer{
+  text-align:center; padding:26px; background:var(--navy-950); color:var(--cyan);
+  border-top:1px solid rgba(0,240,255,.18); font-size:.9em;
 }
 
-@media (min-width: 768px) {
-  .btn {
-    font-size: 105%;
-  }
-}
-
-@media (min-width: 1200px) {
-  .btn {
-    font-size: 105%;
-  }
-}
-/* 🔒 Turn off mobile animation */
-@media (max-width: 768px) {
-  .btn::before,
-  .btn:hover::before {
-    animation:none;
-    background:none;
-  }
-}
-.cart-icon {
-    font-size: clamp(18px, 5vw, 28px);
-    transition: .30s;
-}
-
-.btn:hover .cart-icon {
-    animation: bounce 0.6s;
-}
-
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    30% {
-        transform: translateY(-6px);
-    }
-    60% {
-        transform: translateY(3px);
-    }
-}
-
-
-    footer {text-align: center; padding: 25px; background: #000; border-top: 1px solid #00f0ff30;
-      color: #00f0ff; box-shadow: 0 -5px 25px #00f0ff20; font-size: 0.9em;}
-    /* ===========================
-   MODAL DE COMPRA - NUEVO ESTILO
-=========================== */
-
+/* ===================== MODALS ===================== */
 .modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-visibility:hidden;
-opacity:0;
-transition:.35s;
-background:rgba(0,0,0,.75);
-backdrop-filter:blur(8px);
-z-index:9999;
+  position:fixed; inset:0; display:flex; justify-content:center; align-items:center;
+  visibility:hidden; opacity:0; transition:.35s; background:rgba(0,0,0,.75); backdrop-filter:blur(8px); z-index:9999;
 }
-
-.modal.active{
-visibility:visible;
-opacity:1;
-}
-
+.modal.active{ visibility:visible; opacity:1; }
 .modal-content{
-
-position:relative;
-
-width:90%;
-max-width:400px;
-
-padding:30px;
-
-border-radius:28px;
-
-background:rgba(255,255,255,.08);
-
-backdrop-filter:blur(18px);
-
-border:1px solid rgba(255,255,255,.10);
-
-box-shadow:
-0 25px 60px rgba(0,0,0,.45),
-0 0 35px rgba(0,229,255,.18);
-
-animation:modalShow .45s ease;
-
-overflow:hidden;
-
+  position:relative; width:90%; max-width:400px; padding:32px;
+  border-radius:28px; background:rgba(20,27,63,.55); backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 25px 60px rgba(0,0,0,.45), 0 0 35px rgba(0,229,255,.18);
+  animation:modalShow .4s ease; overflow:hidden;
 }
-
-.modal-content::before{
-
-content:"";
-
-position:absolute;
-
-width:260px;
-height:260px;
-
-border-radius:50%;
-
-background:#00e5ff;
-
-filter:blur(120px);
-
-opacity:.12;
-
-top:-120px;
-left:-100px;
-
-pointer-events:none;
-
+.modal-content::before{ content:""; position:absolute; width:260px; height:260px; border-radius:50%; background:var(--cyan); filter:blur(120px); opacity:.15; top:-120px; left:-100px; pointer-events:none; }
+.modal-content::after{ content:""; position:absolute; width:220px; height:220px; border-radius:50%; background:var(--violet); filter:blur(120px); opacity:.15; bottom:-120px; right:-80px; pointer-events:none; }
+@keyframes modalShow{ from{opacity:0; transform:translateY(40px) scale(.95);} to{opacity:1; transform:translateY(0) scale(1);} }
+.modal-content>*{ position:relative; z-index:2; }
+.modal-content h3{ color:#fff; font-size:26px; font-weight:700; margin-bottom:22px; text-align:center; }
+.modal-content input, .modal-content select{
+  width:100%; padding:15px 18px; margin:9px 0; border-radius:14px;
+  border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.08); color:#fff; outline:none;
+  transition:.3s; font-size:15px;
 }
-
-.modal-content::after{
-
-content:"";
-
-position:absolute;
-
-width:220px;
-height:220px;
-
-border-radius:50%;
-
-background:#5b3cff;
-
-filter:blur(120px);
-
-opacity:.12;
-
-bottom:-120px;
-right:-80px;
-
-pointer-events:none;
-
-}
-
-@keyframes modalShow{
-
-from{
-
-opacity:0;
-
-transform:translateY(40px) scale(.95);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0) scale(1);
-
-}
-
-}
-
-.modal-content>*{
-
-position:relative;
-
-z-index:2;
-
-}
-
-.modal-content h3{
-
-color:#fff;
-
-font-size:28px;
-
-font-weight:600;
-
-margin-bottom:25px;
-
-text-align:center;
-
-}
-
-.modal-content input,
-.modal-content select{
-
-width:100%;
-
-padding:15px 18px;
-
-margin:10px 0;
-
-border-radius:14px;
-
-border:1px solid rgba(255,255,255,.15);
-
-background:rgba(255,255,255,.08);
-
-color:#fff;
-
-outline:none;
-
-transition:.35s;
-
-font-size:15px;
-
-}
-
-.modal-content input::placeholder{
-
-color:#d7d7d7;
-
-}
-
-.modal-content input:focus,
-.modal-content select:focus{
-
-border-color:#00e5ff;
-
-box-shadow:0 0 20px rgba(0,229,255,.35);
-
-}
-
-.modal-content select{
-
-appearance:none;
-
-}
+.modal-content input::placeholder{ color:#c7cbe0; }
+.modal-content input:focus, .modal-content select:focus{ border-color:var(--cyan); box-shadow:0 0 20px rgba(0,229,255,.35); }
+.modal-content select{ appearance:none; }
+.usuario-box small{ display:block; color:#a9adc9; font-size:12px; margin-bottom:4px; }
+#usuarioPedido{ font-size:16px; font-weight:600; }
 
 button.pay-btn{
-
-width:100%;
-
-margin-top:20px;
-
-padding:16px;
-
-border:none;
-
-border-radius:15px;
-
-background:linear-gradient(135deg,#00e5ff,#5b3cff);
-
-color:#fff;
-
-font-size:16px;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:.35s;
-
+  width:100%; margin-top:18px; padding:16px; border:none; border-radius:15px;
+  background:linear-gradient(135deg, var(--cyan), var(--violet)); color:#fff; font-size:16px; font-weight:700; cursor:pointer; transition:.3s;
 }
+button.pay-btn:hover{ transform:translateY(-3px); box-shadow:0 0 25px rgba(0,229,255,.45); }
+button.close{ margin-top:14px; background:none; border:none; color:#d7dff8; cursor:pointer; font-size:14px; transition:.25s; width:100%; text-align:center; }
+button.close:hover{ color:var(--cyan); }
 
-button.pay-btn:hover{
-
-transform:translateY(-3px);
-
-box-shadow:0 0 25px rgba(0,229,255,.45);
-
+.location{ display:flex; gap:10px; }
+.location input{ flex:1; }
+.location button{
+  padding:0 18px; border:none; border-radius:14px; cursor:pointer;
+  background:linear-gradient(135deg, var(--cyan), #4b9fff); color:#fff; font-weight:600; transition:.3s; white-space:nowrap;
 }
+.location button:hover{ transform:translateY(-2px); box-shadow:0 0 18px rgba(0,229,255,.45); }
 
-button.close{
-
-margin-top:15px;
-
-background:none;
-
-border:none;
-
-color:#d7dff8;
-
-cursor:pointer;
-
-font-size:14px;
-
-transition:.3s;
-
+/* Info modal */
+.info-modal-content{ max-width:880px; background:var(--white); padding:44px; width:95%; }
+.info-modal-content::before, .info-modal-content::after{ display:none; }
+.info-layout{ display:flex; gap:40px; align-items:flex-start; }
+.info-details{ flex:1; min-width:0; text-align:left; }
+.info-details h3{ font-size:1.35em; color:var(--ink); }
+.info-categoria{
+  display:inline-block; background:var(--ivory); color:var(--ink-soft); font-size:12px;
+  padding:5px 12px; border-radius:20px; margin:10px 0; font-weight:600;
 }
-
-button.close:hover{
-
-color:#00e5ff;
-
-}
-
-/* --- SLIDER --- */
-
-.product-slider{
-
-display:flex;
-
-overflow-x:auto;
-
-scroll-behavior:smooth;
-
-gap:30px;
-
-padding:20px;
-
-}
-
-.product-slider::-webkit-scrollbar{
-
-height:8px;
-
-}
-
-.product-slider::-webkit-scrollbar-thumb{
-
-background:#00f0ff80;
-
-border-radius:10px;
-
-}
-
-.product-slider::-webkit-scrollbar-track{
-
-background:#081733;
-
-}
-
-    /* =========================
-   BOTONES SLIDER PC
-========================= */
-
-.slider-container{
-position:relative;
-width:100%;
-}
-
-
-.slider-btn{
-
-position:absolute;
-
-top:50%;
-
-transform:translateY(-50%);
-
-width:42px;
-height:70px;
-
-border:none;
-
-background:rgba(0,0,0,0.65);
-
-color:white;
-
-font-size:22px;
-
-cursor:pointer;
-
-z-index:20;
-
-opacity:0;
-
-transition:0.25s;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-backdrop-filter:blur(8px);
-
-box-shadow:
-0 0 15px rgba(0,240,255,0.25);
-
-}
-
-
-.slider-btn.left{
-
-left:0;
-
-}
-
-
-
-.slider-btn.right{
-
-right:0;
-
-}
-
-
-
-/* aparece con mouse en computadora */
-
-.slider-container:hover .slider-btn{
-
-opacity:1;
-
-}
-/* celular sin botones */
-
-@media(max-width:768px){
-
-.slider-btn{
-
-display:none;
-}
-
-}
-
-
-@media(max-width:768px){
-
-.hero{
-    background-size: cover;
-    background-position: center;
-    min-height: 300px;
-}
-}
-/* Tipografía base adaptable */
-body {
-  font-size: 16px; /* tamaño base */
-}
-
-@media (max-width: 768px) {
-  body {
-    font-size: 14px; /* reduce un poco en pantallas pequeñas */
-  }
-
-  header h1 {
-    font-size: 1.4em; /* más pequeño en móvil */
-  }
-
-  .hero h2 {
-    font-size: 2em; /* ajusta títulos */
-  }
-
-  .hero p {
-    font-size: 1em;
-  }
-
-  .section-title {
-    font-size: 1.5em;
-  }
-
-  .product-card {
-    flex: 0 0 90%; /* ocupa casi todo el ancho en móvil */
-    margin: 0 auto;
-  }
-
-  .product-card img {
-    max-height:none;
-  }
-
-  .product-info h3 {
-    font-size: larger;
-  }
-
-  .product-info p {
-    font-size: 0.85em;
-  }
-
-  .btn {
-    padding: 8px 15px;
-    font-size: 0.9em;
-  }
-}
-/* ===========================
-   MENU HAMBURGUESA
-=========================== */
-
-.menu-btn{
-    font-size:30px;
-    color:white;
-    cursor:pointer;
-    user-select:none;
-}
-
-/* Fondo oscuro */
-.menu-fondo{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.45);
-    display:none;
-    z-index:998;
-}
-
-/* Panel lateral */
-.menu-lateral{
-    position:fixed;
-    top:0;
-    left:-280px;
-    width:260px;
-    height:100%;
-    background:white;
-    transition:0.35s;
-    z-index:999;
-    overflow-y:auto;
-    box-shadow:5px 0 20px rgba(0,0,0,.3);
-}
-
-/* Cuando está abierto */
-.menu-lateral.abierto{
-    left:0;
-}
-
-.menu-fondo.abierto{
-    display:block;
-}
-
-/* Cabecera del menú */
-.perfil{
-    background:#0A0F2C;
-    color:white;
-    text-align:center;
-    padding:25px;
-}
-
-.perfil img{
-    width:80px;
-    height:80px;
-    border-radius:50%;
-    display:block;
-    margin:0 auto 10px;
-}
-
-/* Opciones */
-.menu-lateral a{
-    display:block;
-    padding:16px 20px;
-    text-decoration:none;
-    color:#333;
-    border-bottom:1px solid #e5e5e5;
-    transition:.2s;
-}
-
-.menu-lateral a:hover{
-    background:#f5f5f5;
-    padding-left:30px;
-}
-#fotoPerfil{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #00f0ff;
-  box-shadow:0 0 15px rgba(0,240,255,0.4);
-  transition:0.3s;
-}
-
-#fotoPerfil:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 25px rgba(0,240,255,0.7);
-}
-
-.perfil h3{
-  margin-top:10px;
-  font-size:16px;
-  color:#fff;
-}
-
-.perfil p{
-  font-size:12px;
-  color:#ccc;
-}
-/* ===========================
-   BOTONES PRODUCTO
-=========================== */
-
-
-
-.info-btn{
-
-    width: 32px;
-    height: 35px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border:none;
-    border-radius:100%;
-
-    background:#5b3cff;
-    color:#ffffff;
-
-    font-size: 30px;
-
-    font-family: "Blackadder ITC", "Times New Roman", cursive;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-    box-shadow: 0 0 18px rgb(255,255,255);
-}
-
-.info-btn:hover{
-
-    transform:scale(1.12);
-
-    background:#00e5ff;
-    color:#071739;
-
-    box-shadow:
-    0 0 25px rgba(0,240,255,.8);
-}
-
-.price{
-    color:#ff0000;
-    display:flex;
-    align-items:baseline;
-    justify-content:flex-start; /* o center si quieres centrado */
-    gap:1px; /* 👈 AQUÍ está la clave */
-}
-
-.currency{
-    font-size: 28px;
-    margin-right:0px;
-    margin-top:4px;
-}
-
-.entero{
-    font-size:34px;
-    line-height:1;
-}
-
-.decimal{
-    font-size:23px;
-    margin-top:4px;
-}
-
-.precio-anterior{
-    color:#000000;
-    font-size:20px;
-    text-decoration:line-through;
-    font-weight:500;
-    margin-left:2px;
-    opacity:0.9;
-}
-
-.precio-anterior{
-    margin-left:1px;  /* casi pegado */
-}
-/* ===========================
-   BUSCADOR DE PRODUCTOS
-=========================== */
-
-.search-container {
-  position: relative;
-  z-index: 2;
-  margin: 20px auto 25px auto;
-  width: 90%;
-  max-width: 500px;
-  animation: fadeInDown 0.8s ease;
-}
-
-/* ==========================
-   BUSCADOR FLOTANTE
-========================== */
-
-.search-container.flotante{
-
-  position:fixed;
-
-  top:25px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  width:90%;
-  max-width:500px;
-
-  z-index:2000;
-
-  animation: buscadorFlota .35s ease;
-
-}
-
-.search-container.floating .search-box{
-
-  background: rgba(0, 0, 0, 0.178);
-
-  backdrop-filter: blur(12px);
-
-  border:1px solid #00f0ff50;
-
-  box-shadow:
-  0 10px 40px rgba(0,0,0,.5),
-  0 0 25px rgba(0,240,255,.35);
-
-}
-
-
-/* Animación entrada */
-
-@keyframes buscadorFlota{
-
-  from{
-
-    opacity:0;
-
-    transform:
-    translateX(-50%)
-    translateY(-30px);
-
-  }
-
-  to{
-
-    opacity:1;
-
-    transform:
-    translateX(-50%)
-    translateY(0);
-
-  }
-
-}
-.search-box {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: rgba(68, 68, 68, 0.137);
-  backdrop-filter: blur(12px);
-  border: 1px solid #00f0ff50;
-  border-radius: 50px;
-  padding: 4px 8px 4px 20px;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
-  transition: all 0.3s ease;
-}
-
-.search-box:focus-within {
-  border-color: #00eeff;
-  box-shadow: 0 0 30px rgb(255, 255, 255);
-  background: rgb(0, 0, 0);
-}
-
-.search-box input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #fff;
-  font-size: 1.05em;
-  padding: 12px 8px;
-  font-family: 'Poppins', sans-serif;
-}
-
-.search-box input::placeholder {
-  color: #aaa;
-  opacity: 0.8;
-}
-
-.search-icon {
-  color: #00f0ff;
-  font-size: 1.1em;
-  margin-right: 8px;
-  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
-}
-.search-btn{
-    border:none;
-    background:#00f0ff;
-    color:#000;
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:.25s;
-}
-
-.search-btn:hover{
-    transform:scale(1.08);
-}
-
-/* Animación suave al cargar */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .search-container {
-    width: 95%;
-    max-width: 100%;
-  }
-  .search-box input {
-    font-size: 1em;
-    padding: 10px 6px;
-  }
-}
-/* ==========================
-   PRUEBA: REDUCIR CONTENIDO EN CELULAR
-========================== */
+.info-descripcion{ color:#444; font-size:.92em; margin:8px 0 4px; line-height:1.55; }
+.info-image{ flex:0 0 340px; }
+.info-image img{ width:100%; border-radius:16px; object-fit:contain; aspect-ratio:1/1; background:var(--ivory); border:1px solid var(--line); }
+.info-comprar-btn{ width:100%; margin-top:16px; color:var(--navy-900); }
+#infoPrecioBox{ display:flex; align-items:baseline; justify-content:flex-start; gap:2px; margin-top:8px; }
 
 @media (max-width:768px){
-
-.product-section,
-footer{
-    transform: scale(0.90);
-    transform-origin: top center;
+  .info-modal-content{ padding:20px; }
+  .info-layout{ flex-direction:column; gap:16px; }
+  .info-image{ flex:0 0 auto; width:100%; }
+  .info-details h3{ font-size:1.1em; }
+  .info-descripcion{ font-size:.85em; }
 }
 
-}
-
-/*=========================
-SUGERENCIAS BUSCADOR
-==========================*/
-
-.search-container{
-
-    position:relative;
-
-}
-
-.lista-sugerencias{
-
-    position:absolute;
-
-    top:100%;
-
-    left:0;
-
-    width:100%;
-
-    background:#101010;
-
-    border:1px solid rgba(0,240,255,.2);
-
-    border-radius:12px;
-
-    margin-top:8px;
-
-    overflow:hidden;
-
-    display:none;
-
-    z-index:99999;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.45);
-
-}
-
-.sugerencia{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    padding:12px;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-}
-
-.sugerencia:hover{
-
-    background:#181818;
-
-}
-
-.sugerencia img{
-
-    width:45px;
-
-    height:45px;
-
-    object-fit:cover;
-
-    border-radius:8px;
-
-}
-
-.sugerencia .nombre{
-
-    color:white;
-
-    font-size:15px;
-
-}
-
-.sugerencia .precio{
-
-    color:#00f0ff;
-
-    font-size:13px;
-
-}
-
-.lista-sugerencias::-webkit-scrollbar{
-
-    width:6px;
-
-}
-
-.lista-sugerencias::-webkit-scrollbar-thumb{
-
-    background:#00f0ff;
-
-}
-
-.location{
-    display:flex;
-    gap:10px;
-}
-
-.location input{
-    flex:1;
-}
-
-.location button{
-    padding:12px 18px;
-    border:none;
-    border-radius:14px;
-    cursor:pointer;
-    background:linear-gradient(135deg,#00e5ff,#4b9fff);
-    color:white;
-    font-weight:600;
-    transition:.3s;
-}
-
-.location button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 0 18px rgba(0,229,255,.45);
-}
-
-/* =========================
-   TELEFONO INTELIGENTE
-========================= */
-
-
-#estadoTelefono{
-
-color:#aaa;
-font-size:14px;
-display:flex;
-align-items:center;
-gap:8px;
-
-}
-
-
-#estadoTelefono span{
-
-font-size:18px;
-transition:.3s;
-
-}
-
-
-
-#telefono{
-
-transition:.35s;
-
-}
-
-
-/* Estado correcto */
-
-.telefono-ok{
-
-border-color:#00ff66 !important;
-
-box-shadow:
-0 0 15px #00ff66,
-0 0 30px rgba(0,255,100,.5);
-
-}
-
-
-
-/* Estado error */
-
-.telefono-error{
-
-border-color:#ff0033 !important;
-
-box-shadow:
-0 0 15px #ff0033,
-0 0 30px rgba(255,0,50,.5);
-
-}
-
-
-
-.estado-verde{
-
-color:#00ff66 !important;
-
-text-shadow:
-0 0 10px #00ff66;
-
-}
-
-
-
-.estado-rojo{
-
-color:#ff0033 !important;
-
-text-shadow:
-0 0 10px #ff0033;
-
-}
-.usuario-box small{
-
-display:block;
-
-color:#aaa;
-
-font-size:12px;
-
-margin-bottom:5px;
-
-}
-
-
-#usuarioPedido{
-
-font-size:17px;
-
-font-weight:600;
-
-}
-
-/* =========================
-   QR ANIMADO BLUWAY
-========================= */
-
-.qr-box{
-
-position:relative;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-margin:20px auto;
-
-width:250px;
-
-height:250px;
-
-}
-
+/* Telefono states */
+.telefono-ok{ border-color:#00ff88 !important; box-shadow:0 0 15px #00ff88, 0 0 30px rgba(0,255,140,.4) !important; }
+.telefono-error{ border-color:#ff3355 !important; box-shadow:0 0 15px #ff3355, 0 0 30px rgba(255,50,80,.4) !important; }
 
 /* QR */
-
-.qrcode img{
-
-width:250px;
-
-height:250px;
-
-background:white;
-
-padding:10px;
-
-border-radius:15px;
-
-}
-
-
-/* LETRA B CENTRAL */
-
+.qr-box{ position:relative; display:flex; justify-content:center; align-items:center; margin:20px auto; width:250px; height:250px; }
+.qrcode img{ width:250px; height:250px; background:#fff; padding:10px; border-radius:15px; }
 .qr-logo{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:40px; font-weight:900; color:var(--cyan); background:rgba(4,7,15,.8);
+  border:3px solid var(--cyan); box-shadow:0 0 15px var(--cyan), 0 0 35px rgba(0,229,255,.8);
+  animation:pulsoB 2s infinite;
+}
+@keyframes pulsoB{ 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.12);} }
 
-position:absolute;
-
-top:50%;
-
-left:50%;
-
-transform:translate(-50%,-50%);
-
-width:65px;
-
-height:65px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:45px;
-
-font-weight:900;
-
-font-family:Arial, sans-serif;
-
-color:#00e5ff;
-
-background:rgba(0,0,0,.75);
-
-border:3px solid #00e5ff;
-
-box-shadow:
-
-0 0 15px #00e5ff,
-
-0 0 35px rgba(0,229,255,.8);
-
-animation:
-
-pulsoB 2s infinite;
-
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:768px){
+  header h1{ font-size:1.4em; }
+  .hero{ padding:44px 16px 80px; }
+  .product-card{ flex:0 0 84%; }
+  .section-title{ font-size:1.5em; }
 }
 
-
-/* ANIMACIÓN */
-
-@keyframes pulsoB{
-
-0%{
-
-transform:
-
-translate(-50%,-50%)
-
-scale(1);
-
-}
-
-50%{
-
-transform:
-
-translate(-50%,-50%)
-
-scale(1.12);
-
-}
-
-100%{
-
-transform:
-
-translate(-50%,-50%)
-
-scale(1);
-
-}
-
-}
-.info-modal-content{
-  max-width:900px;
-  background:#fff;
-  padding:90px;
-  width:95%;
-}
-.info-layout{
-  display:flex;
-  gap:50px;
-  align-items:flex-start;
-}
-
-.info-details{
-  flex:1;
-  min-width:0;
-  text-align:left;
-}
-
-.info-details h3{
-  font-size:1.3em;
-}
-
-.info-categoria{
-  display:inline-block;
-  background:#f0f0f0;
-  color:#555;
-  font-size:12px;
-  padding:4px 10px;
-  border-radius:20px;
-  margin-bottom:10px;
-}
-
-.info-descripcion{
-  color:#333;
-  font-size:0.9em;
-  margin:10px 0;
-  line-height:1.4;
-}
-
-.info-image{
-  flex:0 0 400px;
-}
-
-.info-image img{
-  width:100%;
-  border-radius:12px;
-  object-fit:cover;
-  aspect-ratio:1/1;
-}
-
-.info-comprar-btn{
-  width:100%;
-  margin-top:15px;
-}
-
-#infoPrecioBox{
-  display:flex;
-  align-items:baseline;
-  justify-content:center;
-  gap:2px;
-  width:fit-content;
-  margin:0 auto;
-}
-
-#infoPrecioBox .entero{
-  margin:0;
-}
-
-#infoPrecioBox .decimal{
-  margin:0;
-}
-
-@media (max-width: 768px) {
-  .info-modal-content{
-    padding:15px;
-  }
-  .info-layout{
-    gap:15px;
-  }
-  .info-image{
-    flex:0 0 150px;
-    padding:0px;
-  }
-  .info-details h3{
-    font-size:1.05em;
-  }
-  .info-descripcion{
-    font-size:0.8em;
-  }
-}
-
-@media (max-width: 768px) {
-  #menuCatalogo{
-    background: rgba(10,15,44,0.35) !important;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
 }
 </style>
 </head>
 <body>
+
 <header>
-
-<div style="display:flex;align-items:center;gap:15px;">
-
-<div class="menu-btn" onclick="abrirMenu()">
-☰
-</div>
-
-<h1>BluWay</h1>
-
-</div>
-
-<nav>
-
-  <a href="#" id="btnCatalogo">
-    Catalogo
-  </a>
-
-</nav>
-
+  <div style="display:flex;align-items:center;gap:15px;">
+    <div class="menu-btn" onclick="abrirMenu()"><i class="fa-solid fa-bars"></i></div>
+    <h1>BluWay</h1>
+  </div>
+  <nav>
+    <a href="#" id="btnCatalogo">Catálogo</a>
+  </nav>
 </header>
-<div id="menuCatalogo" style="
-display:none;
-position:absolute;
-top:70px;
-right:20px;
-background:rgba(3, 0, 41, 0);
-border-radius:12px;
-box-shadow:0 10px 30px rgb(0, 238, 255);
-padding:10px 0;
-min-width:220px;
-z-index:9999;
-">
 
-<div id="listaCategorias"></div>
-
+<div id="menuCatalogo" style="display:none; position:absolute; top:70px; right:20px; padding:10px 0; min-width:220px; z-index:9999;">
+  <div id="listaCategorias"></div>
 </div>
+
 <div class="menu-fondo" id="menuFondo" onclick="cerrarMenu()"></div>
 
 <div class="menu-lateral" id="menuLateral">
-
-<div class="perfil">
+  <div class="perfil">
     <img id="fotoPerfil" src="imagenes/icono.jpg" alt="Foto de perfil">
-
     <h3 id="nombrePerfil">BluWay</h3>
-
     <p id="correoPerfil">Sin Límites</p>
+  </div>
+  <a href="index.html"><i class="fa-solid fa-house"></i> Inicio</a>
+  <a href="bluwaytv.html"><i class="fa-solid fa-tv"></i> TV</a>
+  <a href="#" id="perfilUsuario"><i class="fa-solid fa-user"></i> Perfil</a>
+  <a href="#" id="cerrarSesion"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
+  <a href="#"><i class="fa-solid fa-envelope"></i> Contacto</a>
 </div>
 
-<a href="index.html">Inicio</a>
-
-<a href="bluwaytv.html">TV</a>
-
-<a href="#" id="perfilUsuario">
-  Perfil
-</a>
-
-<a href="#" id="cerrarSesion">
-  Cerrar sesión
-</a>
-
-<a href="#">Contacto</a>
-
-</div>
 <section class="hero">
-  <h2 id="frase" style="
-    font-family:'Monotype Corsiva', cursive;
-    color:rgb(228, 228, 228);
-    font-weight:normal;
-  ">
-  </h2>
+  <div class="hero-content">
+    <h2 id="frase" class="frase"></h2>
 
-  <!-- BUSCADOR PASO 1 -->
-<div class="search-container">
-
-    <div class="search-box">
-
+    <div class="search-container">
+      <div class="search-box">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-
-        <input
-        type="text"
-        id="buscadorProductos"
-        placeholder="Buscar productos..."
-        autocomplete="off">
-
-        <button id="btnBuscar" class="search-btn">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-
+        <input type="text" id="buscadorProductos" placeholder="Buscar productos..." autocomplete="off">
+        <button id="btnBuscar" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+      <div id="listaSugerencias" class="lista-sugerencias"></div>
     </div>
 
-    <!-- NUEVO -->
-    <div id="listaSugerencias" class="lista-sugerencias"></div>
-
-</div>
-  <!-- FIN BUSCADOR -->
-
-  <h2 style="
-    font-family:'Monotype Corsiva', cursive;
-    color:rgb(172, 166, 166);
-    font-weight:normal;
-  ">
-    De tu eleccion
-  </h2>
+    <h2 class="tagline">De tu elección</h2>
+  </div>
 </section>
 
 <section class="product-section">
+  <h2 class="section-title">Colección</h2>
 
-<h2 class="section-title">
-Coleccion
-</h2>
-
-
-<div class="slider-container">
-  
-<button class="slider-btn left" id="btnLeft">
-‹
-</button>
-
-<div class="product-slider" id="productosFirebase">
-</div>
-
-<button class="slider-btn right" id="btnRight">
-›
-</button>
-
-
-</div>
+  <div class="slider-container">
+    <button class="slider-btn left" id="btnLeft"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="product-slider" id="productosFirebase"></div>
+    <button class="slider-btn right" id="btnRight"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
 </section>
-<footer>
-  © 2026 BluWay | Sin Límites
-</footer>
 
+<footer>© 2026 BluWay | Sin Límites</footer>
 
 <script src="js/fondos.js"></script>
 
 <script type="module">
-
-import { createClient } from 
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 window.supabase = createClient(
-
-"https://nyloxoancdspgmhfaxgu.supabase.co",
-
-"sb_publishable_L5e4j8t_hWq1Owd2Zi2JOQ_h0PECtSy"
-
+  "https://nyloxoancdspgmhfaxgu.supabase.co",
+  "sb_publishable_L5e4j8t_hWq1Owd2Zi2JOQ_h0PECtSy"
 );
-
-
-// ===============================
-// REVISAR SESIÓN ACTUAL
-// ===============================
 
 const { data } = await window.supabase.auth.getSession();
 
@@ -1504,2017 +443,741 @@ const nombrePerfil = document.querySelector(".perfil h3");
 const textoPerfil = document.querySelector(".perfil p");
 
 if (data.session) {
-
   const user = data.session.user;
-
   nombrePerfil.textContent = user.user_metadata?.full_name || "Usuario";
   textoPerfil.textContent = user.email;
-
-  fotoPerfil.src =
-    user.user_metadata?.avatar_url || "imagenes/icono.jpg";
-
-	} else {
-
+  fotoPerfil.src = user.user_metadata?.avatar_url || "imagenes/icono.jpg";
+} else {
   nombrePerfil.textContent = "BluWay";
   textoPerfil.textContent = "Sin Límites";
-
   fotoPerfil.src = "imagenes/icono.jpg";
+  const usuarioPedido = document.getElementById("usuarioPedido");
+  if (usuarioPedido) usuarioPedido.value = "No has iniciado sesión";
+}
+
+if (data.session) {
+  const user = data.session.user;
+  document.getElementById("nombrePerfil").innerText = user.user_metadata?.full_name || "Usuario";
+  document.getElementById("correoPerfil").innerText = user.email;
+  document.getElementById("perfilUsuario").innerHTML = "👤 " + user.email;
 
   const usuarioPedido = document.getElementById("usuarioPedido");
+  if (usuarioPedido) usuarioPedido.value = user.user_metadata?.full_name || user.email;
 
-  if (usuarioPedido) {
-    usuarioPedido.value = "No has iniciado sesión";
-  }
-}
-
-if (data.session) {
-  const user = data.session.user;
-
-  // TEXTO
-  document.getElementById("nombrePerfil").innerText =
-    user.user_metadata?.full_name || "Usuario";
-
-document.getElementById("correoPerfil").innerText =
-    user.email;
-
-
-document.getElementById("perfilUsuario").innerHTML =
-    "👤 " + user.email;
-const usuarioPedido = document.getElementById("usuarioPedido");
-if (usuarioPedido) {
-    usuarioPedido.value =
-        user.user_metadata?.full_name || user.email;
-}
-
-    
-
-  // 👾 AVATAR AUTOMÁTICO (DICEBEAR)
-  const avatarUrl =
-    "https://api.dicebear.com/9.x/bottts/svg?seed=" +
-    encodeURIComponent(user.email);
-
+  const avatarUrl = "https://api.dicebear.com/9.x/bottts/svg?seed=" + encodeURIComponent(user.email);
   document.getElementById("fotoPerfil").src = avatarUrl;
-
-  console.log(
-    "Usuario conectado:",
-    user.email
-  );
-
+  console.log("Usuario conectado:", user.email);
 } else {
-  // RESET (sin sesión)
-
-  document.getElementById("fotoPerfil").src =
-    "imagenes/icono.jpg";
-
-  document.getElementById("nombrePerfil").innerText =
-    "BluWay";
-
-  document.getElementById("correoPerfil").innerText =
-    "Sin Límites";
-
-  document.getElementById("perfilUsuario").innerHTML =
-    " Iniciar sesión";
-
-  console.log(
-    "No hay usuario conectado"
-  );
-}
-// ===============================
-// ABRIR MODAL LOGIN
-// ===============================
-
-
-document
-.getElementById("perfilUsuario")
-.addEventListener("click", async()=>{
-
-
-const {data} =
-await window.supabase.auth.getSession();
-const fotoPerfil = document.getElementById("fotoPerfil");
-const nombrePerfil = document.querySelector(".perfil h3");
-const textoPerfil = document.querySelector(".perfil p");
-
-if (data.session) {
-
-  const user = data.session.user;
-
-  nombrePerfil.textContent = user.user_metadata?.full_name || "Usuario";
-  textoPerfil.textContent = user.email;
-
-  fotoPerfil.src = user.user_metadata?.avatar_url || "imagenes/icono.jpg";
-
-} else {
-
-  nombrePerfil.textContent = "BluWay";
-  textoPerfil.textContent = "Sin Límites";
-
-  fotoPerfil.src = "imagenes/icono.jpg";
+  document.getElementById("fotoPerfil").src = "imagenes/icono.jpg";
+  document.getElementById("nombrePerfil").innerText = "BluWay";
+  document.getElementById("correoPerfil").innerText = "Sin Límites";
+  document.getElementById("perfilUsuario").innerHTML = " Iniciar sesión";
+  console.log("No hay usuario conectado");
 }
 
+document.getElementById("perfilUsuario").addEventListener("click", async () => {
+  const { data } = await window.supabase.auth.getSession();
+  const fotoPerfil = document.getElementById("fotoPerfil");
+  const nombrePerfil = document.querySelector(".perfil h3");
+  const textoPerfil = document.querySelector(".perfil p");
 
-
-if(data.session){
-
-alert(
-"Ya tienes sesión iniciada"
-);
-
-return;
-
-}
-
-
-
-// abrir Google directamente
-
-const {error} =
-await window.supabase.auth.signInWithOAuth({
-  provider: "google",
-  options: {
-    redirectTo: "https://bluwayex.github.io/blu/"
+  if (data.session) {
+    const user = data.session.user;
+    nombrePerfil.textContent = user.user_metadata?.full_name || "Usuario";
+    textoPerfil.textContent = user.email;
+    fotoPerfil.src = user.user_metadata?.avatar_url || "imagenes/icono.jpg";
+  } else {
+    nombrePerfil.textContent = "BluWay";
+    textoPerfil.textContent = "Sin Límites";
+    fotoPerfil.src = "imagenes/icono.jpg";
   }
+
+  if (data.session) {
+    alert("Ya tienes sesión iniciada");
+    return;
+  }
+
+  const { error } = await window.supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: "https://bluwayex.github.io/blu/" }
+  });
+  if (error) console.log("Error Google:", error.message);
 });
 
-
-if(error){
-
-console.log(
-"Error Google:",
-error.message
-);
-
-}
-
-
+document.getElementById("cerrarSesion").addEventListener("click", async () => {
+  const { error } = await window.supabase.auth.signOut();
+  if (error) { console.log("Error cerrando sesión:", error.message); return; }
+  console.log("Sesión cerrada correctamente");
+  alert("Sesión cerrada correctamente");
+  setTimeout(() => { location.reload(); }, 500);
 });
-
-// ===============================
-// CERRAR SESIÓN
-// ===============================
-
-
-document
-.getElementById("cerrarSesion")
-.addEventListener("click", async ()=>{
-
-
-const { error } =
-await window.supabase.auth.signOut();
-
-
-
-if(error){
-
-
-console.log(
-"Error cerrando sesión:",
-error.message
-);
-
-
-return;
-
-
-}
-
-
-
-console.log(
-"Sesión cerrada correctamente"
-);
-
-
-
-alert("Session successfully closed");
-
-setTimeout(()=>{
-location.reload();
-},500);
-
-});
-
-
-
 </script>
 
 <!-- ORDER DATA MODAL -->
 <div class="modal" id="pedidoModal">
+  <div class="modal-content">
+    <h3>Finalizar Pedido</h3>
+    <p id="productoPedido" style="color:#00e5ff;font-weight:600;margin-bottom:22px;font-size:16px;text-align:center;"></p>
 
-<div class="modal-content">
+    <div class="group">
+      <div class="usuario-box">
+        <small id="correoPedido">Usuario</small>
+        <input type="text" id="usuarioPedido" readonly value="No has iniciado sesión">
+      </div>
+    </div>
 
-<h3>Finalizar Pedido</h3>
+    <div class="location">
+      <input type="text" id="direccion" readonly placeholder="Obteniendo ubicación...">
+      <button type="button" id="gps">📍 Ubicar</button>
+    </div>
 
-<p
-id="productoPedido"
-style="
-color:#00e5ff;
-font-weight:600;
-margin-bottom:22px;
-font-size:16px;
-text-align:center;
-">
-</p>
+    <div class="group">
+      <input type="text" id="telefono" placeholder="Número de contacto" maxlength="12" autocomplete="off">
+    </div>
 
-<!-- USUARIO -->
-
-<div class="group">
-  
-<div class="usuario-box">
-
-<small id="correoPedido">
-Usuario
-</small>
-<input
-type="text"
-id="usuarioPedido"
-readonly
-value="No has iniciado sesión"
->
-
+    <button type="button" class="pay-btn" id="generarPedido">CONTINUAR</button>
+    <button class="close" onclick="cerrarModal()">Cancelar</button>
+  </div>
 </div>
 
-</div>
-
-<div class="location">
-
-<input
-type="text"
-id="direccion"
-readonly
-placeholder="Obteniendo ubicación..."
->
-
-<button
-type="button"
-id="gps">
-
-📍 Ubicar
-
-</button>
-
-</div>
-
-<!-- TELÉFONO -->
-
-<div class="group">
-<input
-type="text"
-id="telefono"
-placeholder="Número de contacto"
-maxlength="12"
-autocomplete="off"
->
-
-
-</div>
-
-<button
-type="button"
-class="pay-btn"
-id="generarPedido">
-
-CONTINUAR
-
-</button>
-
-<button
-class="close"
-onclick="cerrarModal()">
-
-Cancelar
-
-</button>
-
-</div>
-
-</div>
-<!-- =========================
-     MODAL REFERENCIAS
-========================= -->
-
+<!-- MODAL REFERENCIAS -->
 <div class="modal" id="referenciaModal">
+  <div class="modal-content">
+    <h3>Referencias de entrega</h3>
+    <p style="color:#bfbfbf;text-align:center;margin-bottom:20px;font-size:14px;">Ayúdanos a encontrar tu ubicación más rápido.</p>
 
-<div class="modal-content">
+    <div class="group"><input type="text" id="callePrincipal" placeholder="Calle principal" autocomplete="off"></div>
+    <div class="group"><input type="text" id="calleSecundaria" placeholder="Calle secundaria o transversal" autocomplete="off"></div>
+    <div class="group"><input type="text" id="referenciaExtra" placeholder="Referencia adicional (Ej: Casa azul junto a la farmacia)" autocomplete="off"></div>
 
-<h3>
-Referencias de entrega
-</h3>
-
-<p
-style="
-color:#bfbfbf;
-text-align:center;
-margin-bottom:20px;
-font-size:14px;
-">
-
-Ayúdanos a encontrar tu ubicación más rápido.
-
-</p>
-
-<div class="group">
-
-<input
-type="text"
-id="callePrincipal"
-placeholder="Calle principal"
-autocomplete="off"
->
-
+    <button type="button" class="pay-btn" id="continuarPedidoFinal">GENERAR PEDIDO</button>
+    <button class="close" onclick="cerrarReferenciaModal()">Volver</button>
+  </div>
 </div>
 
-<div class="group">
-
-<input
-type="text"
-id="calleSecundaria"
-placeholder="Calle secundaria o transversal"
-autocomplete="off"
->
-
-</div>
-
-<div class="group">
-
-<input
-type="text"
-id="referenciaExtra"
-placeholder="Referencia adicional (Ej: Casa azul junto a la farmacia)"
-autocomplete="off"
->
-
-</div>
-
-<button
-type="button"
-class="pay-btn"
-id="continuarPedidoFinal">
-
-GENERAR PEDIDO
-
-</button>
-
-<button
-class="close"
-onclick="cerrarReferenciaModal()">
-
-Volver
-
-</button>
-
-</div>
-
-</div>
 <!-- MODAL QR -->
 <div class="modal" id="qrModal">
   <div class="modal-content">
-
     <h3>Pedido Generado</h3>
-
-<div class="qr-box">
-
-    <div id="qrcode"></div>
-
-    <div class="qr-logo">
-        B
+    <div class="qr-box">
+      <div id="qrcode"></div>
+      <div class="qr-logo">B</div>
     </div>
-
+    <button class="pay-btn" onclick="guardarQR()">Guardar QR</button>
+    <button class="close" onclick="cancelarPedido()">Cancelar Pedido</button>
+  </div>
 </div>
-    <button class="pay-btn" onclick="guardarQR()">
-      Guardar QR
-    </button>
 
-    <button class="close" onclick="cancelarPedido()">
-      Cancelar Pedido
-    </button>
-  </div><!-- close modal-content -->
-</div><!-- cierra qrModal -->
 <script>
-const SUPABASE_URL =
-"https://nyloxoancdspgmhfaxgu.supabase.co";
+const SUPABASE_URL = "https://nyloxoancdspgmhfaxgu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_L5e4j8t_hWq1Owd2Zi2JOQ_h0PECtSy";
 
-const SUPABASE_KEY =
-"sb_publishable_L5e4j8t_hWq1Owd2Zi2JOQ_h0PECtSy";
-
-fetch(`${SUPABASE_URL}/rest/v1/productos`, {
-  method: "GET",
-  headers: {
-    apikey: SUPABASE_KEY,
-    Authorization: `Bearer ${SUPABASE_KEY}`
-  }
-})
-.then(res => res.json())
-.then(data => {
-
-  console.log("Connected Supabase:", data);
-  productosCache = data;
-
-  // ===============================
-// CATEGORÍAS AUTOMÁTICAS
-// ===============================
-
-const listaCategorias =
-document.getElementById("listaCategorias");
-
-listaCategorias.innerHTML = "";
-
-// Botón Todos
-listaCategorias.innerHTML += `
-<div class="categoria-item"
-data-categoria="Todos"
-style="padding:12px 18px;cursor:pointer;">
-Todos
-</div>
-`;
-
-const categorias = [...new Set(
-data
-.map(p => p.categoria)
-.filter(c => c)
-)];
-
-categorias.forEach(categoria=>{
-
-listaCategorias.innerHTML += `
-<div class="categoria-item"
-data-categoria="${categoria}"
-style="padding:12px 18px;cursor:pointer;">
-${categoria}
-</div>
-`;
-
-});
-
-  const contenedor = document.getElementById("productosFirebase");
-
-  // limpia productos originales si quieres usar SOLO Supabase
-  contenedor.innerHTML = "";
-
-  if (!data || data.length === 0) {
-    contenedor.innerHTML = "<p>No hay productos en Supabase</p>";
-    return;
-  }
-// ===============================
-// CREAR ESTANTERÍAS AUTOMÁTICAS
-// MÁXIMO 10 PRODUCTOS POR SLIDER
-// ===============================
-
-let contadorProductos = 0;
-let numeroEstanteria = 1;
-
-let contenedorActual = contenedor;
-
-
-// crear nueva estantería
-function crearNuevaEstanteria(){
-
-    numeroEstanteria++;
-
-    const nueva = document.createElement("div");
-
-    nueva.className = "product-slider";
-
-    nueva.id = "productosFirebase_" + numeroEstanteria;
-
-
-    // agregar debajo de la anterior
-    contenedor.parentElement.parentElement.appendChild(nueva);
-
-
-    return nueva;
-
-}
-
-
-
-data.forEach(producto => {
-
-
-    // si ya hay 10 productos,
-    // crear otra estantería
-
-    if(contadorProductos >= 10){
-
-        contenedorActual = crearNuevaEstanteria();
-
-        contadorProductos = 0;
-
-    }
-
-
-
-    contenedorActual.innerHTML += `
-
-      <div class="product-card" data-id="${producto.id}">
-
-        <img src="${producto.imagen || 'imagenes/Camiseta.jpg'}">
-
-        <div class="product-info">
-
-
-<div class="titulo-producto">
-
-<h3>${producto.nombre}</h3>
-
-<button class="info-btn">
-    <i class="fa-solid fa-circle-info"></i>
-</button>
-
-</div>
-
-
-<p>${producto.descripcion || ""}</p>
-
-
-<div style="display:flex;align-items:baseline;gap:6px;">
-
-
-<div class="price">
-
-<span class="currency">$</span>
-
-<span class="entero">
-${producto.precio.toFixed(2).split('.')[0]}
-</span>
-
-<span class="decimal">
-.${producto.precio.toFixed(2).split('.')[1]}
-</span>
-
-
-</div>
-
-
-${
-producto.precio_anterior > 0
-?
-`
-<div class="precio-anterior">
-
-$${Number(producto.precio_anterior).toFixed(2)}
-
-</div>
-`
-:
-""
-}
-
-
-</div>
-
-
-<button class="btn comprar-btn">
-
-<i class="fa-solid fa-cart-shopping cart-icon"></i>
-
-<span>Comprar</span>
-
-</button>
-
-
-
-</div>
-
-</div>
-
-`;
-
-
-contadorProductos++;
-
-
-});
-})
-.catch(error => {
-  console.log("Error Supabase:", error);
-});
-
+let productosCache = [];
 let productoSeleccionado = "";
-
 let latitudCliente = "";
 let longitudCliente = "";
 
-// =========================
-// TELEFONO INTELIGENTE
-// =========================
+fetch(`${SUPABASE_URL}/rest/v1/productos`, {
+  method: "GET",
+  headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+})
+.then(res => res.json())
+.then(data => {
+  console.log("Connected Supabase:", data);
+  productosCache = data;
 
+  const listaCategorias = document.getElementById("listaCategorias");
+  listaCategorias.innerHTML = `<div class="categoria-item" data-categoria="Todos" style="padding:12px 18px;cursor:pointer;">Todos</div>`;
 
-const telefono =
-document.getElementById("telefono");
+  const categorias = [...new Set(data.map(p => p.categoria).filter(c => c))];
+  categorias.forEach(categoria => {
+    listaCategorias.innerHTML += `<div class="categoria-item" data-categoria="${categoria}" style="padding:12px 18px;cursor:pointer;">${categoria}</div>`;
+  });
 
+  const contenedor = document.getElementById("productosFirebase");
+  contenedor.innerHTML = "";
 
-telefono.addEventListener("input",()=>{
+  if (!data || data.length === 0) {
+    contenedor.innerHTML = "<p style='padding:20px;color:#667085;'>No hay productos disponibles por ahora.</p>";
+    return;
+  }
 
+  let contadorProductos = 0;
+  let numeroEstanteria = 1;
+  let contenedorActual = contenedor;
 
-let numeros =
-telefono.value.replace(/\D/g,"");
+  function crearNuevaEstanteria(){
+    numeroEstanteria++;
+    const nueva = document.createElement("div");
+    nueva.className = "product-slider";
+    nueva.id = "productosFirebase_" + numeroEstanteria;
+    contenedor.parentElement.parentElement.appendChild(nueva);
+    return nueva;
+  }
 
+  data.forEach(producto => {
+    if (contadorProductos >= 10) {
+      contenedorActual = crearNuevaEstanteria();
+      contadorProductos = 0;
+    }
 
-// máximo 10 números
+    contenedorActual.innerHTML += `
+      <div class="product-card" data-id="${producto.id}">
+        <img src="${producto.imagen || 'imagenes/Camiseta.jpg'}">
+        <div class="product-info">
+          <div class="titulo-producto">
+            <h3>${producto.nombre}</h3>
+            <button class="info-btn"><i class="fa-solid fa-circle-info"></i></button>
+          </div>
+          <p>${producto.descripcion || ""}</p>
+          <div style="display:flex;align-items:baseline;gap:8px;justify-content:center;">
+            <div class="price">
+              <span class="currency">$</span>
+              <span class="entero">${producto.precio.toFixed(2).split('.')[0]}</span>
+              <span class="decimal">.${producto.precio.toFixed(2).split('.')[1]}</span>
+            </div>
+            ${producto.precio_anterior > 0 ? `<div class="precio-anterior">$${Number(producto.precio_anterior).toFixed(2)}</div>` : ""}
+          </div>
+          <button class="btn comprar-btn">
+            <i class="fa-solid fa-cart-shopping cart-icon"></i>
+            <span>Comprar</span>
+          </button>
+        </div>
+      </div>
+    `;
+    contadorProductos++;
+  });
+})
+.catch(error => console.log("Error Supabase:", error));
 
-if(numeros.length > 10){
+/* =========================
+   TELEFONO INTELIGENTE
+========================= */
+const telefono = document.getElementById("telefono");
+telefono.addEventListener("input", () => {
+  let numeros = telefono.value.replace(/\D/g, "");
+  if (numeros.length > 10) numeros = numeros.substring(0, 10);
 
-numeros = numeros.substring(0,10);
+  let formato = numeros;
+  if (numeros.length > 3) formato = numeros.substring(0,3) + "-" + numeros.substring(3);
+  if (numeros.length > 6) formato = numeros.substring(0,3) + "-" + numeros.substring(3,6) + "-" + numeros.substring(6);
+  telefono.value = formato;
 
-}
+  if (numeros.length === 0) { telefono.className = ""; return; }
 
-
-// formato 099-999-9999
-
-let formato = numeros;
-
-
-if(numeros.length > 3){
-
-formato =
-numeros.substring(0,3)
-+
-"-"
-+
-numeros.substring(3);
-
-}
-
-
-if(numeros.length > 6){
-
-formato =
-numeros.substring(0,3)
-+
-"-"
-+
-numeros.substring(3,6)
-+
-"-"
-+
-numeros.substring(6);
-
-}
-
-
-telefono.value = formato;
-
-
-
-// VALIDACIÓN
-
-
-if(numeros.length === 0){
-
-
-
-
-estadoTelefono.className="";
-
-telefono.className="";
-
-
-return;
-
-}
-
-
-
-if(numeros.startsWith("0") 
-&& numeros.length <=10){
-
-
-
-
-telefono.classList.add(
-"telefono-ok"
-);
-
-
-telefono.classList.remove(
-"telefono-error"
-);
-
-
-
-}else{
-
-
-telefono.classList.add(
-"telefono-error"
-);
-
-
-telefono.classList.remove(
-"telefono-ok"
-);
-
-
-}
-
-
-
+  if (numeros.startsWith("0") && numeros.length <= 10) {
+    telefono.classList.add("telefono-ok");
+    telefono.classList.remove("telefono-error");
+  } else {
+    telefono.classList.add("telefono-error");
+    telefono.classList.remove("telefono-ok");
+  }
 });
-
 
 /* =========================
    OBTENER UBICACION
 ========================= */
-
 async function obtenerUbicacion() {
+  const campoDireccion = document.getElementById("direccion");
+  campoDireccion.value = "Solicitando ubicación...";
 
-    const campoDireccion =
-    document.getElementById("direccion");
+  if (!navigator.geolocation) { campoDireccion.value = "GPS no disponible"; return; }
 
-    campoDireccion.value =
-    "Solicitando ubicación...";
-
-    if (!navigator.geolocation) {
-
-        campoDireccion.value =
-        "GPS no disponible";
-
-        return;
-    }
-
-navigator.geolocation.getCurrentPosition(
-
+  navigator.geolocation.getCurrentPosition(
     async function(posicion) {
+      const lat = posicion.coords.latitude;
+      const lon = posicion.coords.longitude;
+      latitudCliente = lat; longitudCliente = lon;
 
-        const lat =
-        posicion.coords.latitude;
-
-        const lon =
-        posicion.coords.longitude;
-
-        /* GUARDAR GPS EXACTO */
-        latitudCliente = lat;
-        longitudCliente = lon;
-
-        try {
-
-            const respuesta =
-            await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-            );
-
-            const datos =
-            await respuesta.json();
-
-            campoDireccion.value =
-            datos.display_name ||
-            `${lat}, ${lon}`;
-
-        }
-
-        catch(error) {
-
-            campoDireccion.value =
-            `${lat}, ${lon}`;
-
-        }
-
+      try {
+        const respuesta = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+        const datos = await respuesta.json();
+        campoDireccion.value = datos.display_name || `${lat}, ${lon}`;
+      } catch (error) {
+        campoDireccion.value = `${lat}, ${lon}`;
+      }
     },
-function(error) {
-
-    if(error.code === 1){
-
-        alert(
-        "Por favor activa la ubicación del navegador para completar el pedido."
-        );
-
-        campoDireccion.value =
-        "Permiso de ubicación rechazado";
-
+    function(error) {
+      if (error.code === 1) {
+        alert("Por favor activa la ubicación del navegador para completar el pedido.");
+        campoDireccion.value = "Permiso de ubicación rechazado";
+      } else if (error.code === 2) {
+        campoDireccion.value = "Ubicación no disponible";
+      } else if (error.code === 3) {
+        campoDireccion.value = "Tiempo agotado";
+      }
     }
-
-    else if(error.code === 2){
-
-        campoDireccion.value =
-        "Ubicación no disponible";
-
-    }
-
-    else if(error.code === 3){
-
-        campoDireccion.value =
-        "Tiempo agotado";
-
-    }
-
+  );
 }
 
-);
-
-}
 /* =========================
    BOTÓN INFO (i)
 ========================= */
-
 let productoInfoActual = "";
-
 document.addEventListener("click", function(e){
+  if (e.target.closest(".info-btn")) {
+    const card = e.target.closest(".product-card");
+    const id = Number(card.dataset.id);
+    const producto = productosCache.find(p => p.id === id);
+    if (!producto) return;
 
-    if(e.target.closest(".info-btn")){
+    productoInfoActual = producto.nombre;
+    document.getElementById("infoNombre").innerText = producto.nombre || "";
 
-        const card = e.target.closest(".product-card");
-        const id = Number(card.dataset.id);
+    const categoriaEl = document.getElementById("infoCategoria");
+    if (producto.categoria) { categoriaEl.innerText = producto.categoria; categoriaEl.style.display = "inline-block"; }
+    else categoriaEl.style.display = "none";
 
-        const producto = productosCache.find(p => p.id === id);
+    document.getElementById("infoDescripcion").innerText = producto.descripcion || "Sin descripción disponible";
+    document.getElementById("infoImagen").src = producto.imagen || "imagenes/Camiseta.jpg";
 
-        if(!producto){
-            return;
-        }
+    const precio = Number(producto.precio) || 0;
+    document.getElementById("infoPrecioEntero").innerText = precio.toFixed(2).split(".")[0];
+    document.getElementById("infoPrecioDecimal").innerText = "." + precio.toFixed(2).split(".")[1];
 
-        productoInfoActual = producto.nombre;
+    const anteriorEl = document.getElementById("infoPrecioAnterior");
+    if (producto.precio_anterior > 0) {
+      anteriorEl.innerText = "$" + Number(producto.precio_anterior).toFixed(2);
+      anteriorEl.style.display = "inline-block";
+    } else anteriorEl.style.display = "none";
 
-        document.getElementById("infoNombre").innerText = producto.nombre || "";
-
-        const categoriaEl = document.getElementById("infoCategoria");
-
-        if(producto.categoria){
-            categoriaEl.innerText = producto.categoria;
-            categoriaEl.style.display = "inline-block";
-        }else{
-            categoriaEl.style.display = "none";
-        }
-
-        document.getElementById("infoDescripcion").innerText =
-            producto.descripcion || "Sin descripción disponible";
-
-        document.getElementById("infoImagen").src =
-            producto.imagen || "imagenes/Camiseta.jpg";
-
-        const precio = Number(producto.precio) || 0;
-
-        document.getElementById("infoPrecioEntero").innerText =
-            precio.toFixed(2).split(".")[0];
-
-        document.getElementById("infoPrecioDecimal").innerText =
-            "." + precio.toFixed(2).split(".")[1];
-
-        const anteriorEl = document.getElementById("infoPrecioAnterior");
-
-        if(producto.precio_anterior > 0){
-            anteriorEl.innerText = "$" + Number(producto.precio_anterior).toFixed(2);
-            anteriorEl.style.display = "inline-block";
-        }else{
-            anteriorEl.style.display = "none";
-        }
-
-        document.getElementById("infoModal").classList.add("active");
-
-    }
-
+    document.getElementById("infoModal").classList.add("active");
+  }
 });
 
-function cerrarInfoModal(){
+function cerrarInfoModal(){ document.getElementById("infoModal").classList.remove("active"); }
 
-    document.getElementById("infoModal").classList.remove("active");
-
-}
 /* =========================
    BOTONES COMPRAR
 ========================= */
-
 document.addEventListener("click", async function(e){
-
-
-if(e.target.classList.contains("comprar-btn")){
-
-
-if(!window.supabase){
-    alert("Supabase no está listo");
-    return;
-}
-
-
-const {data} = await window.supabase.auth.getSession();
-
-if (!data.session) {
-
-await window.supabase.auth.signInWithOAuth({
-
-provider:"google",
-
-options:{
-redirectTo:"https://bluwayex.github.io/blu/"
-}
-
-});
-
-return;
-
-}
-
-
-productoSeleccionado =
-e.target.parentElement.querySelector("h3").innerText;
-
-
-document.getElementById("productoPedido")
-.innerText =
-"Producto: " + productoSeleccionado;
-
-
-document.getElementById("direccion").value =
-"Obteniendo ubicación...";
-
-
-document.getElementById("pedidoModal")
-.classList.add("active");
-
-const gpsButton = document.getElementById("gps");
-const direccion = document.getElementById("direccion");
-
-gpsButton.innerHTML = "Ubicar";
-gpsButton.disabled = false;
-
-gpsButton.onclick = function(){
-
-if(!navigator.geolocation){
-
-alert("Tu navegador no soporta geolocalización.");
-
-return;
-
-}
-
-gpsButton.innerHTML = "Buscando...";
-
-gpsButton.disabled = true;
-navigator.geolocation.getCurrentPosition(
-
-async function(pos){
-
-const lat = pos.coords.latitude;
-const lng = pos.coords.longitude;
-
-
-// Guardar coordenadas internamente
-latitudCliente = lat;
-longitudCliente = lng;
-
-
-try{
-
-const respuesta = await fetch(
-`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-);
-
-
-const datos = await respuesta.json();
-
-
-// Mostrar dirección real
-direccion.value =
-datos.display_name || "Dirección encontrada";
-
-
-gpsButton.innerHTML = "✓ Detectada";
-
-
-}
-
-catch(error){
-
-
-direccion.value =
-"Dirección no disponible";
-
-
-gpsButton.innerHTML =
-"Intentar";
-
-
-gpsButton.disabled = false;
-
-
-}
-
-
-},
-
-function(){
-
-gpsButton.innerHTML = "Intentar";
-
-gpsButton.disabled = false;
-
-alert("No se pudo obtener la ubicación.");
-
-}
-
-);
-
-};
-
-
-setTimeout(() => {
-
-    obtenerUbicacion();
-
-},500);
-
-
-}
-
-document.getElementById("infoComprarBtn").addEventListener("click", function(){
-
-    document.getElementById("infoModal").classList.remove("active");
-
-    const botonesComprar = document.querySelectorAll(".comprar-btn");
-
-    for(const boton of botonesComprar){
-
-        const nombreTarjeta = boton.parentElement.querySelector("h3")?.innerText;
-
-        if(nombreTarjeta === productoInfoActual){
-            boton.click();
-            break;
-        }
+  if (e.target.classList.contains("comprar-btn") || e.target.closest(".comprar-btn")) {
+    const boton = e.target.closest(".comprar-btn") || e.target;
+
+    if (!window.supabase) { alert("Supabase no está listo"); return; }
+
+    const { data } = await window.supabase.auth.getSession();
+    if (!data.session) {
+      await window.supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: "https://bluwayex.github.io/blu/" }
+      });
+      return;
     }
 
-});
+    productoSeleccionado = boton.parentElement.querySelector("h3").innerText;
+    document.getElementById("productoPedido").innerText = "Producto: " + productoSeleccionado;
+    document.getElementById("direccion").value = "Obteniendo ubicación...";
+    document.getElementById("pedidoModal").classList.add("active");
+
+    const gpsButton = document.getElementById("gps");
+    const direccion = document.getElementById("direccion");
+    gpsButton.innerHTML = "📍 Ubicar";
+    gpsButton.disabled = false;
+
+    gpsButton.onclick = function(){
+      if (!navigator.geolocation) { alert("Tu navegador no soporta geolocalización."); return; }
+      gpsButton.innerHTML = "Buscando...";
+      gpsButton.disabled = true;
+
+      navigator.geolocation.getCurrentPosition(
+        async function(pos){
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          latitudCliente = lat; longitudCliente = lng;
+
+          try {
+            const respuesta = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+            const datos = await respuesta.json();
+            direccion.value = datos.display_name || "Dirección encontrada";
+            gpsButton.innerHTML = "✓ Detectada";
+          } catch (error) {
+            direccion.value = "Dirección no disponible";
+            gpsButton.innerHTML = "Intentar";
+            gpsButton.disabled = false;
+          }
+        },
+        function(){
+          gpsButton.innerHTML = "Intentar";
+          gpsButton.disabled = false;
+          alert("No se pudo obtener la ubicación.");
+        }
+      );
+    };
+
+    setTimeout(() => { obtenerUbicacion(); }, 500);
+  }
+
+  if (e.target.id === "infoComprarBtn" || e.target.closest("#infoComprarBtn")) {
+    document.getElementById("infoModal").classList.remove("active");
+    const botonesComprar = document.querySelectorAll(".comprar-btn");
+    for (const boton of botonesComprar) {
+      const nombreTarjeta = boton.parentElement.querySelector("h3")?.innerText;
+      if (nombreTarjeta === productoInfoActual) { boton.click(); break; }
+    }
+  }
 });
 
 /* =========================
-   CERRAR MODAL
+   CERRAR MODALES
 ========================= */
-
-function cerrarModal(){
-
-    document.getElementById("pedidoModal")
-    .classList.remove("active");
-
-}
+function cerrarModal(){ document.getElementById("pedidoModal").classList.remove("active"); }
 function cerrarReferenciaModal(){
-
-document
-.getElementById("referenciaModal")
-.classList.remove("active");
-
-document
-.getElementById("pedidoModal")
-.classList.add("active");
-
+  document.getElementById("referenciaModal").classList.remove("active");
+  document.getElementById("pedidoModal").classList.add("active");
 }
+
 /* =========================
-   GENERAR PEDIDO
+   GENERAR PEDIDO (paso 1: validación)
 ========================= */
+document.getElementById("generarPedido").addEventListener("click", function(){
+  let direccion = document.getElementById("direccion").value.trim();
+  let telefonoVal = document.getElementById("telefono").value.replace(/\s+/g, '');
+  let telefonoLimpio = telefonoVal.replace(/\D/g, '');
 
-document.getElementById("generarPedido")
-.addEventListener("click", function(){
-
-    let direccion =
-    document.getElementById("direccion").value.trim();
-
-    let telefono =
-    document.getElementById("telefono").value.replace(/\s+/g,'');
-
-
-    /* VALIDAR TELEFONO */
-let telefonoLimpio =telefono.replace(/\D/g,'');
-
-if (!/^0\d{9}$/.test(telefonoLimpio)) {
+  if (!/^0\d{9}$/.test(telefonoLimpio)) {
     alert("Ingrese un número válido de 10 dígitos.");
     return;
-}
+  }
 
-
-if(
+  if (
     !direccion ||
     direccion.includes("Obteniendo") ||
     direccion.includes("Solicitando") ||
     direccion.includes("Ubicación no permitida") ||
     direccion.includes("GPS no disponible") ||
-    !telefono
-){
+    !telefonoVal
+  ) {
     alert("Espere a que se obtenga la ubicación y complete todos los campos.");
-
     return;
-}
-// =========================
-// ABRIR MODAL REFERENCIAS
-// =========================
+  }
 
-document
-.getElementById("pedidoModal")
-.classList.remove("active");
-
-
-document
-.getElementById("referenciaModal")
-.classList.add("active");
-
-
-return;
-    let fecha =
-    new Date().toLocaleString();
-
-    let pedidoID =
-    "BLW-" + Date.now();
-
-    let datos =
-
-`PEDIDO BLUWAY
-
-ID: ${pedidoID}
-
-Producto: ${productoSeleccionado}
-
-Direccion:
-${direccion}
-
-Telefono:
-${telefono}
-
-Cedula:
-${cedula}
-
-GPS:
-${latitudCliente}, ${longitudCliente}
-
-GOOGLE MAPS:
-https://maps.google.com/?q=${latitudCliente},${longitudCliente}
-
-Fecha:
-${fecha}`;
-
-console.log(datos);
-alert("Generating order...");
-/* SEND ORDER TO FORMSPREE */
-
-fetch("https://formspree.io/f/mnjkaaqq", {
-
-    method:"POST",
-
-    headers:{
-        "Content-Type":"application/x-www-form-urlencoded"
-    },
-
-    body:new URLSearchParams({
-        pedido: datosFinales
-    })
-
-})
-.then(response=>{
-
-    if(!response.ok){
-
-        throw new Error("Error del servidor Formspree");
-
-    }
-
-    console.log("✅ Pedido enviado correctamente a BluWay");
-
-})
-.catch(error=>{
-
-    console.log(error);
-
-    console.log("⚠️ Formspree no respondió, se continuará generando el QR.");
-
+  document.getElementById("pedidoModal").classList.remove("active");
+  document.getElementById("referenciaModal").classList.add("active");
 });
 
-});
 /* =========================
    GUARDAR QR
 ========================= */
-
 async function guardarQR(){
+  const imagen = document.getElementById("qrImage");
+  if (!imagen) { alert("No existe QR para guardar"); return; }
 
-    const imagen = document.getElementById("qrImage");
-
-    if(!imagen){
-        alert("No existe QR para guardar");
-        return;
-    }
-
-    try{
-
-        const respuesta = await fetch(imagen.src);
-
-        const blob = await respuesta.blob();
-
-        const url = URL.createObjectURL(blob);
-
-        const enlace = document.createElement("a");
-
-        enlace.href = url;
-
-        enlace.download = "pedido-bluway.png";
-
-        document.body.appendChild(enlace);
-
-        enlace.click();
-
-        document.body.removeChild(enlace);
-
-        URL.revokeObjectURL(url);
-
-    }
-    catch(error){
-
-        console.log(error);
-
-        alert("No se pudo guardar el QR");
-
-    }
-
+  try {
+    const respuesta = await fetch(imagen.src);
+    const blob = await respuesta.blob();
+    const url = URL.createObjectURL(blob);
+    const enlace = document.createElement("a");
+    enlace.href = url;
+    enlace.download = "pedido-bluway.png";
+    document.body.appendChild(enlace);
+    enlace.click();
+    document.body.removeChild(enlace);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.log(error);
+    alert("No se pudo guardar el QR");
+  }
 }
 
 /* =========================
    CANCELAR PEDIDO
 ========================= */
-
 function cancelarPedido(){
-
-    document.getElementById("qrModal")
-    .classList.remove("active");
-
-    document.getElementById("direccion").value = "";
-    document.getElementById("telefono").value = "";
-    document.getElementById("cedula").value = "";
-
-    /* LIMPIAR PRODUCTO */
-    document.getElementById("productoPedido")
-    .innerText = "";
-
-    /* LIMPIAR GPS */
-    latitudCliente = "";
-    longitudCliente = "";
-
-    /* LIMPIAR QR */
-    document.getElementById("qrcode").innerHTML = "";
-
+  document.getElementById("qrModal").classList.remove("active");
+  document.getElementById("direccion").value = "";
+  document.getElementById("telefono").value = "";
+  document.getElementById("productoPedido").innerText = "";
+  latitudCliente = "";
+  longitudCliente = "";
+  document.getElementById("qrcode").innerHTML = "";
 }
+
 /* =========================
    CONTROL SLIDER BOTONES PC
 ========================= */
+const slider = document.getElementById("productosFirebase");
+const btnLeft = document.getElementById("btnLeft");
+const btnRight = document.getElementById("btnRight");
 
-const slider =
-document.getElementById("productosFirebase");
+btnLeft.addEventListener("click", () => { slider.scrollBy({ left: -300, behavior: "smooth" }); });
+btnRight.addEventListener("click", () => { slider.scrollBy({ left: 300, behavior: "smooth" }); });
 
-
-const btnLeft =
-document.getElementById("btnLeft");
-
-
-const btnRight =
-document.getElementById("btnRight");
-
-
-
-btnLeft.addEventListener("click",()=>{
-
-
-    slider.scrollBy({
-
-        left:-300,
-
-        behavior:"smooth"
-
-    });
-
-
-});
-
-
-
-btnRight.addEventListener("click",()=>{
-
-
-    slider.scrollBy({
-
-        left:300,
-
-        behavior:"smooth"
-
-    });
-
-
-});
 /* ===========================
    MENÚ HAMBURGUESA
 =========================== */
-
 function abrirMenu(){
-
-    document
-    .getElementById("menuLateral")
-    .classList.add("abierto");
-
-    document
-    .getElementById("menuFondo")
-    .classList.add("abierto");
-
+  document.getElementById("menuLateral").classList.add("abierto");
+  document.getElementById("menuFondo").classList.add("abierto");
 }
-
 function cerrarMenu(){
-
-    document
-    .getElementById("menuLateral")
-    .classList.remove("abierto");
-
-    document
-    .getElementById("menuFondo")
-    .classList.remove("abierto");
-
+  document.getElementById("menuLateral").classList.remove("abierto");
+  document.getElementById("menuFondo").classList.remove("abierto");
 }
+
 /* ==========================
-   BUSCADOR DE PRODUCTOS
+   CATÁLOGO DESPLEGABLE
 ========================== */
-
-const buscador = document.getElementById("buscadorProductos");
-const listaSugerencias =
-document.getElementById("listaSugerencias");
-
-let productosCache = [];
-const btnCatalogue = document.getElementById("btnCatalogue");
-
+const btnCatalogo = document.getElementById("btnCatalogo");
 const menuCatalogo = document.getElementById("menuCatalogo");
 
 btnCatalogo.addEventListener("click", function(e){
-
-    e.preventDefault();
-
-    if(menuCatalogo.style.display === "block"){
-
-        menuCatalogo.style.display = "none";
-
-    }else{
-
-        menuCatalogo.style.display = "block";
-
-    }
-
+  e.preventDefault();
+  menuCatalogo.style.display = (menuCatalogo.style.display === "block") ? "none" : "block";
 });
 
-// Cerrar al hacer clic fuera
 document.addEventListener("click", function(e){
-
-    if(
-        !menuCatalogo.contains(e.target) &&
-        !btnCatalogo.contains(e.target)
-    ){
-
-        menuCatalogo.style.display = "none";
-
-    }
-
-});
-// ==========================
-// ACTIVAR BUSCADOR FLOTANTE
-// ==========================
-
-const contenedorBuscador =
-document.querySelector(".search-container");
-
-
-buscador.addEventListener ("focus", () => {
-
-    // Solo activar buscador flotante en computadoras
-    if (window.innerWidth > 768) {
-
-        contenedorBuscador.classList.add("flotante");
-
-    }
-
-});
-
-buscador.addEventListener ("blur", () => {
-
-    if (window.innerWidth > 768) {
-
-        contenedorBuscador.classList.remove("flotante");
-
-    }
-
-});
-buscador.addEventListener ("keydown", (e) => {
-
-    if (window.innerWidth <= 768 && e.key === "Enter") {
-
-        buscarProductos();
-
-        buscador.blur(); // Cierra el teclado
-
-    }
-
-});
-// ==========================
-// EJECUTAR BUSQUEDA DESDE SUGERENCIA
-// ==========================
-
-function ejecutarBusqueda(texto){
-
-    buscador.value = texto;
-
-    buscarProductos();
-
-    listaSugerencias.style.display = "none";
-
-}
-
-
-function buscarProductos() {
-
-    const texto = buscador.value.toLowerCase();
-
-    const productos = document.querySelectorAll(".product-card");
-
-    let primerProducto = null;
-
-    productos.forEach(producto => {
-
-        const nombre = producto.querySelector("h3").textContent.toLowerCase();
-        const description =producto.querySelector("p")?.textContent.toLowerCase() || "";
-
-        if (
-            nombre.includes(texto) ||
-            description.includes(texto)
-        ) {
-
-            producto.style.display = "";
-
-            if (!primerProducto) {
-
-                primerProducto = producto;
-
-            }
-
-        } else {
-
-            producto.style.display = "none";
-
-        }
-
-    });
-// Only scroll when requested
-// Computer: always scrolls while typing
-// Celular: solo cuando se pulsa la lupa o una sugerencia
-if (
-    (window.innerWidth > 768 && primerProducto && texto !== "") ||
-    (window.innerWidth <= 768 &&
-     window.hacerScrollBusqueda &&
-     primerProducto &&
-     texto !== "")
-) {
-
-    setTimeout(() => {
-
-        primerProducto.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "center"
-
-        });
-
-    }, 100);
-
-}
-
-// Reiniciar bandera
-window.hacerScrollBusqueda = false;
-
-}
-
-buscador.addEventListener ("input", () => {
-
-    window.hacerScrollBusqueda = false;
-
-    buscarProductos();
-
-    mostrarSugerencias();
-
-});
-
-buscador.addEventListener ("input", () => {
-
-    const texto =
-    buscador.value.toLowerCase().trim();
-
-    listaSugerencias.innerHTML = "";
-
-    if(texto===""){
-
-        listaSugerencias.style.display="none";
-
-        return;
-
-    }
-
-    const encontrados =
-    productosCache.filter(producto =>
-
-        producto.nombre.toLowerCase().includes(texto)
-
-    ).slice(0,5);
-
-    if(encontrados.length===0){
-
-        listaSugerencias.style.display="none";
-
-        return;
-
-    }
-
-    encontrados.forEach(producto=>{
-
-        listaSugerencias.innerHTML += `
-
-        <div class="sugerencia" data-id="${producto.id}">
-
-            <img src="${producto.imagen}">
-
-            <div>
-
-                <div class="nombre">
-
-                    ${producto.nombre}
-
-                </div>
-
-                <div class="precio">
-
-                    $${Number(producto.precio).toFixed(2)}
-
-                </div>
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
-
-    listaSugerencias.style.display="block";
-
-});
-document.getElementById("btnBuscar").addEventListener("click", () => {
-
-    window.hacerScrollBusqueda = true;
-
-    buscarProductos();
-
-    listaSugerencias.style.display = "none";
-
-    buscador.blur();
-
-    if (window.innerWidth > 768) {
-
-        contenedorBuscador.classList.remove("flotante");
-
-    }
-
+  if (!menuCatalogo.contains(e.target) && !btnCatalogo.contains(e.target)) {
+    menuCatalogo.style.display = "none";
+  }
 });
 
 /* ==========================
-   SUGERENCIAS AMAZON
+   BUSCADOR DE PRODUCTOS
 ========================== */
+const buscador = document.getElementById("buscadorProductos");
+const listaSugerencias = document.getElementById("listaSugerencias");
+const contenedorBuscador = document.querySelector(".search-container");
+
+buscador.addEventListener("focus", () => {
+  if (window.innerWidth > 768) contenedorBuscador.classList.add("flotante");
+});
+buscador.addEventListener("blur", () => {
+  if (window.innerWidth > 768) contenedorBuscador.classList.remove("flotante");
+});
+buscador.addEventListener("keydown", (e) => {
+  if (window.innerWidth <= 768 && e.key === "Enter") {
+    window.hacerScrollBusqueda = true;
+    buscarProductos();
+    buscador.blur();
+  }
+});
+
+function ejecutarBusqueda(texto){
+  buscador.value = texto;
+  window.hacerScrollBusqueda = true;
+  buscarProductos();
+  listaSugerencias.style.display = "none";
+}
+
+function buscarProductos() {
+  const texto = buscador.value.toLowerCase();
+  const productos = document.querySelectorAll(".product-card");
+  let primerProducto = null;
+
+  productos.forEach(producto => {
+    const nombre = producto.querySelector("h3").textContent.toLowerCase();
+    const description = producto.querySelector("p")?.textContent.toLowerCase() || "";
+
+    if (nombre.includes(texto) || description.includes(texto)) {
+      producto.style.display = "";
+      if (!primerProducto) primerProducto = producto;
+    } else {
+      producto.style.display = "none";
+    }
+  });
+
+  if (
+    (window.innerWidth > 768 && primerProducto && texto !== "") ||
+    (window.innerWidth <= 768 && window.hacerScrollBusqueda && primerProducto && texto !== "")
+  ) {
+    setTimeout(() => { primerProducto.scrollIntoView({ behavior: "smooth", block: "center" }); }, 100);
+  }
+  window.hacerScrollBusqueda = false;
+}
 
 function mostrarSugerencias() {
+  const texto = buscador.value.toLowerCase().trim();
+  listaSugerencias.innerHTML = "";
 
-    const texto = buscador.value
-        .toLowerCase()
-        .trim();
+  if (texto === "") { listaSugerencias.style.display = "none"; return; }
 
-    listaSugerencias.innerHTML = "";
+  const encontrados = productosCache.filter(producto => producto.nombre.toLowerCase().includes(texto)).slice(0, 5);
+  if (encontrados.length === 0) { listaSugerencias.style.display = "none"; return; }
 
-    if (texto === "") {
-
-        listaSugerencias.style.display = "none";
-
-        return;
-
-    }
-
-    const encontrados = productosCache.filter(producto =>
-
-        producto.nombre
-        .toLowerCase()
-        .includes(texto)
-
-    ).slice(0,5);
-
-    if (encontrados.length === 0) {
-
-        listaSugerencias.style.display = "none";
-
-        return;
-
-    }
-
-    encontrados.forEach(producto => {
-
-        listaSugerencias.innerHTML += `
-
-        <div class="sugerencia" data-id="${producto.id}">
-
-            <img src="${producto.imagen}">
-
-            <div>
-
-                <div class="nombre">
-                    ${producto.nombre}
-                </div>
-
-                <div class="precio">
-                    $${Number(producto.precio).toFixed(2)}
-                </div>
-
-            </div>
-
+  encontrados.forEach(producto => {
+    listaSugerencias.innerHTML += `
+      <div class="sugerencia" data-id="${producto.id}">
+        <img src="${producto.imagen}">
+        <div>
+          <div class="nombre">${producto.nombre}</div>
+          <div class="precio">$${Number(producto.precio).toFixed(2)}</div>
         </div>
+      </div>`;
+  });
 
-        `;
-
-    });
-
-    listaSugerencias.style.display = "block";
-
+  listaSugerencias.style.display = "block";
 }
+
+buscador.addEventListener("input", () => {
+  window.hacerScrollBusqueda = false;
+  buscarProductos();
+  mostrarSugerencias();
+});
+
+document.getElementById("btnBuscar").addEventListener("click", () => {
+  window.hacerScrollBusqueda = true;
+  buscarProductos();
+  listaSugerencias.style.display = "none";
+  buscador.blur();
+  if (window.innerWidth > 768) contenedorBuscador.classList.remove("flotante");
+});
 
 /* ==========================
    FILTRAR POR CATEGORÍA
 ========================== */
-
 document.addEventListener("click", function(e){
+  const categoria = e.target.closest(".categoria-item");
+  if (!categoria) return;
 
-    const categoria = e.target.closest(".categoria-item");
+  const categoriaSeleccionada = categoria.dataset.categoria;
+  menuCatalogo.style.display = "none";
 
-    if(!categoria) return;
+  document.querySelectorAll(".product-card").forEach(producto => {
+    if (categoriaSeleccionada === "Todos") { producto.style.display = ""; return; }
 
-    const categoriaSeleccionada =
-    categoria.dataset.categoria;
+    const id = Number(producto.dataset.id);
+    const datos = productosCache.find(p => p.id === id);
+    if (!datos) return;
 
-    menuCatalogo.style.display = "none";
-
-    document.querySelectorAll(".product-card").forEach(producto=>{
-
-        if(categoriaSeleccionada === "Todos"){
-
-            producto.style.display = "";
-
-            return;
-
-        }
-
-        const id =
-        Number(producto.dataset.id);
-
-        const datos =
-        productosCache.find(p=>p.id===id);
-
-        if(!datos) return;
-
-        if(datos.categoria === categoriaSeleccionada){
-
-            producto.style.display = "";
-
-        }else{
-
-            producto.style.display = "none";
-
-        }
-
-    });
-
+    producto.style.display = (datos.categoria === categoriaSeleccionada) ? "" : "none";
+  });
 });
+
 /* ==========================
-   CLICK EN SUGERENCIA AMAZON
+   CLICK EN SUGERENCIA
 ========================== */
-document.addEventListener("click", (e)=>{
+document.addEventListener("click", (e) => {
+  const sugerencia = e.target.closest(".sugerencia");
+  if (!sugerencia) return;
 
-    const sugerencia = e.target.closest(".sugerencia");
-
-    if(!sugerencia){
-        return;
-    }
-
-    const nombre =
-    sugerencia.querySelector(".nombre")
-    .textContent
-    .trim();
-
-    buscador.value = nombre;
-
-    window.hacerScrollBusqueda = true;
-
-    buscarProductos();
-
-    listaSugerencias.style.display = "none";
-
-    buscador.blur();
-
+  const nombre = sugerencia.querySelector(".nombre").textContent.trim();
+  buscador.value = nombre;
+  window.hacerScrollBusqueda = true;
+  buscarProductos();
+  listaSugerencias.style.display = "none";
+  buscador.blur();
 });
+
 /* ==========================
-   BOTÓN MODAL REFERENCIAS
+   GENERAR PEDIDO FINAL + QR
 ========================== */
-document
-.getElementById("continuarPedidoFinal")
-.addEventListener("click",function(){
+document.getElementById("continuarPedidoFinal").addEventListener("click", function(){
+  let callePrincipal = document.getElementById("callePrincipal").value.trim();
+  let calleSecundaria = document.getElementById("calleSecundaria").value.trim();
+  let referenciaExtra = document.getElementById("referenciaExtra").value.trim();
 
+  if (!callePrincipal || !calleSecundaria) {
+    alert("Complete las referencias de ubicación");
+    return;
+  }
 
-let callePrincipal =
-document.getElementById("callePrincipal").value.trim();
+  document.getElementById("referenciaModal").classList.remove("active");
+  document.getElementById("qrModal").classList.add("active");
 
+  let userOrdered = document.getElementById("usuarioPedido").value;
+  let lat = latitudCliente;
+  let lon = longitudCliente;
+  let linkMaps = `https://maps.google.com/?q=${lat},${lon}`;
 
-let calleSecundaria =
-document.getElementById("calleSecundaria").value.trim();
-
-
-let referenciaExtra =
-document.getElementById("referenciaExtra").value.trim();
-
-
-
-if(!callePrincipal || !calleSecundaria){
-
-alert("Complete las referencias de ubicación");
-
-return;
-
-}
-
-
-// cerrar referencias
-
-document
-.getElementById("referenciaModal")
-.classList.remove("active");
-
-
-// abrir QR
-
-document
-.getElementById("qrModal")
-.classList.add("active");
-
-
-
-// crear datos finales
-let userOrdered =
-document.getElementById("usuarioPedido").value;
-
-
-let lat = latitudCliente;
-let lon = longitudCliente;
-
-
-let linkMaps = 
-`https://maps.google.com/?q=${lat},${lon}`;
-
-
-
-let datosFinales = `
-
+  let datosFinales = `
 PEDIDO BLUWAY
 
 Usuario:
-${usuarioPedido}
-
+${userOrdered}
 
 Producto:
 ${productoSeleccionado}
 
-
 Dirección:
 ${document.getElementById("direccion").value}
-
 
 Teléfono:
 ${document.getElementById("telefono").value}
 
-
 Ubicación GPS:
 ${lat}, ${lon}
 
-
 Google Maps:
 ${linkMaps}
-
 
 Referencias:
 
 Calle principal:
 ${callePrincipal}
 
-
 Calle secundaria:
 ${calleSecundaria}
 
-
 Referencia:
 ${referenciaExtra}
-
 `;
 
-// =========================
-// ENVIAR A FORMSPREE
-// =========================
+  fetch("https://formspree.io/f/mnjkaaqq", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ pedido: datosFinales })
+  }).catch(error => console.log("Formspree:", error));
 
-fetch("https://formspree.io/f/mnjkaaqq",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/x-www-form-urlencoded"
-},
-
-body:new URLSearchParams({
-
-pedido:datosFinales
-
-})
-
-})
-
-.catch(error=>{
-
-console.log("Formspree:",error);
-
-});
-
-// crear QR
-
-const qrContainer =
-document.getElementById("qrcode");
-
-
-qrContainer.innerHTML="";
-
-
-const qrURL =
-"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="
-+
-encodeURIComponent(datosFinales);
-
-
-
-qrContainer.innerHTML = `
-
-<img
-id="qrImage"
-src="${qrURL}"
-style="
-width:250px;
-height:250px;
-background:white;
-padding:10px;
-border-radius:10px;
-">
-
-`;
-
+  const qrContainer = document.getElementById("qrcode");
+  qrContainer.innerHTML = "";
+  const qrURL = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(datosFinales);
+  qrContainer.innerHTML = `<img id="qrImage" src="${qrURL}" style="width:250px;height:250px;background:white;padding:10px;border-radius:10px;">`;
 });
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<!-- MODAL INFO PRODUCT -->
+
+<!-- MODAL INFO PRODUCTO -->
 <div class="modal" id="infoModal">
   <div class="modal-content info-modal-content">
-    <button class="close" onclick="cerrarInfoModal()" style="position:absolute; top:10px; right:15px; color:#000; z-index:5;">✕</button>
-
-<div class="info-layout">
-
-  <div class="info-image">
-    <img id="infoImagen" src="" alt="">
-  </div>
-
-  <div class="info-details">
-    <h3 id="infoNombre" style="color:#000; text-align:left; margin-bottom:8px;"></h3>
-    <span id="infoCategoria" class="info-categoria"></span>
-    <p id="infoDescripcion" class="info-descripcion"></p>
-
-    <div class="price" id="infoPrecioBox">
-      <span class="currency">$</span>
-      <span class="entero" id="infoPrecioEntero"></span>
-      <span class="decimal" id="infoPrecioDecimal"></span>
+    <button class="close" onclick="cerrarInfoModal()" style="position:absolute; top:10px; right:15px; color:#000; z-index:5; width:auto;">✕</button>
+    <div class="info-layout">
+      <div class="info-image"><img id="infoImagen" src="" alt=""></div>
+      <div class="info-details">
+        <h3 id="infoNombre"></h3>
+        <span id="infoCategoria" class="info-categoria"></span>
+        <p id="infoDescripcion" class="info-descripcion"></p>
+        <div class="price" id="infoPrecioBox">
+          <span class="currency">$</span>
+          <span class="entero" id="infoPrecioEntero"></span>
+          <span class="decimal" id="infoPrecioDecimal"></span>
+        </div>
+        <div class="precio-anterior" id="infoPrecioAnterior" style="display:none;"></div>
+        <button type="button" class="btn info-comprar-btn" id="infoComprarBtn">
+          <i class="fa-solid fa-cart-shopping cart-icon"></i>
+          <span>Comprar</span>
+        </button>
+      </div>
     </div>
-    <div class="precio-anterior" id="infoPrecioAnterior" style="display:none;"></div>
-
-    <button type="button" class="btn info-comprar-btn" id="infoComprarBtn">
-      <i class="fa-solid fa-cart-shopping cart-icon"></i>
-      <span>Comprar</span>
-    </button>
-  </div>
-
-</div>
   </div>
 </div>
+
 <script>
-
 setInterval(function(){
+  if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+    document.body.innerHTML = `<h1 style="text-align:center;margin-top:100px;font-family:Arial;">🔒 BluWay protegido</h1>`;
+  }
+}, 1000);
 
-    if(
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160
-    ){
+document.addEventListener("contextmenu", function(e){ e.preventDefault(); });
 
-        document.body.innerHTML = `
-        <h1 style="
-        text-align:center;
-        margin-top:100px;
-        font-family:Arial;
-        ">
-        🔒 BluWay protegido
-        </h1>
-        `;
-
-    }
-
-},1000);
-
-
+document.addEventListener("keydown", function(e){
+  if (e.ctrlKey && e.key.toLowerCase() === "u") { e.preventDefault(); alert("Código protegido por BluWay."); }
+});
+document.addEventListener("keydown", function(e){
+  if (e.key === "F12") { e.preventDefault(); alert("Herramientas protegidas por BluWay."); }
+});
+document.addEventListener("keydown", function(e){
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") { e.preventDefault(); alert("Acceso restringido."); }
+});
+document.addEventListener("keydown", function(e){
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j") { e.preventDefault(); alert("Acceso restringido."); }
+});
+document.addEventListener("keydown", function(e){
+  if (e.ctrlKey && e.key.toLowerCase() === "s") { e.preventDefault(); alert("Esta página está protegida por BluWay."); }
+});
 </script>
 
-</body>
-
-<script>
-
-
-// BLOQUEAR CLIC DERECHO
-document.addEventListener("contextmenu", function(e){
-    e.preventDefault();
-});
-
-
-// BLOQUEAR CTRL + U (ver código fuente)
-document.addEventListener("keydown", function(e){
-
-    if(e.ctrlKey && e.key.toLowerCase() === "u"){
-        e.preventDefault();
-
-        alert("Código protegido por BluWay.");
-    }
-
-});
-
-
-// BLOQUEAR F12
-document.addEventListener("keydown", function(e){
-
-    if(e.key === "F12"){
-        e.preventDefault();
-
-        alert("Herramientas protegidas por BluWay.");
-    }
-
-});
-
-
-// BLOQUEAR CTRL + SHIFT + I (inspeccionar)
-document.addEventListener("keydown", function(e){
-
-    if(
-        e.ctrlKey &&
-        e.shiftKey &&
-        e.key.toLowerCase() === "i"
-    ){
-
-        e.preventDefault();
-
-        alert("Acceso restringido.");
-
-    }
-
-});
-
-
-// BLOQUEAR CTRL + SHIFT + J (consola)
-document.addEventListener("keydown", function(e){
-
-    if(
-        e.ctrlKey &&
-        e.shiftKey &&
-        e.key.toLowerCase() === "j"
-    ){
-
-        e.preventDefault();
-
-        alert("Acceso restringido.");
-
-    }
-
-});
-
-
-// BLOQUEAR CTRL + S (guardar página)
-document.addEventListener("keydown", function(e){
-
-    if(
-        e.ctrlKey &&
-        e.key.toLowerCase() === "s"
-    ){
-
-        e.preventDefault();
-
-        alert("Esta página está protegida por BluWay.");
-
-    }
-
-});
-
-
-</script>
 </body>
 </html>

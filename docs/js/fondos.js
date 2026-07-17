@@ -1,65 +1,47 @@
 const fondos = [
 
-  "https://este-link-no-existe.com/imagen.jpg",
   "https://picsum.photos/1600/900",
-  "https://loremflickr.com/1600/900/shop",
 
 /* ==========================
-   MODA / TIENDA / ESTILO
+   FARMACIA / SALUD
 ========================== */
 
-  "https://loremflickr.com/1600/900/clothing?random=2",
-  "https://loremflickr.com/1600/900/shopping?random=3",
-  "https://loremflickr.com/1600/900/store?random=4",
-  "https://loremflickr.com/1600/900/style?random=5",
-  "https://loremflickr.com/1600/900/model?random=6",
-
-
-/* ==========================
-   NEGOCIOS / PREMIUM
-========================== */
-
-  "https://loremflickr.com/1600/900/business?random=7",
-  "https://loremflickr.com/1600/900/office?random=8",
-  "https://loremflickr.com/1600/900/luxury?random=9",
-  "https://loremflickr.com/1600/900/technology?random=10",
+  "https://loremflickr.com/1600/900/pharmacy?random=1",
+  "https://loremflickr.com/1600/900/medicine?random=2",
+  "https://loremflickr.com/1600/900/vitamins?random=3",
+  "https://loremflickr.com/1600/900/supplements?random=4",
+  "https://loremflickr.com/1600/900/pills?random=5",
+  "https://loremflickr.com/1600/900/wellness?random=6",
+  "https://loremflickr.com/1600/900/health?random=7",
 
 
 /* ==========================
-   PAISAJES PREMIUM
+   NUTRICIÓN / FITNESS
 ========================== */
 
-  "https://picsum.photos/seed/mountain/1600/900",
-  "https://picsum.photos/seed/nature/1600/900",
-  "https://picsum.photos/seed/ocean/1600/900",
-  "https://picsum.photos/seed/city/1600/900",
-  "https://picsum.photos/seed/night/1600/900",
+  "https://loremflickr.com/1600/900/protein?random=8",
+  "https://loremflickr.com/1600/900/nutrition?random=9",
+  "https://loremflickr.com/1600/900/fitness?random=10",
 
 
 /* ==========================
-   UNSPLASH (fotos reales)
+   UNSPLASH (fotos reales — salud/farmacia)
 ========================== */
 
-  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600",
-  "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600",
-  "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600",
-  "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=1600",
-
-
-/* ==========================
-   UNSPLASH PREMIUM HD
-========================== */
-
-"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&q=90",
-"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=90",
-"https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=1920&q=90",
-"https://images.unsplash.com/photo-1445205170230-053b83016050?w=1920&q=90"
+  "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1920&q=90",
+  "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=1920&q=90",
+  "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1920&q=90",
+  "https://images.unsplash.com/photo-1550572017-edd951b55104?w=1920&q=90",
+  "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=1920&q=90",
+  "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=1920&q=90",
 
 ];
 
-
 const hero = document.querySelector(".hero");
 
+/* Capa oscura que se combina con la foto para que el texto
+   y el buscador se sigan leyendo bien encima de cualquier imagen */
+const overlay = "linear-gradient(160deg, rgba(4,7,15,.78), rgba(10,15,44,.6) 55%, rgba(20,27,63,.7))";
 
 function cargarFondo(indice = 0) {
 
@@ -68,32 +50,21 @@ function cargarFondo(indice = 0) {
     return;
   }
 
-
   const img = new Image();
 
-
   img.onload = function() {
-
-    hero.style.backgroundImage =
-    `url('${fondos[indice]}')`;
-
+    hero.style.backgroundImage = `${overlay}, url('${fondos[indice]}')`;
+    hero.style.backgroundSize = "cover";
+    hero.style.backgroundPosition = "center";
     console.log("Fondo cargado:", fondos[indice]);
-
   };
-
 
   img.onerror = function() {
-
     console.log("Falló:", fondos[indice]);
-
     cargarFondo(indice + 1);
-
   };
 
-
   img.src = fondos[indice];
-
 }
-
 
 cargarFondo();
