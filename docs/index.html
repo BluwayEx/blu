@@ -570,6 +570,23 @@ button.close:hover{ color:var(--cyan); }
     transition:.35s;
 
 }
+@media (max-width: 768px) {
+
+    #infoModal{
+        overflow-y:auto !important;
+        padding:10px !important;
+        align-items:flex-start !important;
+    }
+
+    .info-modal-content{
+        max-height:95vh !important;
+        overflow-y:auto !important;
+        -webkit-overflow-scrolling:touch !important;
+    }
+
+}
+
+
 </style>
 </head>
 <body>
@@ -1553,7 +1570,9 @@ ${referenciaExtra}
 
     </div>
   </div>
+  
 </div>
+
 <script>
 setInterval(function(){
   if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
@@ -1684,6 +1703,25 @@ stars.forEach(star=>{
 });
 }
 </script>
+<script>
+if (window.innerWidth <= 768) {
 
+    const modal = document.getElementById("infoModal");
+    const contenido = document.querySelector(".info-modal-content");
+
+    if (modal && contenido) {
+
+        modal.style.alignItems = "flex-start";
+        modal.style.padding = "10px";
+        modal.style.overflowY = "auto";
+
+        contenido.style.maxHeight = "95vh";
+        contenido.style.overflowY = "auto";
+        contenido.style.webkitOverflowScrolling = "touch";
+
+    }
+
+}
+</script>
 </body>
 </html>
