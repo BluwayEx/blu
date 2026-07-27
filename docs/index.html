@@ -1080,8 +1080,14 @@ document.getElementById("infoShareBtn").addEventListener("click", async ()=>{
 function construirGaleria(producto){
   const galeria = document.getElementById("infoGaleria");
   const dots = document.getElementById("infoDots");
+  const infoImageContainer = document.querySelector(".info-image");
   galeria.innerHTML = "";
   dots.innerHTML = "";
+
+  infoImageContainer.innerHTML = `
+    <div class="descuento-badge" id="infoDescuento" style="display:none;"></div>
+    <img id="infoImagen" src="" alt="">
+  `;
 
   const imgPrincipal = producto.imagen || "imagenes/Camiseta.jpg";
   const imagenes = [
@@ -1108,14 +1114,56 @@ function construirGaleria(producto){
   const videoThumb = document.createElement("div");
   videoThumb.className = "info-thumb video-thumb";
   videoThumb.innerHTML = `<i class="fa-solid fa-play"></i>`;
-  videoThumb.onclick = () => alert("Video no disponible por el momento.");
+  
+videoThumb.onclick = () => {
+    if (producto.video_url) {
+      const url = producto.video_url;
+      let mediaHTML = "";
+
+      // Detectar YouTube (watch, youtu.be, shorts)
+      const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+
+      if (ytMatch) {
+        const videoId = ytMatch[1];
+        mediaHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0"
+          style="width:100%;aspect-ratio:16/9;max-width:100%;margin:0 auto;display:block;border:none;border-radius:16px;"
+          allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+      } else if (url.includes("tiktok.com")) {
+        const match = url.match(/video\/(\d+)/);
+        const videoId = match ? match[1] : null;
+
+        if (videoId) {
+          mediaHTML = `<iframe src="https://www.tiktok.com/embed/v2/${videoId}"
+            style="width:280px;height:500px;max-width:100%;margin:0 auto;display:block;border:none;border-radius:16px;"
+            allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        } else {
+          mediaHTML = `<p style="text-align:center;color:#999;">Link de TikTok no válido</p>`;
+        }
+      } else {
+        mediaHTML = `<video id="infoImagen" src="${url}" controls autoplay muted
+          style="width:100%;aspect-ratio:1/1;border-radius:16px;background:#000;object-fit:contain;"></video>`;
+      }
+
+      document.querySelector(".info-image").innerHTML = mediaHTML;
+    } else {
+      alert("Video no disponible por el momento.");
+    }
+  };
   galeria.appendChild(videoThumb);
 
   document.getElementById("infoImagen").src = imgPrincipal;
 }
 
 function seleccionarImagen(indice, imagenes){
-  document.getElementById("infoImagen").src = imagenes[indice];
+  const infoImageContainer = document.querySelector(".info-image");
+  const badgeActual = document.getElementById("infoDescuento");
+  const badgeHTML = badgeActual ? badgeActual.outerHTML : '<div class="descuento-badge" id="infoDescuento" style="display:none;"></div>';
+
+  infoImageContainer.innerHTML = `
+    ${badgeHTML}
+    <img id="infoImagen" src="${imagenes[indice]}" alt="">
+  `;
+
   document.querySelectorAll(".info-thumb").forEach((t, i) => { if (i < imagenes.length) t.classList.toggle("activo", i === indice); });
   document.querySelectorAll(".info-dot").forEach((d, i) => d.classList.toggle("activo", i === indice));
 }
