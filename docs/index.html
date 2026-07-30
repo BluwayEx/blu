@@ -1175,71 +1175,77 @@ function cerrarInfoModal(){ document.getElementById("infoModal").classList.remov
 /* =========================
    BOTONES COMPRAR
 ========================= */
-document.addEventListener("click", async function(e){
-  if (e.target.classList.contains("comprar-btn") || e.target.closest(".comprar-btn")) {
-    const boton = e.target.closest(".comprar-btn") || e.target;
 
-    if (!window.supabase) { alert("Supabase no está listo"); return; }
+/* Shared function: opens the order modal for a product */
+async function abrirModalPedido(nombreProducto){
+  if (!window.supabase) { alert("Supabase no está listo"); return; }
 
-    const { data } = await window.supabase.auth.getSession();
-    if (!data.session) {
-      await window.supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: "https://bluwayex.github.io/blu/" }
-      });
-      return;
-    }
-
-    productoSeleccionado = boton.parentElement.querySelector("h3").innerText;
-    document.getElementById("productoPedido").innerText = "Producto: " + productoSeleccionado;
-    document.getElementById("direccion").value = "Obteniendo ubicación...";
-    document.getElementById("pedidoModal").classList.add("active");
-
-    const gpsButton = document.getElementById("gps");
-    const direccion = document.getElementById("direccion");
-    gpsButton.innerHTML = "📍 Ubicar";
-    gpsButton.disabled = false;
-
-    gpsButton.onclick = function(){
-      if (!navigator.geolocation) { alert("Tu navegador no soporta geolocalización."); return; }
-      gpsButton.innerHTML = "Buscando...";
-      gpsButton.disabled = true;
-
-      navigator.geolocation.getCurrentPosition(
-        async function(pos){
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-          latitudCliente = lat; longitudCliente = lng;
-
-          try {
-            const respuesta = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-            const datos = await respuesta.json();
-            direccion.value = datos.display_name || "Dirección encontrada";
-            gpsButton.innerHTML = "✓ Detectada";
-          } catch (error) {
-            direccion.value = "Dirección no disponible";
-            gpsButton.innerHTML = "Intentar";
-            gpsButton.disabled = false;
-          }
-        },
-        function(){
-          gpsButton.innerHTML = "Intentar";
-          gpsButton.disabled = false;
-          alert("No se pudo obtener la ubicación.");
-        }
-      );
-    };
-
-    setTimeout(() => { obtenerUbicacion(); }, 500);
+  const { data } = await window.supabase.auth.getSession();
+  if (!data.session) {
+    await window.supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: "https://bluwayex.github.io/blu/" }
+    });
+    return;
   }
 
+  productoSeleccionado = nombreProducto;
+  document.getElementById("productoPedido").innerText = "Producto: " + productoSeleccionado;
+  document.getElementById("direccion").value = "Obteniendo ubicación...";
+  document.getElementById("pedidoModal").classList.add("active");
+
+  const gpsButton = document.getElementById("gps");
+  const direccion = document.getElementById("direccion");
+  gpsButton.innerHTML = "📍 Ubicar";
+  gpsButton.disabled = false;
+
+  gpsButton.onclick = function(){
+    if (!navigator.geolocation) { alert("Tu navegador no soporta geolocalización."); return; }
+    gpsButton.innerHTML = "Buscando...";
+    gpsButton.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(
+      async function(pos){
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        latitudCliente = lat; longitudCliente = lng;
+
+        try {
+          const respuesta = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+          const datos = await respuesta.json();
+          direccion.value = datos.display_name || "Dirección encontrada";
+          gpsButton.innerHTML = "✓ Detectada";
+        } catch (error) {
+          direccion.value = "Dirección no disponible";
+          gpsButton.innerHTML = "Intentar";
+          gpsButton.disabled = false;
+        }
+      },
+      function(){
+        gpsButton.innerHTML = "Intentar";
+        gpsButton.disabled = false;
+        alert("No se pudo obtener la ubicación.");
+      }
+    );
+  };
+
+  setTimeout(() => { obtenerUbicacion(); }, 500);
+}
+
+document.addEventListener("click", async function(e){
+  /* Click en "Comprar" de la tarjeta del producto -> abre la ventana de INFORMACIÓN, no el pedido */
+  if (e.target.classList.contains("comprar-btn") || e.target.closest(".comprar-btn")) {
+    const boton = e.target.closest(".comprar-btn") || e.target;
+    const card = boton.closest(".product-card");
+    const infoBtn = card ? card.querySelector(".info-btn") : null;
+    if (infoBtn) infoBtn.click();
+    return;
+  }
+
+  /* Click en "Comprar" DENTRO del modal de información -> ahí sí abre el pedido real */
   if (e.target.id === "infoComprarBtn" || e.target.closest("#infoComprarBtn")) {
     document.getElementById("infoModal").classList.remove("active");
-    const botonesComprar = document.querySelectorAll(".comprar-btn");
-    for (const boton of botonesComprar) {
-      const nombreTarjeta = boton.parentElement.querySelector("h3")?.innerText;
-      if (nombreTarjeta === productoInfoActual) { boton.click(); break; }
-    }
+    await abrirModalPedido(productoInfoActual);
   }
 });
 
