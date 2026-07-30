@@ -772,12 +772,11 @@ document.getElementById("perfilUsuario").addEventListener("click", async () => {
   if (error) console.log("Error Google:", error.message);
 });
 
-document.getElementById("cerrarSesion").addEventListener("click", async () => {
+document.getElementById("closeSession").addEventListener("click", async () => {
   const { error } = await window.supabase.auth.signOut();
   if (error) { console.log("Error cerrando sesión:", error.message); return; }
   console.log("Sesión cerrada correctamente");
-  alert("Sesión cerrada correctamente");
-  setTimeout(() => { location.reload(); }, 500);
+  alert("Sesión cerrada correctamente", () => { location.reload(); });
 });
 </script>
 
@@ -1113,8 +1112,7 @@ function construirGaleria(producto){
   const videoThumb = document.createElement("div");
   videoThumb.className = "info-thumb video-thumb";
   videoThumb.innerHTML = `<i class="fa-solid fa-play"></i>`;
-  
-videoThumb.onclick = () => {
+  videoThumb.onclick = () => {
     if (producto.video_url) {
       const url = producto.video_url;
       let mediaHTML = "";
@@ -1124,7 +1122,7 @@ videoThumb.onclick = () => {
 
       if (ytMatch) {
         const videoId = ytMatch[1];
-        mediaHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0"
+        mediaHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
           style="width:1000px;aspect-ratio:16/9;max-width:100%;margin:0 auto;display:block;border:none;border-radius:16px;"
           allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
       } else if (url.includes("tiktok.com")) {
@@ -1139,7 +1137,7 @@ videoThumb.onclick = () => {
           mediaHTML = `<p style="text-align:center;color:#999;">Link de TikTok no válido</p>`;
         }
       } else {
-        mediaHTML = `<video id="infoImagen" src="${url}" controls autoplay muted
+        mediaHTML = `<video id="infoImagen" src="${url}" autoplay controls
           style="width:100%;aspect-ratio:1/1;border-radius:16px;background:#000;object-fit:contain;"></video>`;
       }
 
@@ -1775,6 +1773,58 @@ if (window.innerWidth <= 768) {
     }
 
 }
+</script>
+
+<!-- CUSTOM ALERT MODE -->
+<div class="modal" id="blualertModal">
+  <div class="modal-content" style="max-width:340px; text-align:center;">
+    <div style="font-size:38px;color:var(--cyan);margin-bottom:14px;">
+      <i class="fa-solid fa-circle-info"></i>
+    </div>
+    <p id="blualertMensaje" style="color:#fff;font-size:15px;line-height:1.5;margin-bottom:22px;"></p>
+    <button class="pay-btn" onclick="cerrarBluAlert()">Aceptar</button>
+  </div>
+</div>
+
+<script>
+window.blualertCallback = null;
+
+function cerrarBluAlert(){
+  document.getElementById("blualertModal").classList.remove("active");
+  if (typeof window.blualertCallback === "function") {
+    const accion = window.blualertCallback;
+    window.blualertCallback = null;
+    accion();
+  }
+}
+
+window.alert = function(mensaje, callback){
+  document.getElementById("blualertMensaje").innerText = mensaje;
+  window.blualertCallback = typeof callback === "function" ? callback : null;
+  document.getElementById("blualertModal").classList.add("active");
+};
+</script>
+
+<!-- CUSTOM ALERT MODE -->
+<div class="modal" id="blualertModal">
+  <div class="modal-content" style="max-width:340px; text-align:center;">
+    <div style="font-size:38px;color:var(--cyan);margin-bottom:14px;">
+      <i class="fa-solid fa-circle-info"></i>
+    </div>
+    <p id="blualertMensaje" style="color:#fff;font-size:15px;line-height:1.5;margin-bottom:22px;"></p>
+    <button class="pay-btn" onclick="cerrarBluAlert()">Aceptar</button>
+  </div>
+</div>
+
+<script>
+function cerrarBluAlert(){
+  document.getElementById("blualertModal").classList.remove("active");
+}
+
+window.alert = function(mensaje){
+  document.getElementById("blualertMensaje").innerText = mensaje;
+  document.getElementById("blualertModal").classList.add("active");
+};
 </script>
 </body>
 </html>
