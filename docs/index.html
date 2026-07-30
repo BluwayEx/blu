@@ -1177,7 +1177,25 @@ function seleccionarImagen(indice, imagenes){
 }
 
 
-function cerrarInfoModal(){ document.getElementById("infoModal").classList.remove("active"); }
+function cerrarInfoModal(){
+  document.getElementById("infoModal").classList.remove("active");
+
+  const infoImageContainer = document.querySelector(".info-image");
+
+  // Si hay un <video> reproduciéndose, lo pausamos y le quitamos la fuente
+  const video = infoImageContainer.querySelector("video");
+  if (video) {
+    video.pause();
+    video.src = "";
+    video.load();
+  }
+
+  // Si hay un <iframe> (YouTube, TikTok, etc.), le quitamos el src para cortar audio/reproducción
+  const iframe = infoImageContainer.querySelector("iframe");
+  if (iframe) {
+    iframe.src = "";
+  }
+}
 
 
 /* =========================
