@@ -314,7 +314,7 @@ button.close:hover{ color:var(--cyan); }
 .location button:hover{ transform:translateY(-2px); box-shadow:0 0 18px rgba(0,229,255,.45); }
 
 /* Info modal */
-.info-modal-content{ max-width:880px; background:var(--white); padding:44px; width:95%; }
+.info-modal-content{ max-width:1400px; background:var(--white); padding:44px; width:95%; }
 .info-modal-content::before, .info-modal-content::after{ display:none; }
 .info-layout{ display:flex; gap:40px; align-items:flex-start; }
 .info-details{ flex:1; min-width:0; text-align:left; }
@@ -332,7 +332,7 @@ button.close:hover{ color:var(--cyan); }
 .info-rating span.opiniones{ font-size:12.5px; color:var(--ink-soft); }
 
 .info-descripcion{ color:#444; font-size:.92em; margin:8px 0 4px; line-height:1.55; }
-.info-image{ flex:0 0 340px; }
+.info-image{ flex:0 0 520px; }
 .info-image img{ width:100%; border-radius:16px; object-fit:contain; aspect-ratio:1/1; background:var(--ivory); border:1px solid var(--line); }
 .info-layout{ display:flex; gap:28px; align-items:flex-start; }
 
@@ -346,7 +346,7 @@ button.close:hover{ color:var(--cyan); }
 .info-thumb.video-thumb{ display:flex; align-items:center; justify-content:center; background:var(--navy-900); }
 .info-thumb.video-thumb i{ color:#fff; font-size:20px; }
 
-.info-main{ flex:0 0 340px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+.info-main{ flex:0 0 520px; display:flex; flex-direction:column; align-items:center; gap:12px; }
 
 .info-dots{ display:flex; gap:6px; }
 .info-dot{ width:7px; height:7px; border-radius:50%; background:var(--line); cursor:pointer; transition:.2s; }
@@ -1126,7 +1126,7 @@ videoThumb.onclick = () => {
       if (ytMatch) {
         const videoId = ytMatch[1];
         mediaHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0"
-          style="width:100%;aspect-ratio:16/9;max-width:100%;margin:0 auto;display:block;border:none;border-radius:16px;"
+          style="width:1000px;aspect-ratio:16/9;max-width:100%;margin:0 auto;display:block;border:none;border-radius:16px;"
           allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
       } else if (url.includes("tiktok.com")) {
         const match = url.match(/video\/(\d+)/);
