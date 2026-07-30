@@ -772,7 +772,7 @@ document.getElementById("perfilUsuario").addEventListener("click", async () => {
   if (error) console.log("Error Google:", error.message);
 });
 
-document.getElementById("closeSession").addEventListener("click", async () => {
+document.getElementById("cerrarSesion").addEventListener("click", async () => {
   const { error } = await window.supabase.auth.signOut();
   if (error) { console.log("Error cerrando sesión:", error.message); return; }
   console.log("Sesión cerrada correctamente");
