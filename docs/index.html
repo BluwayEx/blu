@@ -727,8 +727,7 @@ if (data.session) {
   const user = data.session.user;
   document.getElementById("nombrePerfil").innerText = user.user_metadata?.full_name || "Usuario";
   document.getElementById("correoPerfil").innerText = user.email;
-  document.getElementById("perfilUsuario").innerHTML = "👤 " + user.email;
-
+document.getElementById("perfilUsuario").innerHTML = `<i class="fa-solid fa-circle-user"></i> ` + user.email;
   const usuarioPedido = document.getElementById("usuarioPedido");
   if (usuarioPedido) usuarioPedido.value = user.user_metadata?.full_name || user.email;
 
