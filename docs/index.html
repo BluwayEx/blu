@@ -1815,16 +1815,5 @@ window.alert = function(mensaje, callback){
     <button class="pay-btn" onclick="cerrarBluAlert()">Aceptar</button>
   </div>
 </div>
-
-<script>
-function cerrarBluAlert(){
-  document.getElementById("blualertModal").classList.remove("active");
-}
-
-window.alert = function(mensaje){
-  document.getElementById("blualertMensaje").innerText = mensaje;
-  document.getElementById("blualertModal").classList.add("active");
-};
-</script>
 </body>
 </html>
