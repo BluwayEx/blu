@@ -773,10 +773,21 @@ document.getElementById("perfilUsuario").addEventListener("click", async () => {
 });
 
 document.getElementById("cerrarSesion").addEventListener("click", async () => {
-  const { error } = await window.supabase.auth.signOut();
-  if (error) { console.log("Error cerrando sesión:", error.message); return; }
+  try {
+    await window.supabase.auth.signOut();
+  } catch (err) {
+    console.log("Error cerrando sesión:", err.message);
+  }
+
+  // Borrado forzado de cualquier residuo de sesión de Supabase
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith("sb-")) localStorage.removeItem(key);
+  });
+
   console.log("Sesión cerrada correctamente");
-  alert("Sesión cerrada correctamente", () => { location.reload(); });
+  alert("Sesión cerrada correctamente", () => {
+    location.href = location.pathname; // recarga limpia, sin el "#" residual
+  });
 });
 </script>
 
