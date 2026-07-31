@@ -275,9 +275,9 @@ footer{
 }
 .modal.active{ visibility:visible; opacity:1; }
 .modal-content{
-  position:relative; width:90%; max-width:400px; padding:1px;
+  position:relative; width:90%; max-width:400px; padding:28px 24px;
   border-radius:28px; background:rgba(20,27,63,.55); backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.25);
   box-shadow:0 25px 60px rgba(0,0,0,.45), 0 0 35px rgba(0,229,255,.18);
   animation:modalShow .4s ease; overflow:hidden;
 }
@@ -1652,6 +1652,64 @@ ${referenciaExtra}
   </div>
   
 </div>
+<!-- Locking overlay -->
+<div id="bloqueoSeguridad" style="
+  display:none; position:fixed; inset:0; z-index:999999;
+  background:#04070f; color:#00E5FF; 
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; font-family:'Poppins', sans-serif; padding:20px;">
+  <i class="fa-solid fa-lock" style="font-size:50px; margin-bottom:20px;"></i>
+  <h2 style="font-size:1.4em; margin-bottom:10px;">Acceso restringido</h2>
+  <p style="color:#c8cde0; max-width:400px;">Se detectó un intento no autorizado. Recarga la página para continuar.</p>
+  <button onclick="location.reload()" style="
+    margin-top:20px; padding:12px 28px; border:none; border-radius:30px;
+    background:linear-gradient(135deg,#00E5FF,#5B3CFF); color:#fff; font-weight:700; cursor:pointer;">
+    Recargar página
+  </button>
+</div>
+
+<script>
+/*====================================
+    PROTECCIÓN CON REDIRECCIÓN
+====================================*/
+function activarBloqueo(){
+  window.location.href = "error.html";
+}
+
+// Clic derecho
+document.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+
+// Selección de texto
+document.addEventListener("selectstart", function(e){ e.preventDefault(); });
+
+// Arrastrar imágenes
+document.addEventListener("dragstart", function(e){ e.preventDefault(); });
+
+// Atajos de teclado -> REDIRECCIÓN INMEDIATA
+document.addEventListener("keydown", function(e){
+  const combos = [
+    e.ctrlKey && ["s","S","u","U","c","C"].includes(e.key),
+    e.ctrlKey && e.shiftKey && ["I","i","J","j","C","c"].includes(e.key),
+    e.key === "F12"
+  ];
+  if (combos.some(Boolean)) {
+    e.preventDefault();
+    activarBloqueo();
+  }
+});
+
+// Detección de DevTools abierto
+let devtoolsAbierto = false;
+setInterval(function(){
+  const umbral = 160;
+  const abierto = (window.outerWidth - window.innerWidth > umbral) ||
+                  (window.outerHeight - window.innerHeight > umbral);
+  if (abierto && !devtoolsAbierto) {
+    devtoolsAbierto = true;
+    activarBloqueo();
+  }
+}, 1000);
+</script>
 <script>
 /*====================================
     SISTEMA DE CALIFICACIONES BLUWAY
@@ -1817,5 +1875,6 @@ window.alert = function(mensaje, callback){
     <button class="pay-btn" onclick="cerrarBluAlert()">Aceptar</button>
   </div>
 </div>
+
 </body>
 </html>
