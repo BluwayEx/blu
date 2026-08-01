@@ -713,7 +713,14 @@ if (data.session) {
   const user = data.session.user;
   nombrePerfil.textContent = user.user_metadata?.full_name || "Usuario";
   textoPerfil.textContent = user.email;
-  fotoPerfil.src = user.user_metadata?.avatar_url || "imagenes/icono.jpg";
+  fotoPerfil.src = user.user_metadata?.avatar_url || "images/icono.jpg";
+  // Keep profile updated in Supabase
+  await window.supabase.from("perfiles").upsert({
+    id: user.id,
+    nombre: user.user_metadata?.full_name || "Usuario",
+    correo: user.email,
+    avatar_url: user.user_metadata?.avatar_url || null
+  });
 	} else {
   nombrePerfil.textContent = "BluWay";
   textoPerfil.textContent = "Sin Límites";
@@ -990,7 +997,7 @@ async function obtenerUbicacion() {
 let priceCurrent = 0;
 let amountCurrent = 1;
 
-document.addEventListener("click", function(e){
+document.addEventListener("click", async function(e){
   if (e.target.closest(".info-btn")) {
     const card = e.target.closest(".product-card");
     const id = Number(card.dataset.id);
@@ -1024,8 +1031,8 @@ document.addEventListener("click", function(e){
       descEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> Este producto aún no tiene descripción detallada.`;
     }
 
-    construirGaleria(producto);
-
+    await construirGaleria(producto);
+    
     const precio = Number(producto.precio) || 0;
     document.getElementById("infoPrecioEntero").innerText = precio.toFixed(2).split(".")[0];
     document.getElementById("infoPrecioDecimal").innerText = "." + precio.toFixed(2).split(".")[1];
@@ -1086,7 +1093,8 @@ document.getElementById("infoShareBtn").addEventListener("click", async ()=>{
   }
 });
 });
-function construirGaleria(producto){
+
+async function construirGaleria(producto){
   const galeria = document.getElementById("infoGaleria");
   const dots = document.getElementById("infoDots");
   const infoImageContainer = document.querySelector(".info-image");
@@ -1099,14 +1107,20 @@ function construirGaleria(producto){
   `;
 
   const imgPrincipal = producto.imagen || "imagenes/Camiseta.jpg";
-  const imagenes = [
-    imgPrincipal,
-    `https://picsum.photos/seed/${producto.id}a/400/400`,
-    `https://picsum.photos/seed/${producto.id}b/400/400`,
-    `https://picsum.photos/seed/${producto.id}c/400/400`,
-    `https://picsum.photos/seed/${producto.id}d/400/400`
-  ];
+  let imagenes = [imgPrincipal];
 
+  try {
+    const respuesta = await fetch(
+      `${SUPABASE_URL}/rest/v1/producto_imagenes?producto_id=eq.${producto.id}&order=orden.asc`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+    );
+    const extras = await respuesta.json();
+    if (extras && extras.length > 0) {
+      imagenes = imagenes.concat(extras.map(img => img.url));
+    }
+  } catch (error) {
+    console.log("Error cargando galería:", error);
+  }
   imagenes.forEach((src, i) => {
     const thumb = document.createElement("div");
     thumb.className = "info-thumb" + (i === 0 ? " activo" : "");
